@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes ,Route } from 'react-router-dom';
-import Frontpage from './Pages/logregPage/logregPage';
+import Frontpage from './Pages/frontPage/frontPage';
 import Mainnavigation from './Components/layout/mainNav';
 import LogRegPage from './Pages/logregPage/logregPage';
 
