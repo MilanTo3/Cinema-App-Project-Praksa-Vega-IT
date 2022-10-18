@@ -1,6 +1,12 @@
 import classes from '../logregPage/logregPage.module.css';
 import {useState, useEffect} from 'react'
 import UserModel from '../../Models/userModel';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
 
 export default function LogRegPage(){
 
@@ -10,6 +16,20 @@ export default function LogRegPage(){
 	const [formValues, setFormValues] = useState(userModel);
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
+	const [open, setOpen] = React.useState(false);
+  	const handleOpen = () => setOpen(true);
+  	const handleClose = () => setOpen(false);
+	  const style = {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		width: 400,
+		bgcolor: 'background.paper',
+		border: '2px solid #000',
+		boxShadow: 24,
+		p: 4,
+	  };
 
     const buttClicked = (e) => {
         setIsActive(current => !current);
@@ -91,13 +111,12 @@ export default function LogRegPage(){
 	<div className={`${classes["form-container"]} ${classes["sign-in-container"]}`}>
 		<form action="#">
 		<img className={classes.logo} src={logo}/>
-
 			<h1 className={classes.signTitle}>Sign in</h1>
 			<span>or use your account</span>
 			<input type="email" placeholder="Username or Email" />
 			<input type="password" placeholder="Password" />
 			<button>Sign In</button>
-			<p className={classes.forgotPassword}>Forgot your password?</p>
+			<p onClick={handleOpen} className={classes.forgotPassword}>Forgot your password?</p>
 		</form>
 	</div>
 	<div className={classes["overlay-container"]}>
@@ -114,5 +133,23 @@ export default function LogRegPage(){
 			</div>
 		</div>
 	</div>
+
+	<Modal
+	open={open}
+	onClose={handleClose}
+	aria-labelledby="modal-modal-title"
+	aria-describedby="modal-modal-description"
+	>
+	<Box style={{textAlign:"center"}} sx={style}>
+		<Typography id="modal-modal-title" variant="h6" component="h2">
+		Request a new password
+		</Typography>
+		<Typography id="modal-modal-description" sx={{ mt: 2 }}>
+			Type in your email address:
+		</Typography>
+		<input type="email" name="email" placeholder="Email"/>
+		<button>Send Request</button>
+	</Box>
+	</Modal>
 </div>;
 }
