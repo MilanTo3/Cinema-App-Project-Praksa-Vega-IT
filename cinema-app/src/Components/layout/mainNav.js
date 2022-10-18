@@ -13,7 +13,7 @@ export default function MainNavigation() {
   
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar style={{ background: 'black' }} className={classes.navbar}>
+      <AppBar style={{ background: 'black' }} className={classes.navbar} position="fixed">
         <Toolbar>
           <Link to="/"><img width="63" src={logo} /></Link>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

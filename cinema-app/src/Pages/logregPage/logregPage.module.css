@@ -1,20 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
-* {
-	box-sizing: border-box;
-}
-
-body {
-	background: #f6f5f7;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -50px 0 50px;
-}
-
 h1 {
 	font-weight: bold;
 	margin: 0;
@@ -69,7 +54,7 @@ button.ghost {
 	border-color: #FFFFFF;
 }
 
-form {
+.form {
 	background-color: #FFFFFF;
 	display: flex;
 	align-items: center;
@@ -106,6 +91,7 @@ input, select {
 	max-width: 100%;
 	min-height: 600px;
     margin: auto;
+	margin-top: 130px;
 
 }
 

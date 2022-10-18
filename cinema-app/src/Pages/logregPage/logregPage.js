@@ -90,7 +90,7 @@ export default function LogRegPage(){
 
     return <div id="container" className={`${classes["container"]} ${ isActive ? classes["right-panel-active"] : classes["container"] }`}>
 	<div className={ `${classes["form-container"]} ${classes["sign-up-container"]}` }>
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className={classes.form}>
 			<h1>Create Account</h1>
 			<span>or use your email for registration</span>
 			<input type="text" name="name" placeholder="Name" value={formValues.name} onChange={handleChange} />
@@ -108,7 +108,7 @@ export default function LogRegPage(){
 		</form>
 	</div>
 	<div className={`${classes["form-container"]} ${classes["sign-in-container"]}`}>
-		<form action="#">
+		<form className={classes.form}>
 		<img className={classes.logo} src={logo}/>
 			<h1 className={classes.signTitle}>Sign in</h1>
 			<span>or use your account</span>
