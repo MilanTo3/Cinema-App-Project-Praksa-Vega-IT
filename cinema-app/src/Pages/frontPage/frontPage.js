@@ -18,7 +18,7 @@ export default function Frontpage(){
 
     return (
       <Box className={classes.box} >
-        <Grid spacing={2} container >
+        <Grid spacing={1} container >
           <Grid item xs={12} sm={6} md={3}>
             <MediaCard/>
           </Grid>
