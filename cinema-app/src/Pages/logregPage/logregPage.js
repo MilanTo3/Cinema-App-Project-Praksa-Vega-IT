@@ -27,6 +27,9 @@ export default function LogRegPage(){
 		if(Object.keys(formErrors).length === 0 && isSubmit){
 			console.log(formValues);
 			setIsActive(false);
+			for (const [key, value] of Object.entries(formValues)) {
+				formValues[key] = '';
+			  }
 		}
 
 	}, [formErrors]);
@@ -35,7 +38,7 @@ export default function LogRegPage(){
 
 		e.preventDefault();
 		setFormErrors(validate(formValues));
-		
+		setIsSubmit(true);
 
 	};
 
@@ -94,6 +97,7 @@ export default function LogRegPage(){
 			<input type="email" placeholder="Username or Email" />
 			<input type="password" placeholder="Password" />
 			<button>Sign In</button>
+			<p className={classes.forgotPassword}>Forgot your password?</p>
 		</form>
 	</div>
 	<div className={classes["overlay-container"]}>
