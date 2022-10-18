@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "RBhOSDYCCWS8JEtX4J3Fq8Elb539Gl+4AqDXYe1k8Y3DL3ZO+lZrtDA8nVUPBk/A86u+uTqfitd33lDAyLcr8Q==",
+  "success": true,
+  "projectFilePath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackend\\CinemaAppBackend\\CinemaAppBackend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wishm\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}

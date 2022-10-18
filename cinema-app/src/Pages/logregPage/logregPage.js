@@ -88,7 +88,7 @@ export default function LogRegPage(){
 		return errors;
 	};
 
-    return <div id="container" className={`${classes["container"]} ${ isActive ? classes["right-panel-active"] : classes["container"] }`}>
+    return <div id="container" className={`${classes["container"]} ${classes["body"]} ${ isActive ? classes["right-panel-active"] : classes["container"] }`}>
 	<div className={ `${classes["form-container"]} ${classes["sign-up-container"]}` }>
 		<form onSubmit={handleSubmit} className={classes.form}>
 			<h1>Create Account</h1>

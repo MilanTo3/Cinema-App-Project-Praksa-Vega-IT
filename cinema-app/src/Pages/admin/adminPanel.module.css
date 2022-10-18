@@ -1,25 +1,32 @@
 .box{
     text-align: center;
+	margin-top: 64px;
+	padding-bottom: 100px;
 }
 
 .managbox{
 
 	background: linear-gradient(to right, #FF4B2B, #FF416C);
-    height: 30vh;
-    padding: 40px;
+    height: 21vh;
+    padding: 10px;
     margin: 12px;
     border-radius: 21px;
+	transition: transform .2s;
 }
 
 .managwrite {
-    margin-top: 63px;
+    margin-top: 90px;
 	border-radius: 20px;
 	border: 1px solid #FF416C;
 	background-color: #FF4B2B;
 	color: #FFFFFF;
 	font-size: 21px;
 	font-weight: bold;
-	padding: 12px 45px;
+	padding: 10px 30px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+}
+
+.managbox:hover{
+	transform: scale(1.02);
 }

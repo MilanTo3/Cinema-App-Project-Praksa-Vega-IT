@@ -17,31 +17,33 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Frontpage(){
 
     return (
-        <Grid spacing={2} container className={classes.box}>
+      <Box className={classes.box} >
+        <Grid spacing={2} container >
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Item><MediaCard/></Item>
+            <MediaCard/>
           </Grid>
         </Grid>
+        </Box>
     );
 }
