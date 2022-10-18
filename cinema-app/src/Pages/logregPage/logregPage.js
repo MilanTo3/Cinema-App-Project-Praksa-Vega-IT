@@ -1,27 +1,88 @@
 import classes from '../logregPage/logregPage.module.css';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import UserModel from '../../Models/userModel';
 
 export default function LogRegPage(){
 
     const [isActive, setIsActive] = useState(false);
 	const logo = require('../../Assets/logo.PNG');
+	var userModel = new UserModel();
+	const [formValues, setFormValues] = useState(userModel);
+	const [formErrors, setFormErrors] = useState({});
+	const [isSubmit, setIsSubmit] = useState(false);
 
     const buttClicked = (e) => {
         setIsActive(current => !current);
 
     }
 
+	const handleChange = (e) => {
+		const {name, value} = e.target;
+		setFormValues({...formValues, [name]: value});
+		console.log(formValues);
+	};
+
+	useEffect(() => {
+		console.log(formErrors)
+		if(Object.keys(formErrors).length === 0 && isSubmit){
+			console.log(formValues);
+			setIsActive(false);
+		}
+
+	}, [formErrors]);
+
+	const handleSubmit = (e) => {
+
+		e.preventDefault();
+		setFormErrors(validate(formValues));
+		
+
+	};
+
+	const validate = (e) => {
+
+		const errors = {}
+		
+		if(!formValues.name){
+			errors.name = "Name is required.";
+		}
+		if(!formValues.email){
+			errors.email = "Email is required.";
+		}
+		if(!formValues.password){
+			errors.password = "Password is required.";
+		}else if(formValues.password.length < 5){
+			errors.password = "Password must be longer than 5 characters.";
+		}
+		if(!formValues.birthday){
+			errors.birthday = "Birthday is required.";
+		}
+		if(!formValues.confirmedpassword){
+			errors.confirmedpassword = "You have to confirm the password";
+		}else if(formValues.password != formValues.confirmedpassword){
+			errors.confirmedpassword = "Confirmed password is wrong.";
+		}
+
+		return errors;
+	};
+
     return <div id="container" className={`${classes["container"]} ${ isActive ? classes["right-panel-active"] : classes["container"] }`}>
 	<div className={ `${classes["form-container"]} ${classes["sign-up-container"]}` }>
-		<form action="#">
+		<form onSubmit={handleSubmit}>
 			<h1>Create Account</h1>
 			<span>or use your email for registration</span>
-			<input type="text" placeholder="Name" />
-			<input type="email" placeholder="Email" />
-			<input type="date" placeholder="Birth date" />
-			<input type="password" placeholder="Password" />
-			<input type="password" placeholder="Confirm your Password" />
-			<button>Sign Up</button>
+			<input type="text" name="name" placeholder="Name" value={formValues.name} onChange={handleChange} />
+			<p className={classes.errors}>{formErrors.name}</p>
+			<input type="email" name="email" placeholder="Email" value={formValues.email} onChange={handleChange}/>
+			<p className={classes.errors}>{formErrors.email}</p>
+			<input type="text" onFocus={(e) => (e.target.type = "date")}
+        onBlur={(e) => (e.target.type = "text")} name="birthday" placeholder="Birth date" value={formValues.birthday} onChange={handleChange}/>
+			<p className={classes.errors}>{formErrors.birthday}</p>
+			<input type="password" name="password" placeholder="Password" value={formValues.password} onChange={handleChange}/>
+			<p className={classes.errors}>{formErrors.password}</p>
+			<input type="password" name="confirmedpassword" placeholder="Confirm your Password" value={formValues.confirmedpassword} onChange={handleChange}/>
+			<p className={classes.errors}>{formErrors.confirmedpassword}</p>
+			<button type="submit">Sign Up</button>
 		</form>
 	</div>
 	<div className={`${classes["form-container"]} ${classes["sign-in-container"]}`}>
