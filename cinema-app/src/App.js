@@ -5,7 +5,7 @@ import LogRegPage from './Pages/logregPage/logregPage';
 import Footer from './Components/footer/footer';
 import classes from './App.css';
 import AdminPanel from './Pages/admin/adminPanel';
-import Switch from 'react-router';
+import AdminCrudPage from './Pages/admin/adminCrudPage/adminCrudPage';
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
             <Route path="/" element={<Frontpage/>}/>
             <Route path='/loginregpage' element={<LogRegPage/>} />
             <Route path='/adminPanel' element={<AdminPanel/>} />
+            <Route path='/adminCrudPage/:type' element={<AdminCrudPage/>} />
           </Routes>
         </div>
       <Footer/>

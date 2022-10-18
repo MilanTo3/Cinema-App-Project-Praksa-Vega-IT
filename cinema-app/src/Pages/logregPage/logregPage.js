@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-
 export default function LogRegPage(){
 
     const [isActive, setIsActive] = useState(false);
@@ -81,7 +80,7 @@ export default function LogRegPage(){
 		}
 		if(!formValues.confirmedpassword){
 			errors.confirmedpassword = "You have to confirm the password";
-		}else if(formValues.password != formValues.confirmedpassword){
+		}else if(formValues.password !== formValues.confirmedpassword){
 			errors.confirmedpassword = "Confirmed password is wrong.";
 		}
 
