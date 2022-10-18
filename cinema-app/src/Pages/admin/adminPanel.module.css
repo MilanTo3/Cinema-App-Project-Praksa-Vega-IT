@@ -1,0 +1,25 @@
+.box{
+    text-align: center;
+}
+
+.managbox{
+
+	background: linear-gradient(to right, #FF4B2B, #FF416C);
+    height: 30vh;
+    padding: 40px;
+    margin: 12px;
+    border-radius: 21px;
+}
+
+.managwrite {
+    margin-top: 63px;
+	border-radius: 20px;
+	border: 1px solid #FF416C;
+	background-color: #FF4B2B;
+	color: #FFFFFF;
+	font-size: 21px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}

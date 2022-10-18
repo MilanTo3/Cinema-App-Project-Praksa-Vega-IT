@@ -4,6 +4,7 @@ import Mainnavigation from './Components/layout/mainNav';
 import LogRegPage from './Pages/logregPage/logregPage';
 import Footer from './Components/footer/footer';
 import classes from './App.css';
+import AdminPanel from './Pages/admin/adminPanel';
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Frontpage/>}/>
         <Route path='/loginregpage' element={<LogRegPage/>} />
+        <Route path='/adminPanel' element={<AdminPanel/>} />
       </Routes>
-      <Footer className={classes.footer}/>
+      <Footer/>
     </div>
   );
 }
