@@ -10,8 +10,8 @@ There are two types of users: Customers and Admins
 - As a user, I can log in using my email or username and password.
     - Users have name, date of birth, email, and role (Admin or Customer).
 - As a user, I can log out.
-- As a user, I can click on a logo to jump to the homepage (Cinema Repertoire).
-- As a user, I can see a footer with copyright information on every page.
+- As a user, I can click on a logo to jump to the homepage (Cinema Repertoire). done
+- As a user, I can see a footer with copyright information on every page. done
 - As a user, I can change my password.
 - As a user, if I forget my password I can request a new one from the login page.
     - Current user's password is invalidated. The user can't log in to the application.

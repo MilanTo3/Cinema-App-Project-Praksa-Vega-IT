@@ -102,12 +102,6 @@ ul{
  	}
 }
 
-@media(max-width: 767px){
-	.footer{
-		color: black;
- 	}
-}
-
 .disclaimer{
 	color: white;
 	text-align: center;

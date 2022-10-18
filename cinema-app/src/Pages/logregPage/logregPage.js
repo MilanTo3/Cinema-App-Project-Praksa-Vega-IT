@@ -18,8 +18,9 @@ export default function LogRegPage(){
 			<span>or use your email for registration</span>
 			<input type="text" placeholder="Name" />
 			<input type="email" placeholder="Email" />
-			<input type="Birth date" placeholder="Birth date" type="Date" />
+			<input type="date" placeholder="Birth date" />
 			<input type="password" placeholder="Password" />
+			<input type="password" placeholder="Confirm your Password" />
 			<button>Sign Up</button>
 		</form>
 	</div>
