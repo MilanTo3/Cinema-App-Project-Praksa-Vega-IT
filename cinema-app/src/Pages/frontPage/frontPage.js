@@ -1,4 +1,12 @@
+import classes from './frontPage.module.css'
+import MediaCard from '../../Components/movieCard/moviecard';
+
 export default function Frontpage(){
 
-    return <div>This is a front page.</div>;
+
+    return (
+        <div>
+            <MediaCard/>
+        </div>
+    );
 }

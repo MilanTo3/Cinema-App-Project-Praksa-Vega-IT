@@ -5,3 +5,7 @@ body {
   --fourth: #707070;
   --fifth: #d4d4d4;
 }
+
+.footer{
+  background-color: black;
+}
