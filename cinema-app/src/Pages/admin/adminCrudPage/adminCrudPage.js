@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import classes from './adminCrudPage.module.css';
 import BasicTable from "../../../Components/table/table";
 

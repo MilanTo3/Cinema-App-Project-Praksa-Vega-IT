@@ -8,15 +8,17 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-function createData(name, email, birthday) {
+function createCustom(name, email, birthday) {
   return { name, email, birthday };
 }
 
 const rows = [
-  createData('Eirx', "erixon@gmail.com1", "21.01.2021"),
-  createData('Firx', "erixon@gmail.com2", "22.01.2021"),
-  createData('dirx', "erixon@gmail.com3", "23.01.2021"),
-
+  [createCustom('Eirx', "erixon@gmail.com1", "21.01.2021"),
+  createCustom('Firx', "erixon@gmail.com2", "22.01.2021"),
+  createCustom('dirx', "erixon@gmail.com3", "23.01.2021")],
+  [{ name: "Action" }, { name: "Comedy" }, { name: "Funny" }],
+  [{ name: "Pirati sa Kariba", originalName: "Pirates of the Carribean", duration: "83m" }, { name: "Deda mrazov pomocnik", originalName: "Santa's helper", duration: "93m" }, {name: "Deda mrazov pomocnik", originalName: "Santa's helper", duration: "90m" }],
+  [{ name: "Screening1" }, { name: "Screening2" }, { name: "Screening3" }]
 ];
 
 // Header names for customers, genres, movies, screenings.
@@ -26,7 +28,7 @@ const headersName = [["Customer name", "Email:", "Birthday:"],
                  ["Screenings name:"]];
 
 // Header keys for customers, genres, movies, screenings:
-const headersKeys = [["name", "email", "birthday"], ["name"], ["name", "originalName"], ["name"]];
+const headersKeys = [["name", "email", "birthday"], ["name"], ["name", "originalName", "duration"], ["name"]];
 
 // Actions for customers, genres, movies, screenings:
 const actions = [["Verify", "Block"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]]
@@ -41,6 +43,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   var headerName = headersName[ind];
   var headerKey = headersKeys[ind];
   var action = actions[ind];
+  var data = rows[ind];
 
   return (
     <TableContainer component={Paper}>
@@ -62,16 +65,16 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
           
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {data.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="left">{row.email}</TableCell>
-              <TableCell align="left">{row.birthday}</TableCell>
+
+              { headerKey.map((key) => (
+                <TableCell align="left">{row[key]}</TableCell>
+              ))}
+
               <TableCell align="left">{action.map((action) => ( <Button style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
             </TableRow>
           ))}

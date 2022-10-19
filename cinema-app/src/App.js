@@ -15,8 +15,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Frontpage/>}/>
             <Route path='/loginregpage' element={<LogRegPage/>} />
-            <Route exact path='/adminPanel' element={<AdminPanel/>} />
-            <Route exact path='/adminCrudPage/:type' element={<AdminCrudPage/>} />
+            <Route exact path='/admin' element={<AdminPanel/>} />
+            <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
           </Routes>
         </div>
       <Footer/>

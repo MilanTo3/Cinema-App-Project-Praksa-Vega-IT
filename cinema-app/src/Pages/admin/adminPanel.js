@@ -14,21 +14,21 @@ export default function AdminPanel(){
           </div>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Link to={{ pathname: "/adminCrudPage/customers" }}><div className={classes.managbox}>
+          <Link to={{ pathname: "/admin/customers" }}><div className={classes.managbox}>
             <p className={classes.managwrite}>Manage Customers</p>
           </div>
           </Link>
         </Grid>
         <Grid item xs={12} md={6}>
-        <Link to={{ pathname: "/adminCrudPage/movies" }}><div className={classes.managbox}>
+        <Link to={{ pathname: "/admin/movies" }}><div className={classes.managbox}>
             <p className={classes.managwrite}>Manage Movies</p>          </div></Link>
         </Grid>
         <Grid item xs={12} md={6}>
-        <Link to={{ pathname: "/adminCrudPage/genres" }}><div className={classes.managbox}>
+        <Link to={{ pathname: "/admin/genres" }}><div className={classes.managbox}>
             <p className={classes.managwrite}>Manage Genres</p>          </div></Link>
         </Grid>
         <Grid item xs={12} md={6}>
-        <Link to={{ pathname: "/adminCrudPage/screenings" }}><div className={classes.managbox}>
+        <Link to={{ pathname: "/admin/screenings" }}><div className={classes.managbox}>
             <p className={classes.managwrite}>Manage Screenings</p>        </div></Link>
         </Grid>
       </Grid>
