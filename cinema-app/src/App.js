@@ -5,6 +5,7 @@ import LogRegPage from './Pages/logregPage/logregPage';
 import Footer from './Components/footer/footer';
 import AdminPanel from './Pages/admin/adminPanel';
 import AdminCrudPage from './Pages/admin/adminCrudPage/adminCrudPage';
+import CinemaReservation from './Pages/cinemaReservationPage/cinemaReservation';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path='/loginregpage' element={<LogRegPage/>} />
             <Route exact path='/admin' element={<AdminPanel/>} />
             <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
+            <Route exact path='/reservation/' element={<CinemaReservation/>} />
           </Routes>
         </div>
       <Footer/>
