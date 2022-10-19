@@ -3,6 +3,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import classes from '../admin/adminPanel.module.css';
 import {Link} from "react-router-dom";
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
+import MovieIcon from '@mui/icons-material/Movie';
+import AnimationIcon from '@mui/icons-material/Animation';
 
 export default function AdminPanel(){
 
@@ -15,21 +19,21 @@ export default function AdminPanel(){
         </Grid>
         <Grid item xs={12} md={6}>
           <Link to={{ pathname: "/admin/customers" }}><div className={classes.managbox}>
-            <p className={classes.managwrite}>Manage Customers</p>
+            <p className={classes.managwrite}>Manage Customers <SupervisorAccountIcon /></p>
           </div>
           </Link>
         </Grid>
         <Grid item xs={12} md={6}>
         <Link to={{ pathname: "/admin/movies" }}><div className={classes.managbox}>
-            <p className={classes.managwrite}>Manage Movies</p>          </div></Link>
+            <p className={classes.managwrite}>Manage Movies <MovieIcon /></p>          </div></Link>
         </Grid>
         <Grid item xs={12} md={6}>
         <Link to={{ pathname: "/admin/genres" }}><div className={classes.managbox}>
-            <p className={classes.managwrite}>Manage Genres</p>          </div></Link>
+            <p className={classes.managwrite}>Manage Genres <AnimationIcon /></p>          </div></Link>
         </Grid>
         <Grid item xs={12} md={6}>
         <Link to={{ pathname: "/admin/screenings" }}><div className={classes.managbox}>
-            <p className={classes.managwrite}>Manage Screenings</p>        </div></Link>
+            <p className={classes.managwrite}>Manage Screenings <SmartDisplayIcon /></p>        </div></Link>
         </Grid>
       </Grid>
     </Box>);

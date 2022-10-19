@@ -6,7 +6,7 @@
 
 .managbox{
 
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	background: linear-gradient(to right, firebrick, #FF416C);
     height: 21vh;
     padding: 10px;
     margin: 12px;
@@ -17,8 +17,7 @@
 .managwrite {
     margin-top: 64px;
 	border-radius: 20px;
-	border: 1px solid #FF416C;
-	background-color: linear-gradient(to right, #FF4B2B, #FF416C);
+	background-color: linear-gradient(to right, firebrick, #FF416C);
 	color: #FFFFFF;
 	font-size: 21px;
 	font-weight: bold;
@@ -31,13 +30,13 @@
 	margin-top: 64px;
 	border-radius: 20px;
 	border: 1px solid #FF416C;
-	background-color: linear-gradient(to right, #FF4B2B, #FF416C);
+	background-color: linear-gradient(to right, firebrick, #FF416C);
 	color: #FFFFFF;
 	font-size: 21px;
 	font-weight: bold;
 	padding: 10px 30px;
 	letter-spacing: 1px;
-	text-transform: uppercase;	background-color: #FF4B2B;
+	text-transform: uppercase;	background-color: firebrick;
 }
 
 .managbox:hover{
