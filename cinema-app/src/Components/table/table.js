@@ -10,22 +10,7 @@ import Button from '@mui/material/Button';
 import AddMovieForm from '../../Pages/admin/addMovie/addMovie';
 import AddGenreForm from '../../Pages/admin/addGenre/addGenre';
 import AddScreeningForm from '../../Pages/admin/addScreenings/addScreening';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import BasicModal from '../modal/modal';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -62,7 +47,6 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
     setIsOpen(!isOpen);
   };
 
-  console.log(dataType);
   const dict = { "customers": 0, "genres": 1, "movies": 2, "screenings": 3 };
   const ind = dict[dataType];
 

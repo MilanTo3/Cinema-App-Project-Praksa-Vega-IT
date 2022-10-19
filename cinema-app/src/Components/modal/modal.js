@@ -45,9 +45,6 @@ export default function BasicModal({ content, isDialogOpened, handleCloseDialog 
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {content}
           </Typography>

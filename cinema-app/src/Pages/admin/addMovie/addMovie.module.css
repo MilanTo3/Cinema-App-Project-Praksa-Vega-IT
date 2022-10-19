@@ -1,0 +1,21 @@
+.uploadImage{
+    border: 1px solid #dd612c;
+    border-radius: 15px;
+    color:Black;
+    font-weight: bold;
+    width: 140px;
+    height: 140px;
+    background-size:cover;
+    transition: transform 0.3s;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-image: url('../../../Assets/uploadImage.jpg');
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position-y:center
+    
+}
+
+.uploadImage:hover{
+    transform: scale(1.03); 
+}

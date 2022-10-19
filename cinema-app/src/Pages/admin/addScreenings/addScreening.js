@@ -1,4 +1,17 @@
 export default function AddScreeningForm(){
 
-    return (<div>This is an add screening form!</div>);
+    return (<div>
+
+        <form style={{ textAlign: "center" }}>
+			<h1>Add a movie screening:</h1>
+            
+			<input type="text" placeholder="Select a movie" />
+			<input type="datetime-local" placeholder="Projection starts at" />
+            <input type="number" placeholder="Ticket price" />
+            <input type="number" placeholder="Seat row number" />
+            <input type="number" placeholder="Seat column number" />
+			<button type="submit">Add Movie</button>
+		</form>
+
+    </div>);
 }

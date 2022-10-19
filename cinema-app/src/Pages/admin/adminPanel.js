@@ -10,7 +10,7 @@ export default function AdminPanel(){
       <Grid container >
         <Grid item xs={12} md={12}>
           <div>
-                <p className={classes.managtitle}>Administrator Panel Options</p>
+            <p className={classes.managtitle}>Administrator Panel Options</p>
           </div>
         </Grid>
         <Grid item xs={12} md={6}>
