@@ -9,7 +9,7 @@ export default function AdminCrudPage(prop){
     return (
         <div style={{marginTop: "100px"}}>
             <p className={classes.managwrite}>Manage {k}:</p>
-            <BasicTable></BasicTable>
+            <BasicTable dataType={k}></BasicTable>
         </div>
     );
 }

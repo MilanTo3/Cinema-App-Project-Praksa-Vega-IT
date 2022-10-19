@@ -13,28 +13,41 @@ function createData(name, email, birthday) {
 }
 
 const rows = [
-  createData('Eirx', "erixon@gmail.com", "22.01.2021"),
-  createData('Eirx', "erixon@gmail.com", "22.01.2021"),
-  createData('Eirx', "erixon@gmail.com", "22.01.2021"),
+  createData('Eirx', "erixon@gmail.com1", "21.01.2021"),
+  createData('Firx', "erixon@gmail.com2", "22.01.2021"),
+  createData('dirx', "erixon@gmail.com3", "23.01.2021"),
 
 ];
 
+// Header names for customers, genres, movies, screenings.
 const headersName = [["Customer name", "Email:", "Birthday:"],
                  ["Genre name:"],
-                 ["Movie name:"]]
+                 ["Movie name:", "Original Name", "Duration"],
+                 ["Screenings name:"]];
 
-const headersKeys = [];
+// Header keys for customers, genres, movies, screenings:
+const headersKeys = [["name", "email", "birthday"], ["name"], ["name", "originalName"], ["name"]];
 
-const actions = [["View", "Verify", "Block"], ["Edit", "Delete"], ["View", "Edit", "Delete"], ["View", "Edit", "Delete"]]
+// Actions for customers, genres, movies, screenings:
+const actions = [["Verify", "Block"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]]
+// 1: cutomer, 2: genre, 3: movie, 4: screening.
 
-export default function BasicTable(props) { // Koji header, i podaci.
+export default function BasicTable({dataType}) { // Koji header, i podaci.
+
+  console.log(dataType);
+  const dict = { "customers": 0, "genres": 1, "movies": 2, "screenings": 3 };
+  const ind = dict[dataType];
+
+  var headerName = headersName[ind];
+  var headerKey = headersKeys[ind];
+  var action = actions[ind];
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-
         <TableHead>
           <TableRow>
-            {headersName[0].map((header) => (
+            {headerName.map((header) => (
                 <TableCell align="left">
                     {header}
                 </TableCell>
@@ -59,7 +72,7 @@ export default function BasicTable(props) { // Koji header, i podaci.
               </TableCell>
               <TableCell align="left">{row.email}</TableCell>
               <TableCell align="left">{row.birthday}</TableCell>
-              <TableCell align="left">{actions[1].map((action) => ( <Button style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
+              <TableCell align="left">{action.map((action) => ( <Button style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
             </TableRow>
           ))}
         </TableBody>

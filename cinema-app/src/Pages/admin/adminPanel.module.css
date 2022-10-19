@@ -15,16 +15,29 @@
 }
 
 .managwrite {
-    margin-top: 90px;
+    margin-top: 64px;
 	border-radius: 20px;
 	border: 1px solid #FF416C;
-	background-color: #FF4B2B;
+	background-color: linear-gradient(to right, #FF4B2B, #FF416C);
 	color: #FFFFFF;
 	font-size: 21px;
 	font-weight: bold;
 	padding: 10px 30px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+}
+
+.managtitle{
+	margin-top: 64px;
+	border-radius: 20px;
+	border: 1px solid #FF416C;
+	background-color: linear-gradient(to right, #FF4B2B, #FF416C);
+	color: #FFFFFF;
+	font-size: 21px;
+	font-weight: bold;
+	padding: 10px 30px;
+	letter-spacing: 1px;
+	text-transform: uppercase;	background-color: #FF4B2B;
 }
 
 .managbox:hover{
