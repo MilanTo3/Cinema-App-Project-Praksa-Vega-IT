@@ -21,7 +21,7 @@ const rows = [
   createCustom('Firx', "erixon@gmail.com2", "22.01.2021"),
   createCustom('dirx', "erixon@gmail.com3", "23.01.2021")],
   [{ name: "Action" }, { name: "Comedy" }, { name: "Funny" }],
-  [{ name: "Pirati sa Kariba", originalName: "Pirates of the Carribean", duration: "83m" }, { name: "Deda mrazov pomocnik", originalName: "Santa's helper", duration: "93m" }, {name: "Deda mrazov pomocnik", originalName: "Santa's helper", duration: "90m" }],
+  [{ name: "Pirati sa Kariba", originalName: "Pirates of the Carribean", duration: "83m" }, { name: "Deda mrazov pomocnik", originalName: "Santa's helper", duration: "93m" }, {name: "Deda mrazov pomocnik 2", originalName: "Santa's helper", duration: "90m" }],
   [{ name: "Screening1" }, { name: "Screening2" }, { name: "Screening3" }]
 ];
 

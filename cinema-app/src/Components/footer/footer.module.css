@@ -9,10 +9,11 @@ footer {
     right: 0;
     text-align: center;
     z-index: 999;
+    height: 84px;
 }
 
 footer p {
-    margin: 10px 0;
+    margin: 17px 0;
 }
 
 footer i {
@@ -22,4 +23,9 @@ footer i {
 footer a {
     color: #3c97bf;
     text-decoration: none;
+}
+
+.curve{
+    background-color: white;
+    fill: black;
 }

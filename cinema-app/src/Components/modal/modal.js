@@ -45,9 +45,7 @@ export default function BasicModal({ content, isDialogOpened, handleCloseDialog 
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {content}
-          </Typography>
         </Box>
       </Modal>
     </div>

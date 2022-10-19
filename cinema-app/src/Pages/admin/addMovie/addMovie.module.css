@@ -19,3 +19,71 @@
 .uploadImage:hover{
     transform: scale(1.03); 
 }
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dropdown {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    border-radius: 10px;
+  }
+  
+  .dropdown:empty {
+    border: none;
+  }
+  
+  .dropdown-row {
+    cursor: pointer;
+    text-align: start;
+    margin: 2px 0;
+  }
+
+  .dropdown-row:hover{
+    background-color: #ff4b2b;
+    border-radius: 4px;
+    color: white;
+  }
+  
+  .search-inner {
+    display: flex;
+    width: 100%;
+  }
+
+  .searchButton{
+    margin-top: 8px;
+    height: 40px;
+    width: 20%;
+    text-align: center;
+    margin-left: 4px;
+    padding: 10px;
+  }
+
+  .tag{
+    border-radius: 24px;
+    background-color: #ff4b2b;
+    color: white;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 110px;
+    margin: 7.4px;
+  }
+
+  .tagBox{
+    border: 1px solid gray;
+    border-radius: 4.5px;
+    margin: 4px 0px 4px 0px;
+    flex: 1 0 auto;
+    justify-content: center;
+  }
+
+  .tagButton{
+    padding: 4px;
+
+  }
+  

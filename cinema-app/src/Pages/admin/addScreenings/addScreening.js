@@ -10,7 +10,7 @@ export default function AddScreeningForm(){
             <input type="number" placeholder="Ticket price" />
             <input type="number" placeholder="Seat row number" />
             <input type="number" placeholder="Seat column number" />
-			<button type="submit">Add Movie</button>
+			<button type="submit" style={{ marginTop: "21px" }}>Add Screening</button>
 		</form>
 
     </div>);

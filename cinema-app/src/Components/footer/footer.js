@@ -7,9 +7,10 @@ export default function Footer(){
 
     return (
 		<footer>
+			<div style={{ display: "flex", justifyContent: "center", marginTop: "16px" }}><img style={{ marginRight: "21px", borderRadius: "10px" }} src={logo} width="60" />
 		<p>
 			Copyright cinefra. ©2022 C# Corner. All contents are copyright of their authors.
-		</p>
+		</p></div>
 	</footer>
  
     );
