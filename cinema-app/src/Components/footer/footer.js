@@ -8,7 +8,7 @@ export default function Footer(){
     return (
 		<footer>
 		<p>
-			Copyright cinefra.
+			Copyright cinefra. ©2022 C# Corner. All contents are copyright of their authors.
 		</p>
 	</footer>
  

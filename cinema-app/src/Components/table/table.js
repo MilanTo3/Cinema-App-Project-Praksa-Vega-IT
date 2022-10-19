@@ -7,6 +7,25 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import AddMovieForm from '../../Pages/admin/addMovie/addMovie';
+import AddGenreForm from '../../Pages/admin/addGenre/addGenre';
+import AddScreeningForm from '../../Pages/admin/addScreenings/addScreening';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import BasicModal from '../modal/modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -31,10 +50,17 @@ const headersName = [["Customer name", "Email:", "Birthday:"],
 const headersKeys = [["name", "email", "birthday"], ["name"], ["name", "originalName", "duration"], ["name"]];
 
 // Actions for customers, genres, movies, screenings:
-const actions = [["Verify", "Block"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]]
+const actions = [["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]]
 // 1: cutomer, 2: genre, 3: movie, 4: screening.
+const addModals = ["", <AddGenreForm/>, <AddMovieForm/>, <AddScreeningForm/>]
 
 export default function BasicTable({dataType}) { // Koji header, i podaci.
+
+  // za basicModal komponentu:
+  const [isOpen, setIsOpen] = React.useState(false);
+  const handleOpenModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   console.log(dataType);
   const dict = { "customers": 0, "genres": 1, "movies": 2, "screenings": 3 };
@@ -44,6 +70,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   var headerKey = headersKeys[ind];
   var action = actions[ind];
   var data = rows[ind];
+  var modal = addModals[ind];
 
   return (
     <TableContainer component={Paper}>
@@ -59,7 +86,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
                     Action:
                 </TableCell>
                 <TableCell align="left">
-                    <Button style={{backgroundColor: "#FF4B2B", color: "white"}}>Add New</Button>
+                    <Button style={{backgroundColor: "#FF4B2B", color: "white"}} onClick={() => handleOpenModal()}>Add New</Button>
                 </TableCell>
           </TableRow>
           
@@ -80,6 +107,9 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
           ))}
         </TableBody>
       </Table>
+      
+      <BasicModal isDialogOpened={isOpen} handleCloseDialog={() => setIsOpen(false)} content={modal} />
+
     </TableContainer>
   );
 }
