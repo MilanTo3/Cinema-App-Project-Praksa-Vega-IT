@@ -3,7 +3,6 @@ import Frontpage from './Pages/frontPage/frontPage';
 import Mainnavigation from './Components/layout/mainNav';
 import LogRegPage from './Pages/logregPage/logregPage';
 import Footer from './Components/footer/footer';
-import classes from './App.css';
 import AdminPanel from './Pages/admin/adminPanel';
 import AdminCrudPage from './Pages/admin/adminCrudPage/adminCrudPage';
 
