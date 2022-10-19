@@ -19,8 +19,8 @@ body{
 	align-items: center;
 	justify-content: center;
     border-radius: 12px;
-    width: 80%;
-    height: 70vh;
+    width: 100%;
+    height: 90vh;
     border-top-left-radius: 21px;
     border-bottom-left-radius: 21px;
 }
@@ -34,8 +34,7 @@ body{
     width: 50%;
     height: 100%;
     background-color: #222;
-    border-top-left-radius: 21px;
-    border-bottom-left-radius: 21px;
+
 }
 
 .screen {
@@ -58,8 +57,7 @@ body{
     height: 12px;
     width: 15px;
     margin: 3px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+
 }
 
 .movieInfo{
@@ -79,14 +77,55 @@ body{
     top: 0;
     left: 0;
     width: 100%;
-    height: 350px;
+    height: 45vh;
 
 }
 
 .title{
     position: absolute;
     right: 0;
-    margin-top: 40%;
+    margin-top: 34%;
     color: #fff;
     text-align: center;
+    margin-right: 16px;
+}
+
+.info{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    background-color: #ff4b2b;
+    height: 45vh;
+}
+
+.writingInfo{
+    margin-left: 21px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+.ticket{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    background-color: firebrick;
+    height: 45vh;
+    text-align: center;
+}
+
+.ticketButtons{
+    padding: 4px;
+    text-align: center;
+    width: 34%;
+    
+}
+
+.buttonWriting{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
