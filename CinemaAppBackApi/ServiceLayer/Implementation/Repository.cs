@@ -1,4 +1,5 @@
-﻿using RepoLayer;
+﻿using Microsoft.EntityFrameworkCore;
+using RepoLayer;
 using ServiceLayer.Contract_Interface;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace ServiceLayer.Implementation
     {
 
         protected readonly AppDbContext dbContext;
+        public DbSet<TEntity> table = null;
 
         public Repository(AppDbContext dbContext)
         {
             this.dbContext = dbContext;
+            table = dbContext.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
@@ -26,6 +29,12 @@ namespace ServiceLayer.Implementation
         public TEntity GetOneRecord(long id)
         {
             return dbContext.Set<TEntity>().Find(id);
+        }
+
+        public void Update(TEntity entity)
+        {
+            table.Attach(entity);
+            dbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public IEnumerable<TEntity> GetAll()
