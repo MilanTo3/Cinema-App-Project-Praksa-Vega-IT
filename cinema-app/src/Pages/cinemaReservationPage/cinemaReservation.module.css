@@ -52,10 +52,20 @@ body{
 
 .seat {
     background-color: #444451;
-    height: 12px;
-    width: 15px;
+    height: 24px;
+    width: 30px;
     margin: 3px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
 
+}
+
+.hover:hover {
+    background: #d4d4d4;
+}
+
+.seatClicked{
+    background-color: #fff;
 }
 
 .movieInfo{

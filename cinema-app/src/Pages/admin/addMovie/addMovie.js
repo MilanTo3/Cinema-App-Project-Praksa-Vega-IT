@@ -7,7 +7,6 @@ export default function AddMovieForm(){
     const inputFileRef = useRef(null);
     const [value, setValue] = useState("");
     const [preview, setPreview] = useState(def);
-
     const [val, setVal]=useState([]);
 
     const handleDelete=(e, i)=>{
@@ -64,7 +63,7 @@ export default function AddMovieForm(){
 			<input type="text" placeholder="Movie name (Local)" />
 			<input type="text" placeholder="Original movie name" />
             <input type="text" placeholder="Duration (minutes)" />
-
+            <input type="text" placeholder="Trailer link" />
             <div className={classes["search-container"]}>
         <div className={classes["search-inner"]}>
           <input type="text" placeholder="Search for a genre..." value={value} onChange={onChange} />
