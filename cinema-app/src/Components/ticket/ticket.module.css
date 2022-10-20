@@ -1,0 +1,36 @@
+.wrapper{
+    width: 50%;
+    background-color: white;
+    border-radius: 14px;
+    height: 23%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin: 14px;
+}
+
+.info{
+    width: 64%;
+    box-sizing: content-box;
+    background-color: #222;
+    text-align: left;
+    color: white;
+}
+
+.info h3{
+    margin-left: 24px;
+}
+
+.torn{
+    width: 36%;
+    height: 100%;
+}
+
+.vertical-dotted-line
+{
+    border-left: 2px dotted white;
+    box-sizing: content-box;
+    margin-left: -4px;
+} 
+

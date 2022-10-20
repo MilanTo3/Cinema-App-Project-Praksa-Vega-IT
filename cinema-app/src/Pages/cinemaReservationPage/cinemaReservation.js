@@ -51,12 +51,12 @@ export default function CinemaReservation(){
                 </div>
                 <h1 className={classes.title}>Zelena milja (The Green mile)</h1>
                 <div className={classes.info}>
-                    <p className={classes.writingInfo}>Name (Localized): </p>
-                    <p className={classes.writingInfo}>Original Name: </p>
-                    <p className={classes.writingInfo}>Screening start: </p>
-                    <p className={classes.writingInfo}>Duration: </p>
-                    <p className={classes.writingInfo}>Tickets left: </p>
-                    <p className={classes.writingInfo}>Price per ticket: </p>
+                    <p className={classes.writingInfo}>Name (Localized): <span>Green mile</span></p>
+                    <p className={classes.writingInfo}>Original Name: <span>Green mile</span></p>
+                    <p className={classes.writingInfo}>Screening start: <span>Green mile</span></p>
+                    <p className={classes.writingInfo}>Duration: <span>Green mile</span></p>
+                    <p className={classes.writingInfo}>Tickets left: <span>Green mile</span></p>
+                    <p className={classes.writingInfo}>Price per ticket: <span>Green mile</span></p>
                 </div>
                 <div className={classes.ticket}>
                     <h3>Watch the trailer:</h3>
