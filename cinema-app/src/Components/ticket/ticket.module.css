@@ -34,3 +34,8 @@
     margin-left: -4px;
 } 
 
+.writing{
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-weight: bold;
+}
