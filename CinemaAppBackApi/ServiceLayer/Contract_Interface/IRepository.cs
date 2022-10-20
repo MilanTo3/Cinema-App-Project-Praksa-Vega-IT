@@ -10,9 +10,9 @@ namespace ServiceLayer.Contract_Interface
     {
 
         IEnumerable<TEntity> GetAll();
-        TEntity GetOneRecord(int id);
+        TEntity GetOneRecord(long id);
         void Add(TEntity entity);
-        void Remove(TEntity entity);
+        void Remove(long id);
 
     }
 }
