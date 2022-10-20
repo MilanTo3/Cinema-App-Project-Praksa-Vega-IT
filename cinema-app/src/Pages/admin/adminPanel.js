@@ -11,7 +11,7 @@ import AnimationIcon from '@mui/icons-material/Animation';
 export default function AdminPanel(){
 
     return (<Box className={classes.box}>
-      <Grid container >
+      <Grid container align="center" >
         <Grid item xs={12} md={12}>
           <div>
             <p className={classes.managtitle}>Administrator Panel Options</p>
@@ -34,6 +34,9 @@ export default function AdminPanel(){
         <Grid item xs={12} md={6}>
         <Link to={{ pathname: "/admin/screenings" }}><div className={classes.managbox}>
             <p className={classes.managwrite}>Manage Screenings <SmartDisplayIcon /></p>        </div></Link>
+        </Grid>
+        <Grid item md={12}>
+            <div className={ `${classes["managbox"]} ${classes["uniform"]}` }><p className={classes.managwrite}>Uniform entity search</p></div>
         </Grid>
       </Grid>
     </Box>);

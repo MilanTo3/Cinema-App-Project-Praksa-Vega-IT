@@ -7,11 +7,15 @@
 .managbox{
 
 	background: linear-gradient(to right, firebrick, #FF416C);
-    height: 21vh;
+    height: 18vh;
     padding: 10px;
     margin: 12px;
     border-radius: 21px;
 	transition: transform .2s;
+}
+
+.uniform{
+	width: 80%;
 }
 
 .managwrite {
