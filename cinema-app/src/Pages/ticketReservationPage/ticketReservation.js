@@ -13,15 +13,9 @@ export default function TicketReservationPage(){
             <h2 className={classes.title}>Upcoming:</h2>
             <div className={classes.ticketContainer}>
                 <Ticket />
-
             </div>
         </div>
 
-        <div className={ classes.passedReservations }>
-            <h2 className={classes.title}>Past Reservations:</h2>
-            <div className={classes.ticketContainer}>
-                <Ticket />
-            </div>
-        </div>
+        
     </div>);
 }
