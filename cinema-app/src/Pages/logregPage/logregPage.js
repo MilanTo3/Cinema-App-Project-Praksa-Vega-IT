@@ -5,6 +5,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import axios from 'axios';
 
 export default function LogRegPage(){
 
@@ -43,11 +44,12 @@ export default function LogRegPage(){
 	useEffect(() => {
 		console.log(formErrors)
 		if(Object.keys(formErrors).length === 0 && isSubmit){
-			console.log(formValues);
 			setIsActive(false);
+
 			for (const [key, value] of Object.entries(formValues)) {
 				formValues[key] = '';
-			  }
+			}
+		
 		}
 
 	}, [formErrors]);
@@ -83,6 +85,7 @@ export default function LogRegPage(){
 		}else if(formValues.password !== formValues.confirmedpassword){
 			errors.confirmedpassword = "Confirmed password is wrong.";
 		}
+		console.log(formValues);
 
 		return errors;
 	};

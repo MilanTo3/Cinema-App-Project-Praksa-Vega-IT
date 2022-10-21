@@ -32,6 +32,9 @@ public class UserService: IUserService
         {
 
             var account = user.Adapt<User>();
+            account.blocked = false;
+            account.verified = false;
+            account.role = "consumer";
             _repositoryManager.userRepository.Insert(account);
 
             await _repositoryManager.UnitOfWork.Complete();
