@@ -1,27 +1,78 @@
 {
   "format": 1,
   "restore": {
-    "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj": {}
+    "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj": {}
   },
   "projects": {
-    "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj": {
+    "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj",
-        "projectName": "DomainLayer",
-        "projectPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj",
-        "packagesPath": "C:\\Users\\wishm\\.nuget\\packages\\",
-        "outputPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\obj\\",
+        "projectUniqueName": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj",
+        "projectName": "Contracts",
+        "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj",
+        "packagesPath": "C:\\Users\\milan.tomin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\wishm\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\milan.tomin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj",
+        "projectName": "DomainLayer",
+        "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj",
+        "packagesPath": "C:\\Users\\milan.tomin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\milan.tomin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,32 +116,36 @@
         }
       }
     },
-    "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\RepoLayer\\RepoLayer.csproj": {
+    "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\RepoLayer\\RepoLayer.csproj",
-        "projectName": "RepoLayer",
-        "projectPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\RepoLayer\\RepoLayer.csproj",
-        "packagesPath": "C:\\Users\\wishm\\.nuget\\packages\\",
-        "outputPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\RepoLayer\\obj\\",
+        "projectUniqueName": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj",
+        "projectName": "ServiceLayer",
+        "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj",
+        "packagesPath": "C:\\Users\\milan.tomin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\wishm\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\milan.tomin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj": {
-                "projectPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj"
+              "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj": {
+                "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj"
+              },
+              "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj": {
+                "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj"
+              },
+              "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServicesAbstraction\\ServicesAbstraction.csproj": {
+                "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServicesAbstraction\\ServicesAbstraction.csproj"
               }
             }
           }
@@ -105,23 +160,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.3.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[6.0.10, )"
-            },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[6.0.10, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[6.0.10, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.10, )"
             }
@@ -146,35 +189,30 @@
         }
       }
     },
-    "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj": {
+    "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServicesAbstraction\\ServicesAbstraction.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj",
-        "projectName": "ServiceLayer",
-        "projectPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\ServiceLayer.csproj",
-        "packagesPath": "C:\\Users\\wishm\\.nuget\\packages\\",
-        "outputPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\ServiceLayer\\obj\\",
+        "projectUniqueName": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServicesAbstraction\\ServicesAbstraction.csproj",
+        "projectName": "ServicesAbstraction",
+        "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServicesAbstraction\\ServicesAbstraction.csproj",
+        "packagesPath": "C:\\Users\\milan.tomin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\ServicesAbstraction\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\wishm\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\milan.tomin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj": {
-                "projectPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\DomainLayer\\DomainLayer.csproj"
-              },
-              "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\RepoLayer\\RepoLayer.csproj": {
-                "projectPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\RepoLayer\\RepoLayer.csproj"
+              "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj": {
+                "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj"
               }
             }
           }
@@ -188,12 +226,6 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[6.0.10, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

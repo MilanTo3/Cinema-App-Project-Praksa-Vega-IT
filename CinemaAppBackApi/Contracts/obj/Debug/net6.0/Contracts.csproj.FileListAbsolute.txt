@@ -1,0 +1,12 @@
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\bin\Debug\net6.0\Contracts.deps.json
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\bin\Debug\net6.0\Contracts.dll
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\bin\Debug\net6.0\Contracts.pdb
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\Contracts.csproj.AssemblyReference.cache
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\Contracts.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\Contracts.AssemblyInfoInputs.cache
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\Contracts.AssemblyInfo.cs
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\Contracts.csproj.CoreCompileInputs.cache
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\Contracts.dll
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\refint\Contracts.dll
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\Contracts.pdb
+c:\Users\milan.tomin\Documents\Project\delta-internship-cinema-app\CinemaAppBackApi\Contracts\obj\Debug\net6.0\ref\Contracts.dll
