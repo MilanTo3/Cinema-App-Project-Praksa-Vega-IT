@@ -53,4 +53,9 @@ public class UserRepository: GenericRepository<User>, IUserRepository
         }
         return true;
     }
+
+    public async Task<User> GetByEmail(string email) {
+
+        return await dbSet.Where(x => x.email == email).FirstOrDefaultAsync();
+    }
 }

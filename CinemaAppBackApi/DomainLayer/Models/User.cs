@@ -21,6 +21,8 @@ namespace DomainLayer.Models
         public bool verified { get; set; }
         public bool blocked { get; set; }
         public DateTime updateDateTime { get; set; }
+        public string? VerificationToken { get; set; }
+        public string? PasswordResetToken { get; set; }
 
     }
 }

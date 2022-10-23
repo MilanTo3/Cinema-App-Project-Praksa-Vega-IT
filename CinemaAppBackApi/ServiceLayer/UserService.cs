@@ -8,6 +8,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 
 public class UserService : IUserService
 {
@@ -41,11 +44,39 @@ public class UserService : IUserService
         var hashedPasswordBytes = hash.ComputeHash(Encoding.Default.GetBytes(user.password + pepper));
         var hashedPasswordString = Convert.ToHexString(hashedPasswordBytes);
         account.password = hashedPasswordString;
+        account.VerificationToken = createatoken();
 
         await _repositoryManager.userRepository.Add(account);
         await _repositoryManager.UnitOfWork.Complete();
+        sendVerificationEmail(account.email, account.VerificationToken);
 
         return account.Adapt<UserDto>();
+    }
+
+    private void sendVerificationEmail(string userEmail, string token) {
+
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse("cinefracinema@gmail.com"));
+        email.To.Add(MailboxAddress.Parse(userEmail));
+        email.Subject = "Cinefra Account Verfication";
+        string link = "http://localhost:5174/api/users/verify/" + userEmail + "/" + token;
+        string anchortag = string.Format("<a href={0}>Confirm the registration.</a>", link);
+        email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "" +
+            "<h2>Hello new user!</h2><p>We welcome you to the Cinefra cinema family, last thing you need to do to complete the registration process is confirm the registration.</p>" + anchortag };
+
+        using (var smtp = new SmtpClient()) {
+            smtp.Connect("smtp.gmail.com", 587, false);
+            smtp.Authenticate("cinefracinema@gmail.com", "xcqrblozlhgqreub");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+        }
+
+    }
+
+    private string createatoken() {
+
+        return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+
     }
 
     public async Task<bool> DeleteAsync(long userid, CancellationToken cancellationToken = default) {
@@ -72,9 +103,15 @@ public class UserService : IUserService
             var hashedPasswordBytes = hash.ComputeHash(Encoding.Default.GetBytes(loginUser.password + pepper));
             var hashedPasswordString = Convert.ToHexString(hashedPasswordBytes);
 
-            if (user.blocked) {
+            if (user.verified == false) {
+                tokendto.errorMessage = "Check your email for a verification link.";
+                return tokendto;
+            }
+            else if (user.blocked) {
                 tokendto.errorMessage = "Oops! Your account seems to be blocked!";
-            }else if (user.password != hashedPasswordString) {
+                return tokendto;
+            }
+            else if (user.password != hashedPasswordString) {
                 tokendto.errorMessage = "Incorrect email or password.";
                 return tokendto;
             }
@@ -87,16 +124,22 @@ public class UserService : IUserService
         return tokendto;
     }
 
-    public async Task<bool> VerifyUser(long id) {
+    public async Task<bool> VerifyUser(string email, string token) {
 
-        var user = await _repositoryManager.userRepository.getById(id);
+        var user = await _repositoryManager.userRepository.GetByEmail(email);
         if (user == null) {
             return false;
         }
 
-        user.verified = true;
+        if (token != user.VerificationToken) {
+            return false;
+        }
 
-        return await _repositoryManager.userRepository.Update(user);
+        user.verified = true;
+        bool updated = await _repositoryManager.userRepository.Update(user);
+        await _repositoryManager.UnitOfWork.Complete();
+
+        return updated;
     }
 
     public async Task<bool> BlockUser(long id) {
@@ -107,7 +150,9 @@ public class UserService : IUserService
         }
 
         user.blocked = !user.blocked;
+        bool changed = await _repositoryManager.userRepository.Update(user);
+        await _repositoryManager.UnitOfWork.Complete();
 
-        return await _repositoryManager.userRepository.Update(user);
+        return changed;
     }
 }

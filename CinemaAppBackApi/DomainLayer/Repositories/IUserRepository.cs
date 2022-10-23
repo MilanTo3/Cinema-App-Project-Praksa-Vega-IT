@@ -11,6 +11,7 @@ namespace DomainLayer.Repositories
     {
 
         Task<User> LoginUserAsync(string email, string password);
+        Task<User> GetByEmail(string email);
 
     }
 }

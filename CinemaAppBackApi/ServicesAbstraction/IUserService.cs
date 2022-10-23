@@ -15,7 +15,7 @@ public interface IUserService
 
     Task<TokenDto> LoginUserAsync(LoginUserDto loginUser);
 
-    Task<bool> VerifyUser(long id);
+    Task<bool> VerifyUser(string email, string token);
 
     Task<bool> BlockUser(long id);
 

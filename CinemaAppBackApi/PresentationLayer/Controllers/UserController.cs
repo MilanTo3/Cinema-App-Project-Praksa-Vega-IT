@@ -12,6 +12,8 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography.Xml;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 [ApiController]
 [Route("api/users")]
@@ -36,7 +38,12 @@ public class UserController : ControllerBase
     [Route("registerUser")]
     public async Task<IActionResult> AddUser(UserDto user){
 
-        await _serviceManager.UserService.CreateAsync(user);
+        try {
+            await _serviceManager.UserService.CreateAsync(user);
+        }
+        catch {
+            return BadRequest();
+        }
 
         return Ok();
     }
@@ -94,20 +101,23 @@ public class UserController : ControllerBase
 
     }
 
-    [HttpPatch]
-    [Route("verify/{id}")]
-    public async Task<IActionResult> VerifyUser(long id) {
+   
 
-        bool verified = await _serviceManager.UserService.VerifyUser(id);
+    [HttpGet]
+    [Route("verify/{email}/{token}")]
+    public async Task<IActionResult> VerifyUser(string email, string token) {
+        
+        bool verified = await _serviceManager.UserService.VerifyUser(email, token);
+
         if (verified) {
-            return Ok();
+            return Ok("Verification successfull.");
         }
         else {
-            return NotFound();
+            return BadRequest("Verification Unsuccesfull.");
         }
     }
 
-    [HttpPatch]
+    [HttpPut]
     [Route("block/{id}")]
     public async Task<IActionResult> BlockUser(long id) {
 
