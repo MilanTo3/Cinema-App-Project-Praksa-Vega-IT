@@ -8,6 +8,7 @@ namespace DomainLayer.Repositories
 {
     public interface IUnitofWork
     {
+
         Task<int> Complete(); // za transkacije.
 
     }

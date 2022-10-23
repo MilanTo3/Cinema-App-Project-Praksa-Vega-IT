@@ -5,20 +5,30 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import axios from 'axios';
+import LoginModel from '../../Models/loginModel';
+import { getUsers, registerUser, loginUser } from '../../Services/userService';
+import BasicSnackbar from '../../Components/snackbar/snackbar';
+import { useNavigate } from "react-router-dom";
 
 export default function LogRegPage(){
 
     const [isActive, setIsActive] = useState(false);
 	const logo = require('../../Assets/logo.PNG');
 	var userModel = new UserModel();
+	var loginModel = new LoginModel();
 	const [formValues, setFormValues] = useState(userModel);
+	const [loginFormValue, setLoginFormValue] = useState(loginModel);
+	const [loginFormErrors, setLoginFormErrors] = useState({});
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
+	const [loginIsSubmit, setLoginSubmit] = useState(false);
 	const [open, setOpen] = React.useState(false);
+	const [snackbarOpen, setsnackbarOpen] = React.useState(false);
+	const [snackbarContent, setsnackbarContent] = React.useState("");
+	const [snackbarType, setsnackbarType] = React.useState(0);
   	const handleOpen = () => setOpen(true);
   	const handleClose = () => setOpen(false);
-	  const style = {
+	const style = {
 		position: 'absolute',
 		top: '50%',
 		left: '50%',
@@ -28,7 +38,8 @@ export default function LogRegPage(){
 		border: '2px solid #000',
 		boxShadow: 24,
 		p: 4,
-	  };
+	};
+	const navigate = useNavigate();
 
     const buttClicked = (e) => {
         setIsActive(current => !current);
@@ -38,11 +49,9 @@ export default function LogRegPage(){
 	const handleChange = (e) => {
 		const {name, value} = e.target;
 		setFormValues({...formValues, [name]: value});
-		console.log(formValues);
 	};
 
 	useEffect(() => {
-		console.log(formErrors)
 		if(Object.keys(formErrors).length === 0 && isSubmit){
 			setIsActive(false);
 
@@ -60,7 +69,76 @@ export default function LogRegPage(){
 		setFormErrors(validate(formValues));
 		setIsSubmit(true);
 
+		if(Object.keys(formErrors).length === 0 && isSubmit){
+			
+			const formData = {
+				name: formValues["name"],
+				email: formValues["email"],
+				birthday: formValues["birthday"],
+				password: formValues["password"],
+			}
+
+			registerUser(formData).then(function (response){
+				setsnackbarType(0);
+				setsnackbarOpen(true);
+				setsnackbarContent("Registered successfully.");
+			}).catch(function (error){
+				setsnackbarType(1);
+				setsnackbarOpen(true);
+				setsnackbarContent(error["response"]["data"]);
+			});
+	
+	}};
+
+	const handleLoginChange = (e) => {
+		const {name, value} = e.target;
+		setLoginFormValue({...loginFormValue, [name]: value});
 	};
+
+	const loginHandleSubmit = (e) => {
+
+		e.preventDefault();
+		setLoginFormErrors(validateLogin(loginFormValue));
+		setLoginSubmit(true);
+
+		if(Object.keys(loginFormErrors).length === 0 && loginIsSubmit){
+			
+			const formData = {
+				email: loginFormValue["email"],
+				password: loginFormValue["password"],
+			}
+
+			loginUser(formData).then(function (response){
+				localStorage.setItem("loggedInUser", JSON.stringify(response["data"]));
+				setsnackbarType(0);
+				setsnackbarOpen(true);
+				setsnackbarContent("Welcome back :)");
+				navigate("/");
+				
+			}).catch(function (error) {
+				setsnackbarType(1);
+				setsnackbarOpen(true);
+				setsnackbarContent(error["response"]["data"]);
+			});
+
+  		}
+
+	};
+
+	const validateLogin = (e) => {
+
+		const errors = {}
+		if(!loginFormValue.email){
+			errors.email = "Email is required.";
+		}
+		if(!loginFormValue.password){
+			errors.password = "Password is required.";
+		}else if(loginFormValue.password.length < 5) {
+			errors.password = "Password must be longer than 5 characters.";
+		}
+
+		return errors;
+	}
 
 	const validate = (e) => {
 
@@ -85,16 +163,21 @@ export default function LogRegPage(){
 		}else if(formValues.password !== formValues.confirmedpassword){
 			errors.confirmedpassword = "Confirmed password is wrong.";
 		}
-		console.log(formValues);
 
 		return errors;
 	};
 
+	const handleSnackbarClose = () => {
+
+		setsnackbarOpen(false);
+  	};
+
     return <div id="container" className={`${classes["container"]} ${classes["body"]} ${ isActive ? classes["right-panel-active"] : classes["container"] }`}>
+
 	<div className={ `${classes["form-container"]} ${classes["sign-up-container"]}` }>
 		<form onSubmit={handleSubmit} className={classes.form}>
 			<h1>Create Account</h1>
-			<span>or use your email for registration</span>
+			<span>join us, you get a 5% discount!</span>
 			<input type="text" name="name" placeholder="Name" value={formValues.name} onChange={handleChange} />
 			<p className={classes.errors}>{formErrors.name}</p>
 			<input type="email" name="email" placeholder="Email" value={formValues.email} onChange={handleChange}/>
@@ -110,13 +193,15 @@ export default function LogRegPage(){
 		</form>
 	</div>
 	<div className={`${classes["form-container"]} ${classes["sign-in-container"]}`}>
-		<form className={classes.form}>
-		<img className={classes.logo} src={logo}/>
+		<form onSubmit={loginHandleSubmit} className={classes.form}>
+			<img className={classes.logo} src={logo}/>
 			<h1 className={classes.signTitle}>Sign in</h1>
 			<span>or use your account</span>
-			<input type="email" placeholder="Username or Email" />
-			<input type="password" placeholder="Password" />
-			<button>Sign In</button>
+			<input type="email" name="email" placeholder="Username or Email" value={loginFormValue.email} onChange={handleLoginChange} />
+			<p className={classes.errors}>{loginFormErrors.email}</p>
+			<input type="password" name="password" placeholder="Password" value={loginFormValue.password} onChange={handleLoginChange} />
+			<p className={classes.errors}>{loginFormErrors.password}</p>
+			<button type="submit">Sign In</button>
 			<p onClick={handleOpen} className={classes.forgotPassword}>Forgot your password?</p>
 		</form>
 	</div>
@@ -134,6 +219,7 @@ export default function LogRegPage(){
 			</div>
 		</div>
 	</div>
+	<BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
 
 	<Modal
 	open={open}
@@ -152,5 +238,6 @@ export default function LogRegPage(){
 		<button>Send Request</button>
 	</Box>
 	</Modal>
+
 </div>;
 }

@@ -7,16 +7,10 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository: IGenericRepository<User>
     {
 
-        Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken = default);
-
-        Task<User> GetByIdAsync(long userid, CancellationToken cancellationToken = default);
-
-        void Insert(User user);
-
-        void Remove(User user);
+        Task<User> LoginUserAsync(string email, string password);
 
     }
 }

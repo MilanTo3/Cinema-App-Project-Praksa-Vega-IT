@@ -18,3 +18,17 @@
     font-weight: bold;
     border-color:red;
 }
+
+.buttonStyle{
+
+    font-weight: bold;
+}
+
+.dropDown{
+
+    font-weight: bold;
+}
+
+.hidden{
+    display: none;
+}

@@ -10,6 +10,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable(nameof(User));
         builder.HasKey(user => user.userId);
+        builder.HasAlternateKey(user => user.email);
         builder.Property(user => user.userId).ValueGeneratedOnAdd();
         builder.Property(user => user.password).IsRequired();
     }
