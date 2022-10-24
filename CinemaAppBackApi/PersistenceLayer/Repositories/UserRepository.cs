@@ -45,6 +45,8 @@ public class UserRepository: GenericRepository<User>, IUserRepository
             if (exist != null) {
                 exist.blocked = user.blocked;
                 exist.verified = user.verified;
+                exist.password = user.password;
+                exist.PasswordResetToken = user.PasswordResetToken;
                 exist.updateDateTime = DateTime.Now;
             }
         }

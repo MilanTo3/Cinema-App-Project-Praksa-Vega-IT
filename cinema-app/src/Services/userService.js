@@ -14,4 +14,14 @@ const loginUser = (formData) => {
     return axios.post(baseUrl + "loginUser", formData);
 }
 
-export { getUsers, registerUser, loginUser }
+const requestReset = (formData) => {
+
+    return axios.put(baseUrl + "requestReset/" + formData.email);
+}
+
+const passwordReset = (data) => {
+
+    return axios.put(baseUrl + "passwordReset/" + data.email + "/" + data.token + "/" + data.password);
+}
+
+export { getUsers, registerUser, loginUser, passwordReset, requestReset }

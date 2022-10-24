@@ -19,4 +19,8 @@ public interface IUserService
 
     Task<bool> BlockUser(long id);
 
+    Task<bool> RequestPassReset(string email);
+
+    Task<bool> ResetPassword(string email, string token, string newpassword);
+
 }

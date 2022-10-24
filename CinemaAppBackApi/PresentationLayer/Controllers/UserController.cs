@@ -118,6 +118,34 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
+    [Route("passwordReset/{email}/{token}/{password}")]
+    public async Task<IActionResult> ResetPassword(string email, string token, string password) {
+        
+        bool reset = await _serviceManager.UserService.ResetPassword(email, token, password);
+
+        if(reset){
+            return Ok("Password changed successfully.");
+        }else{
+            return BadRequest("User doesn't exist or the token is broken. Send for another password reset request.");
+        }
+        
+    }
+
+    [HttpPut]
+    [Route("requestReset/{email}")]
+    public async Task<IActionResult> RequestPass(string email){
+
+        bool request = await _serviceManager.UserService.RequestPassReset(email);
+
+        if(request){
+            return Ok();
+        }else{
+            return BadRequest("User doesn't exist.");
+        }
+
+    }
+
+    [HttpPut]
     [Route("block/{id}")]
     public async Task<IActionResult> BlockUser(long id) {
 

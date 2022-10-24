@@ -40,10 +40,7 @@ public class UserService : IUserService
         account.blocked = false;
         account.verified = false;
         account.role = "consumer";
-        SHA256 hash = SHA256.Create();
-        var hashedPasswordBytes = hash.ComputeHash(Encoding.Default.GetBytes(user.password + pepper));
-        var hashedPasswordString = Convert.ToHexString(hashedPasswordBytes);
-        account.password = hashedPasswordString;
+        account.password = hashPassword(user.password);
         account.VerificationToken = createatoken();
 
         await _repositoryManager.userRepository.Add(account);
@@ -51,6 +48,14 @@ public class UserService : IUserService
         sendVerificationEmail(account.email, account.VerificationToken);
 
         return account.Adapt<UserDto>();
+    }
+
+    private string hashPassword(string password){
+
+        SHA256 hash = SHA256.Create();
+        var hashedPasswordBytes = hash.ComputeHash(Encoding.Default.GetBytes(password + pepper));
+        var hashedPasswordString = Convert.ToHexString(hashedPasswordBytes);
+        return hashedPasswordString;
     }
 
     private void sendVerificationEmail(string userEmail, string token) {
@@ -77,6 +82,67 @@ public class UserService : IUserService
 
         return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
 
+    }
+
+    public async Task<bool> RequestPassReset(string email){
+
+        var account = await _repositoryManager.userRepository.GetByEmail(email);
+        bool request = false;
+
+        if(account != null){
+            account.PasswordResetToken = createatoken();
+            account.password = "Invalid";
+            request = await _repositoryManager.userRepository.Update(account);
+            await _repositoryManager.UnitOfWork.Complete();
+            try{
+                sendPasswordResetMail(email, account.PasswordResetToken);
+            }catch{
+                return false;
+            }
+        }
+
+        return request;
+    }
+
+    public void sendPasswordResetMail(string userEmail, string token){
+        
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse("cinefracinema@gmail.com"));
+        email.To.Add(MailboxAddress.Parse(userEmail));
+        email.Subject = "Cinefra Password Reset";
+        string link = "http://localhost:3000/passwordreset?email=" + userEmail + "&token=" + token;
+        string anchortag = string.Format("<a href={0}>Change the password.</a>", link);
+        email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "" +
+            "<h2>Cinefra password reset!</h2><p>Oops. Forgot your password? Heres a link to change it.</p>" + anchortag };
+
+        using (var smtp = new SmtpClient()) {
+            smtp.Connect("smtp.gmail.com", 587, false);
+            smtp.Authenticate("cinefracinema@gmail.com", "xcqrblozlhgqreub");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+        }
+
+    }
+
+    public async Task<bool> ResetPassword(string email, string token, string newpassword){
+
+        var account = await _repositoryManager.userRepository.GetByEmail(email);
+        bool reseted = false;
+
+        if(account != null){
+            
+            if(account.PasswordResetToken != token){
+                return false;
+            }
+
+            account.PasswordResetToken = "";
+            account.password = hashPassword(newpassword);
+            reseted = await _repositoryManager.userRepository.Update(account);
+            await _repositoryManager.UnitOfWork.Complete();
+
+        }
+
+        return reseted;
     }
 
     public async Task<bool> DeleteAsync(long userid, CancellationToken cancellationToken = default) {
@@ -127,6 +193,7 @@ public class UserService : IUserService
     public async Task<bool> VerifyUser(string email, string token) {
 
         var user = await _repositoryManager.userRepository.GetByEmail(email);
+        
         if (user == null) {
             return false;
         }

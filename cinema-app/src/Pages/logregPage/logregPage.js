@@ -2,13 +2,12 @@ import classes from '../logregPage/logregPage.module.css';
 import {useState, useEffect} from 'react'
 import UserModel from '../../Models/userModel';
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import LoginModel from '../../Models/loginModel';
-import { getUsers, registerUser, loginUser } from '../../Services/userService';
+import { registerUser, loginUser } from '../../Services/userService';
 import BasicSnackbar from '../../Components/snackbar/snackbar';
 import { useNavigate } from "react-router-dom";
+import PasswordRequestModal from '../PasswordRequestModal/passwordRequestModal';
+import BasicModal from '../../Components/modal/modal';
 
 export default function LogRegPage(){
 
@@ -28,17 +27,8 @@ export default function LogRegPage(){
 	const [snackbarType, setsnackbarType] = React.useState(0);
   	const handleOpen = () => setOpen(true);
   	const handleClose = () => setOpen(false);
-	const style = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-		width: 400,
-		bgcolor: 'background.paper',
-		border: '2px solid #000',
-		boxShadow: 24,
-		p: 4,
-	};
+	var modal = <PasswordRequestModal />
+
 	const navigate = useNavigate();
 
     const buttClicked = (e) => {
@@ -54,22 +44,6 @@ export default function LogRegPage(){
 	useEffect(() => {
 		if(Object.keys(formErrors).length === 0 && isSubmit){
 			setIsActive(false);
-
-			for (const [key, value] of Object.entries(formValues)) {
-				formValues[key] = '';
-			}
-		
-		}
-
-	}, [formErrors]);
-
-	const handleSubmit = (e) => {
-
-		e.preventDefault();
-		setFormErrors(validate(formValues));
-		setIsSubmit(true);
-
-		if(Object.keys(formErrors).length === 0 && isSubmit){
 			
 			const formData = {
 				name: formValues["name"],
@@ -87,19 +61,13 @@ export default function LogRegPage(){
 				setsnackbarOpen(true);
 				setsnackbarContent(error["response"]["data"]);
 			});
-	
-	}};
 
-	const handleLoginChange = (e) => {
-		const {name, value} = e.target;
-		setLoginFormValue({...loginFormValue, [name]: value});
-	};
-
-	const loginHandleSubmit = (e) => {
-
-		e.preventDefault();
-		setLoginFormErrors(validateLogin(loginFormValue));
-		setLoginSubmit(true);
+			for (const [key, value] of Object.entries(formValues)) {
+				
+				formValues[key] = '';
+			}
+			setIsSubmit(false);
+		}
 
 		if(Object.keys(loginFormErrors).length === 0 && loginIsSubmit){
 			
@@ -120,8 +88,29 @@ export default function LogRegPage(){
 				setsnackbarOpen(true);
 				setsnackbarContent(error["response"]["data"]);
 			});
+			setLoginSubmit(false);
+		}
 
-  		}
+	}, [formErrors, formValues, isSubmit, loginFormValue, loginFormErrors, loginIsSubmit]);
+
+	const handleSubmit = (e) => {
+
+		e.preventDefault();
+		setFormErrors(validate(formValues));
+		setIsSubmit(true);
+
+	};
+
+	const handleLoginChange = (e) => {
+		const {name, value} = e.target;
+		setLoginFormValue({...loginFormValue, [name]: value});
+	};
+
+	const loginHandleSubmit = (e) => {
+
+		e.preventDefault();
+		setLoginFormErrors(validateLogin(loginFormValue));
+		setLoginSubmit(true);
 
 	};
 
@@ -221,23 +210,7 @@ export default function LogRegPage(){
 	</div>
 	<BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
 
-	<Modal
-	open={open}
-	onClose={handleClose}
-	aria-labelledby="modal-modal-title"
-	aria-describedby="modal-modal-description"
-	>
-	<Box style={{textAlign:"center"}} sx={style}>
-		<Typography id="modal-modal-title" variant="h6" component="h2">
-		Request a new password
-		</Typography>
-		<Typography id="modal-modal-description" sx={{ mt: 2 }}>
-			Type in your email address:
-		</Typography>
-		<input type="email" name="email" placeholder="Email"/>
-		<button>Send Request</button>
-	</Box>
-	</Modal>
+	<BasicModal content={modal} isDialogOpened={open} handleCloseDialog={handleClose} />
 
 </div>;
 }

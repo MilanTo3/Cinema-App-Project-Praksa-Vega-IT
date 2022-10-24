@@ -7,6 +7,7 @@ import AdminPanel from './Pages/admin/adminPanel';
 import AdminCrudPage from './Pages/admin/adminCrudPage/adminCrudPage';
 import CinemaReservation from './Pages/cinemaReservationPage/cinemaReservation';
 import TicketReservationPage from './Pages/ticketReservationPage/ticketReservation';
+import PasswordReset from './Pages/passwordResetPage/passwordReset';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
             <Route exact path='/screening' element={<CinemaReservation/>} />
             <Route exact path='/reservations' element={<TicketReservationPage/>} />
+            <Route path='/passwordreset' element={<PasswordReset />} />
           </Routes>
         </div>
       <Footer/>
