@@ -59,7 +59,7 @@ public class GenreController : ControllerBase
     public async Task<IActionResult> DeleteGenre(string name){
 
         bool deleted = await _serviceManager.GenreService.DeleteAsync(name);
-        if(added){
+        if(deleted){
             return Ok();
         }else{
             return BadRequest("Delete not operated. Genre does not exist.");
@@ -71,7 +71,7 @@ public class GenreController : ControllerBase
     public async Task<IActionResult> UpdateGenre(string name, string newname){
 
         bool updated = await _serviceManager.GenreService.UpdateAsync(name, newname);
-        if(added){
+        if(updated){
             return Ok();
         }else{
             return BadRequest("Updated not operated. New genre name already exists?");

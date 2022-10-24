@@ -53,7 +53,7 @@ export default function PasswordRequestModal(){
                 setsnackbarContent(error["response"]["data"]);
 				setsnackbarOpen(true);
 			});
-	
+            setIsSubmit(false);
 	    }
 
       }, [formErrors, formValues, isSubmit]);
