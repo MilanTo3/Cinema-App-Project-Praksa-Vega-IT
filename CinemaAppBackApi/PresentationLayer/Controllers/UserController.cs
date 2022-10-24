@@ -101,8 +101,6 @@ public class UserController : ControllerBase
 
     }
 
-   
-
     [HttpGet]
     [Route("verify/{email}/{token}")]
     public async Task<IActionResult> VerifyUser(string email, string token) {
