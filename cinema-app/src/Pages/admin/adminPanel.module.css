@@ -1,7 +1,9 @@
 .box{
     text-align: center;
-	margin-top: 64px;
 	padding-bottom: 100px;
+	margin: 0 auto;
+	margin-top: 64px;
+	width: 82%;
 }
 
 .managbox{

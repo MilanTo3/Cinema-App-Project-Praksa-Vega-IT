@@ -1,4 +1,3 @@
-import classes from './footer.module.css';
 import React from 'react';
 
 export default function Footer(){

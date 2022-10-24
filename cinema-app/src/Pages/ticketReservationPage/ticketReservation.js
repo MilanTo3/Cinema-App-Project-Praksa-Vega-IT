@@ -1,6 +1,6 @@
 import Ticket from "../../Components/ticket/ticket";
 import classes from './ticketReservation.module.css';
-import { Grid, Box } from "@mui/material";
+import { Grid } from "@mui/material";
 
 export default function TicketReservationPage(){
 

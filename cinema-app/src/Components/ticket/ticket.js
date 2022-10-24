@@ -1,10 +1,8 @@
 import classes from './ticket.module.css';
-import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 
 export default function Ticket(prop){
 
     const k = prop.type;
-    const logo = require('../../Assets/img1.jpg')
 
     if(k === 0){
     return (

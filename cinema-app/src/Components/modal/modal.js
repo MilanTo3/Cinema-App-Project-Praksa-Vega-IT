@@ -1,12 +1,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+
 import Modal from '@mui/material/Modal';
 import { useEffect } from "react";
-import AddMovieForm from '../../Pages/admin/addMovie/addMovie';
-import AddGenreForm from '../../Pages/admin/addGenre/addGenre';
-import AddScreeningForm from '../../Pages/admin/addScreenings/addScreening';
 
 const style = {
   position: 'absolute',

@@ -11,6 +11,9 @@ import AddMovieForm from '../../Pages/admin/addMovie/addMovie';
 import AddGenreForm from '../../Pages/admin/addGenre/addGenre';
 import AddScreeningForm from '../../Pages/admin/addScreenings/addScreening';
 import BasicModal from '../modal/modal';
+import useEffect from 'react';
+import { getGenres } from '../../Services/genreService';
+import { getUsers } from '../../Services/userService';
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -35,7 +38,7 @@ const headersName = [["Customer name", "Email:", "Birthday:"],
 const headersKeys = [["name", "email", "birthday"], ["name"], ["name", "originalName", "duration"], ["name"]];
 
 // Actions for customers, genres, movies, screenings:
-const actions = [["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]]
+const actions = [["Edit"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]]
 // 1: cutomer, 2: genre, 3: movie, 4: screening.
 const addModals = ["", <AddGenreForm/>, <AddMovieForm/>, <AddScreeningForm/>]
 
@@ -43,6 +46,8 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
   // za basicModal komponentu:
   const [isOpen, setIsOpen] = React.useState(false);
+  const [data, setData] = React.useState([]);
+  const [headerKeys, setheaderKeys] = React.useState([]);
   const handleOpenModal = () => {
     setIsOpen(!isOpen);
   };
@@ -53,8 +58,40 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   var headerName = headersName[ind];
   var headerKey = headersKeys[ind];
   var action = actions[ind];
-  var data = rows[ind];
   var modal = addModals[ind];
+
+  useEffect(() => {
+    
+    if(dataType === "genres"){
+      
+      getGenres().then(function (response){
+        if(response["data"].length !== 0){
+          setheaderKeys(Object.getOwnPropertyNames(response["data"][0]));
+        }
+				setData(response["data"]);
+			}).catch(function (error){
+        setheaderKeys(headersKeys[ind])
+        setData(rows[ind]);
+			});
+
+    }else if(dataType === "customers"){
+
+      getUsers().then(function (response){
+        if(response["data"].length !== 0){
+          setheaderKeys(Object.getOwnPropertyNames(response["data"][0]));
+        }
+        setData(response["data"]);
+      }).catch(function (error){
+        setheaderKeys(headersKeys[ind])
+        setData(rows[ind]);
+      });
+
+    }else{
+      setheaderKeys(headersKeys[ind])
+      setData(rows[ind]);
+    }
+
+  }, [isOpen]);
 
   return (
     <TableContainer component={Paper}>
