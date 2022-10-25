@@ -30,16 +30,17 @@ namespace PersistenceLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("genreId"), 1L, 1);
 
+                    b.Property<bool>("deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("updated")
                         .HasColumnType("datetime2");
 
                     b.HasKey("genreId");
-
-                    b.HasAlternateKey("name");
 
                     b.ToTable("Genre", (string)null);
                 });

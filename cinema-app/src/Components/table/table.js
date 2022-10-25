@@ -11,9 +11,15 @@ import AddMovieForm from '../../Pages/admin/addMovie/addMovie';
 import AddGenreForm from '../../Pages/admin/addGenre/addGenre';
 import AddScreeningForm from '../../Pages/admin/addScreenings/addScreening';
 import BasicModal from '../modal/modal';
-import useEffect from 'react';
-import { getGenres } from '../../Services/genreService';
+import {useEffect} from 'react';
+import { getGenres, deleteGenre } from '../../Services/genreService';
 import { getUsers } from '../../Services/userService';
+import EditGenreFrom from '../../Pages/admin/editGenre/editGenre';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import classes from './table.module.css';
+import BasicSnackbar from '../snackbar/snackbar';
+import EditCustomerForm from '../../Pages/admin/editCustomer/editCustomer';
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -36,11 +42,12 @@ const headersName = [["Customer name", "Email:", "Birthday:"],
 
 // Header keys for customers, genres, movies, screenings:
 const headersKeys = [["name", "email", "birthday"], ["name"], ["name", "originalName", "duration"], ["name"]];
-
 // Actions for customers, genres, movies, screenings:
-const actions = [["Edit"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]]
+const actions = [["Edit"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]];
 // 1: cutomer, 2: genre, 3: movie, 4: screening.
-const addModals = ["", <AddGenreForm/>, <AddMovieForm/>, <AddScreeningForm/>]
+const addModals = ["", <AddGenreForm/>, <AddMovieForm/>, <AddScreeningForm/>];
+const idNames = ["userId", "genreId", "", ""];
+const deleteCallback = ["", deleteGenre, "", ""];
 
 export default function BasicTable({dataType}) { // Koji header, i podaci.
 
@@ -48,9 +55,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   const [isOpen, setIsOpen] = React.useState(false);
   const [data, setData] = React.useState([]);
   const [headerKeys, setheaderKeys] = React.useState([]);
-  const handleOpenModal = () => {
-    setIsOpen(!isOpen);
-  };
+  const [modal, setmodal] = React.useState([]);
 
   const dict = { "customers": 0, "genres": 1, "movies": 2, "screenings": 3 };
   const ind = dict[dataType];
@@ -58,31 +63,90 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   var headerName = headersName[ind];
   var headerKey = headersKeys[ind];
   var action = actions[ind];
-  var modal = addModals[ind];
+  var addmodal = addModals[ind];
+  var idName = idNames[ind];
+  var deletecall = deleteCallback[ind];
+
+  const [snackbarOpen, setsnackbarOpen] = React.useState(false);
+	const [snackbarContent, setsnackbarContent] = React.useState("");
+	const [snackbarType, setsnackbarType] = React.useState(0);
+
+  const handleSnackbarClose = () => {
+
+		setsnackbarOpen(false);
+  };
+  
+  const handleAction = (action, id) => {
+
+    if(action === "Edit"){
+      const model = determineModal(id);
+      setmodal(model);
+      setIsOpen(!isOpen);
+    }else if(action === "Delete"){
+      confirmDialog(id);
+    }
+
+  }
+
+  const determineModal = (id) => {
+
+    const editModals = [<EditCustomerForm id={id} />, <EditGenreFrom id={id}/>, "", ""];
+
+    return editModals[ind];
+  }
+
+  const confirmDialog = (id) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className={classes["custom-ui"]}>
+            <h1>Are you sure?</h1>
+            <p>Do you wish to delete?</p>
+            <button
+              onClick={() => {
+                deletecall(id).then(function (response){
+                  setsnackbarType(0);
+                  setsnackbarContent(response["data"]);
+                  setsnackbarOpen(true);
+                }).catch(function (response){
+                  setsnackbarType(1);
+                  setsnackbarContent(response["data"]);
+                  setsnackbarOpen(true);
+                });
+                onClose();
+              }}
+            >
+              Confirm
+            </button>
+            <button onClick={onClose}>No</button>
+          </div>
+        );
+      }
+    });
+  };
+  
+  const handleOpenModal = () => {
+    setmodal(addmodal);
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     
     if(dataType === "genres"){
       
       getGenres().then(function (response){
-        if(response["data"].length !== 0){
-          setheaderKeys(Object.getOwnPropertyNames(response["data"][0]));
-        }
 				setData(response["data"]);
 			}).catch(function (error){
-        setheaderKeys(headersKeys[ind])
+        setheaderKeys(headersKeys[ind]);
         setData(rows[ind]);
 			});
 
     }else if(dataType === "customers"){
 
       getUsers().then(function (response){
-        if(response["data"].length !== 0){
-          setheaderKeys(Object.getOwnPropertyNames(response["data"][0]));
-        }
         setData(response["data"]);
       }).catch(function (error){
-        setheaderKeys(headersKeys[ind])
+        setheaderKeys(headersKeys[ind]);
         setData(rows[ind]);
       });
 
@@ -91,10 +155,11 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
       setData(rows[ind]);
     }
 
-  }, [isOpen]);
+  }, [isOpen, snackbarOpen]);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.container}>
+      <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -115,7 +180,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
         <TableBody>
           {data.map((row) => (
             <TableRow
-              key={row.name}
+              key={row[idName]}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
 
@@ -123,7 +188,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
                 <TableCell align="left">{row[key]}</TableCell>
               ))}
 
-              <TableCell align="left">{action.map((action) => ( <Button style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
+              <TableCell align="left">{action.map((action) => ( <Button onClick={() => handleAction(action, row[idName])} style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
             </TableRow>
           ))}
         </TableBody>

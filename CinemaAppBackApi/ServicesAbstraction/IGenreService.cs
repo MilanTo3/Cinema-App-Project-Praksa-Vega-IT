@@ -9,10 +9,12 @@ public interface IGenreService
 
     Task<GenreDto> GetByNameAsync(string name);
 
+    Task<GenreDto> GetByIdAsync(long id);
+
     Task<bool> CreateAsync(GenreDto dto);
 
-    Task<bool> DeleteAsync(string name);
+    Task<bool> DeleteAsync(long id);
 
-    Task<bool> UpdateAsync(string name, string newname);
+    Task<bool> UpdateAsync(long id, string newname);
 
 }

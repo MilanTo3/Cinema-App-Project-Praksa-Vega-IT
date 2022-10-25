@@ -10,17 +10,17 @@ const addGenre = (formData) => {
     return axios.post(baseUrl, formData);
 }
 
-const getGenre = (formData) => {
+const getGenre = (id) => {
 
-    return axios.get(baseUrl + formData.name);
+    return axios.get(baseUrl + id);
 }
 
-const deleteGenre = (formData) => {
-    return axios.delete(baseUrl + formData.name);
+const deleteGenre = (id) => {
+    return axios.delete(baseUrl + id);
 }
 
 const updateGenre = (formData) => {
-    return axios.put(baseUrl + formData.name + "/" + formData.newName);
+    return axios.put(baseUrl + formData.id + "/" + formData.name);
 }
 
 export { getGenres, addGenre, getGenre, deleteGenre, updateGenre }

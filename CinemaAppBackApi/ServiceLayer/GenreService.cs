@@ -17,6 +17,7 @@ public class GenreService : IGenreService{
     public async Task<IEnumerable<GenreDto>> GetAllAsync(){
 
         var genres = await _repositoryManager.genreRepository.getAll();
+        genres = genres.Where(x => x.deleted == false);
         var genresDto = genres.Adapt<IEnumerable<GenreDto>>();
 
         return genresDto;
@@ -38,16 +39,17 @@ public class GenreService : IGenreService{
         }
 
         var genreReal = dto.Adapt<Genre>();
+        genreReal.deleted = false;
         bool added = await _repositoryManager.genreRepository.Add(genreReal);
         await _repositoryManager.UnitOfWork.Complete();
 
         return added;
     }
 
-    public async Task<bool> DeleteAsync(string name){
+    public async Task<bool> DeleteAsync(long id){
         
         bool deleted = false;
-        var genre = await _repositoryManager.genreRepository.GetByName(name);
+        var genre = await _repositoryManager.genreRepository.getById(id);
         if(genre == null){
             return false;
         }
@@ -58,13 +60,21 @@ public class GenreService : IGenreService{
         return deleted;
     }
 
-    public async Task<bool> UpdateAsync(string name, string newName){
+    public async Task<bool> UpdateAsync(long id, string newName){
 
-        var genre = await _repositoryManager.genreRepository.GetByName(name);
+        var genre = await _repositoryManager.genreRepository.getById(id);
         bool changed = await _repositoryManager.genreRepository.UpdateName(genre, newName);
         await _repositoryManager.UnitOfWork.Complete();
 
         return changed;
+    }
+
+    public async Task<GenreDto> GetByIdAsync(long id){
+
+        var genre = await _repositoryManager.genreRepository.getById(id);
+        var genreDto = genre.Adapt<GenreDto>();
+
+        return genreDto;
     }
 
 }

@@ -34,10 +34,10 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{name?}")]
-    public async Task<IActionResult> GetGenre(string name) {
+    [Route("{id}")]
+    public async Task<IActionResult> GetGenre(long id) {
 
-        GenreDto genre = await _serviceManager.GenreService.GetByNameAsync(name);
+        GenreDto genre = await _serviceManager.GenreService.GetByIdAsync(id);
 
         return Ok(genre);
     }
@@ -55,22 +55,22 @@ public class GenreController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("{name}")]
-    public async Task<IActionResult> DeleteGenre(string name){
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteGenre(long id){
 
-        bool deleted = await _serviceManager.GenreService.DeleteAsync(name);
+        bool deleted = await _serviceManager.GenreService.DeleteAsync(id);
         if(deleted){
-            return Ok();
+            return Ok("Genre deleted successfully.");
         }else{
             return BadRequest("Delete not operated. Genre does not exist.");
         }
     }
 
     [HttpPut]
-    [Route("{name}/{newname}")]
-    public async Task<IActionResult> UpdateGenre(string name, string newname){
+    [Route("{id}/{name}")]
+    public async Task<IActionResult> UpdateGenre(long id, string name){
 
-        bool updated = await _serviceManager.GenreService.UpdateAsync(name, newname);
+        bool updated = await _serviceManager.GenreService.UpdateAsync(id, name);
         if(updated){
             return Ok();
         }else{

@@ -149,10 +149,10 @@ public class UserController : ControllerBase
 
         bool success = await _serviceManager.UserService.BlockUser(id);
         if (success) {
-            return Ok();
+            return Ok("Operation successfull.");
         }
         else {
-            return NotFound();
+            return NotFound("User not found, so could not be blocked.");
         }
     }
 

@@ -1,0 +1,16 @@
+
+.container{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.custom-ui {
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 21px;
+    padding: 14px;
+}
+
+.custom-ui button{
+    margin: 4px;
+}

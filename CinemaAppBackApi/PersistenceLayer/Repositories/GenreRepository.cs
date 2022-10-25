@@ -16,7 +16,7 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
         try {
             var exist = await dbSet.Where(x => x.genreId == id).FirstOrDefaultAsync();
             if (exist != null) {
-                dbSet.Remove(exist);
+                exist.deleted = true;
             }
 
         }catch(Exception ex) {
@@ -33,8 +33,10 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
         }
 
         try {
-            exist.name = nameGenre;
-            exist.updated = DateTime.Now;
+            var updategenre = await dbSet.Where(x => x.genreId == genre.genreId).FirstOrDefaultAsync();
+
+            updategenre.name = nameGenre;
+            updategenre.updated = DateTime.Now;
             
         }
         catch (Exception ex) {
