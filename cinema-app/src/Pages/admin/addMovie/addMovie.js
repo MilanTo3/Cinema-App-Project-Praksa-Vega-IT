@@ -1,6 +1,7 @@
 import classes from './addMovie.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
+import { addmovie } from '../../../Services/movieService';
 
 export default function AddMovieForm(){
 
@@ -85,16 +86,15 @@ export default function AddMovieForm(){
     useEffect(() => {
 
       if(Object.keys(formErrors).length === 0 && isSubmit){
-        
-        const formData = {
-          nameLocal: formValues["nameLocal"],
-          nameOriginal: formValues["nameOriginal"],
-          trailer: formValues["trailer"],
-          duration: formValues["duration"],
-          imageFile: formValues["imageFile"],
-        }
+
+        let formData = new FormData();
+        formData.append("nameLocal", formValues["nameLocal"]);
+        formData.append("nameOriginal", formValues["nameOriginal"]);
+        formData.append("trailer", formValues["trailer"]);
+        formData.append("duration", formValues["duration"]);
+        formData.append("imageFile", formValues["imageFile"]);
   
-        console.log(formData);
+        addmovie(formData);
         
         setIsSubmit(false);
       }

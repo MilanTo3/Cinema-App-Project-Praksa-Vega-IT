@@ -12,6 +12,7 @@ namespace DomainLayer.Repositories
         IUnitofWork UnitOfWork {get;}
         IUserRepository userRepository{get;}
         IGenreRepository genreRepository{get;}
+        IMovieRepository movieRepository { get; }
 
     }
 }
