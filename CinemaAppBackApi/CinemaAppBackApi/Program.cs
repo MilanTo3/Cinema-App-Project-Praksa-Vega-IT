@@ -23,7 +23,7 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddDbContext<RepositoryDbContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
-app.UseCors("corspolicy") ;
+app.UseCors("corspolicy");
 //Migrations part----------------
 
 //Migrations part----------------

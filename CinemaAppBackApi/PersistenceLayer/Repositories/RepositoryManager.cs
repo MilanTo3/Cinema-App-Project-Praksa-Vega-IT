@@ -7,12 +7,14 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<IUserRepository> _lazyUserRepository;
     private readonly Lazy<IGenreRepository> _lazyGenreRepository;
     private readonly Lazy<IUnitofWork> _lazyUnitOfWork;
+    private readonly Lazy<IMovieRepository> _lazyMovieRepository;
 
     public RepositoryManager(RepositoryDbContext dbContext){
 
         _lazyUserRepository = new Lazy<IUserRepository>(() => new UserRepository(dbContext));
         _lazyGenreRepository = new Lazy<IGenreRepository>(() => new GenreRepository(dbContext));
         _lazyUnitOfWork = new Lazy<IUnitofWork>(() => new UnitOfWork(dbContext));
+        _lazyMovieRepository = new Lazy<IMovieRepository>(() => new MovieRepository(dbContext));
 
     }
 
@@ -20,5 +22,6 @@ public class RepositoryManager : IRepositoryManager
 
     public IGenreRepository genreRepository => _lazyGenreRepository.Value;
     public IUnitofWork UnitOfWork => _lazyUnitOfWork.Value;
+    public IMovieRepository movieRepository => _lazyMovieRepository.Value;
 
 }
