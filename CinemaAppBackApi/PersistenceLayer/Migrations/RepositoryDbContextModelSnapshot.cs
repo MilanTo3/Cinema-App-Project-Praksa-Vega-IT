@@ -45,6 +45,37 @@ namespace PersistenceLayer.Migrations
                     b.ToTable("Genre", (string)null);
                 });
 
+            modelBuilder.Entity("DomainLayer.Models.Movie", b =>
+                {
+                    b.Property<long>("movieId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("movieId"), 1L, 1);
+
+                    b.Property<bool>("deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("nameLocal")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nameOriginal")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("trailer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("movieId");
+
+                    b.ToTable("Movie", (string)null);
+                });
+
             modelBuilder.Entity("DomainLayer.Models.User", b =>
                 {
                     b.Property<long>("userId")
@@ -92,6 +123,36 @@ namespace PersistenceLayer.Migrations
                     b.HasAlternateKey("email");
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.Property<long>("GenresgenreId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("MoviesmovieId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("GenresgenreId", "MoviesmovieId");
+
+                    b.HasIndex("MoviesmovieId");
+
+                    b.ToTable("GenreMovie");
+                });
+
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.HasOne("DomainLayer.Models.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresgenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DomainLayer.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesmovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

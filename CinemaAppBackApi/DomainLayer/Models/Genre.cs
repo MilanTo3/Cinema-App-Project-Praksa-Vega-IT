@@ -10,11 +10,16 @@ namespace DomainLayer.Models
     public class Genre
     {
 
+        public Genre(){
+            Movies = new List<Movie>();
+        }
+
         [Key]
         public long genreId { get; set; }
         public string name { get;set; }
         public DateTime updated{get;set;}
         public bool deleted{get;set;}
+        public virtual ICollection<Movie> Movies {get;set;}
 
     }
 }

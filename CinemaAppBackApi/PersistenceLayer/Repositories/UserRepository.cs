@@ -35,6 +35,7 @@ public class UserRepository: GenericRepository<User>, IUserRepository
         }catch(Exception ex) {
             return false;
         }
+
         return true;
     }
 
@@ -53,6 +54,7 @@ public class UserRepository: GenericRepository<User>, IUserRepository
         catch (Exception ex) {
             return false;
         }
+
         return true;
     }
 

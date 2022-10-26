@@ -8,6 +8,7 @@ public class MovieDto
     public string nameOriginal { get; set; }
     public string trailer { get;set; }
     public int duration { get;set; }
+    public string genres { get;set; }
     public IFormFile imageFile { get; set; }
 
 }

@@ -7,4 +7,19 @@ const addmovie = (formData) => {
     return axios.post(baseUrl, formData);
 }
 
-export {addmovie};
+const getMovies = () => {
+
+    return axios.get(baseUrl);
+}
+
+const getMovie = (id) => {
+
+    return axios.get(baseUrl + id);
+}
+
+const deleteMovie = (id) => {
+
+    return axios.delete(baseUrl + id);
+}
+
+export {addmovie, getMovies, deleteMovie, getMovie };

@@ -2,6 +2,8 @@ import classes from './addMovie.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 import { addmovie } from '../../../Services/movieService';
+import { getGenre, getGenres } from '../../../Services/genreService';
+import BasicSnackbar from '../../../Components/snackbar/snackbar';
 
 export default function AddMovieForm(){
 
@@ -10,6 +12,12 @@ export default function AddMovieForm(){
     const [value, setValue] = useState("");
     const [preview, setPreview] = useState(def);
     const [val, setVal]=useState([]);
+    const [addClicked, setAddClicked] = useState(false);
+    const [genreData, setGenreData] = useState([]);
+
+    const [snackbarOpen, setsnackbarOpen] = useState(false);
+	  const [snackbarContent, setsnackbarContent] = useState("");
+	  const [snackbarType, setsnackbarType] = useState(0);
 
     const initialFieldValues = {
       nameLocal: '',
@@ -28,9 +36,12 @@ export default function AddMovieForm(){
         const deletVal=[...val]
         deletVal.splice(i,1)
         setVal(deletVal)
-    }
+    };
 
-    var data = [{ name: "Action" }, { name: "Genre" }, { name: "Comedy" }];
+    const handleSnackbarClose = () => {
+
+      setsnackbarOpen(false);
+    };
 
     const onBtnClick = () => {
         /*Collecting node-element and performing click*/
@@ -44,7 +55,6 @@ export default function AddMovieForm(){
     const onSearch = (searchTerm) => {
         setValue(searchTerm);
         
-        // our api to fetch the search result
     };
 
     const handleChange = (e) => {
@@ -56,6 +66,9 @@ export default function AddMovieForm(){
 
       const errors = {}
       
+      if(!formValues.imageFile){
+        errors.imageFile = "Poster image for the movie is required.";
+      }
       if(!formValues.nameLocal){
         errors.nameLocal = "Localized name is required.";
       }
@@ -64,17 +77,31 @@ export default function AddMovieForm(){
       }
       if(!formValues.duration){
         errors.duration = "Duration of the movie is a required field.";
+      }else if(formValues. duration < 1){
+        errors.duration = "Duration must be a positive number greater than zero.";
       }
   
       return errors;
     };
 
-    onsearch = (e) => {
+    const onsearch = (e) => {
       e.preventDefault();
-      console.log(value);
-      const abc = [...val, value]
-      setVal(abc)
+      setAddClicked(true);
+      
     }
+
+    useEffect(() => {
+
+      const obj = genreData.find(t => t.name === value);
+
+      if(obj !== undefined && (val.includes(obj.name) === false)){
+        const abc = [...val, value];
+        setVal(abc);
+      }
+
+      setAddClicked(false);
+
+    }, [addClicked]);
 
     const handleSubmit = (e) => {
 
@@ -85,16 +112,36 @@ export default function AddMovieForm(){
 
     useEffect(() => {
 
+      getGenres().then(function (response){
+        setGenreData(response["data"]);
+      });
+
       if(Object.keys(formErrors).length === 0 && isSubmit){
 
         let formData = new FormData();
         formData.append("nameLocal", formValues["nameLocal"]);
         formData.append("nameOriginal", formValues["nameOriginal"]);
-        formData.append("trailer", formValues["trailer"]);
+        if(formValues["trailer"] !== ""){
+          formData.append("trailer", formValues["trailer"]);
+        }else{
+          formData.append("trailer", "No link");
+        }
         formData.append("duration", formValues["duration"]);
+        formData.append("genres", val);
         formData.append("imageFile", formValues["imageFile"]);
   
-        addmovie(formData);
+        addmovie(formData).then(function (response){
+          setsnackbarType(0);
+				  setsnackbarOpen(true);
+				  setsnackbarContent(response["data"]);
+          setFormValues(initialFieldValues);
+          setPreview(def);
+          setVal([]);
+        }).catch(function (response){
+          setsnackbarType(1);
+				  setsnackbarOpen(true);
+				  setsnackbarContent(response["data"]);
+        });
         
         setIsSubmit(false);
       }
@@ -112,7 +159,7 @@ export default function AddMovieForm(){
           reader.readAsDataURL(event.target.files[0]);
           reader.onloadend = () => {
             setPreview(reader.result);
-            setFormValues({...formValues, imageFile, imageSrc: reader.result })
+            setFormValues({...formValues, imageFile, imageSrc: reader.result });
         };
       }
       
@@ -121,12 +168,17 @@ export default function AddMovieForm(){
     return (<div>
       
       <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+        <BasicSnackbar center={true} type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
 			  <h1>Add a new movie:</h1>
         <img src={ preview } className={classes.uploadImage} onClick={onBtnClick} />
         <input name="file" onChange={changeHandler} ref={inputFileRef} type='file' hidden accept="image/*" />
+        <p className={classes.errors}>{formErrors.imageFile}</p>
 			  <input type="text" name="nameLocal" placeholder="Movie name (Local)" value={formValues.nameLocal} onChange={handleChange} />
+        <p className={classes.errors}>{formErrors.nameLocal}</p>
 			  <input type="text" name="nameOriginal" placeholder="Original movie name" value={formValues.nameOriginal} onChange={handleChange} />
-        <input type="text" name="duration" placeholder="Duration (minutes)" value={formValues.duration} onChange={handleChange} />
+        <p className={classes.errors}>{formErrors.nameOriginal}</p>
+        <input type="number" name="duration" placeholder="Duration (minutes)" value={formValues.duration} onChange={handleChange} />
+        <p className={classes.errors}>{formErrors.duration}</p>
         <input type="text" name="trailer" placeholder="Trailer link" value={formValues.trailer} onChange={handleChange} />
         <div className={classes["search-container"]}>
           <div className={classes["search-inner"]}>
@@ -134,7 +186,7 @@ export default function AddMovieForm(){
             <button className={classes.searchButton} onClick={e => onsearch(e)}>Add</button>
           </div>
           <div className={classes["dropdown"]}>
-            {data
+            {genreData
               .filter((item) => {
                 const searchTerm = value.toLowerCase();
                 const name = item.name.toLowerCase();
@@ -157,16 +209,16 @@ export default function AddMovieForm(){
               ))}
           </div>
       </div>
-      <div className={classes.tagBox}>
+      <Grid container className={classes.tagBox}>
       {val.map((data,i)=>{
             return(
-               <div className={classes.tag}>
+               <Grid item xs={4} md={4} className={classes.tag}>
                     <div>{data}</div>
                     <button className={classes.tagButton} onClick={(e)=>handleDelete(e, i)}>x</button>
-               </div>
+               </Grid>
             )
         })}
-      </div>
+      </Grid>
 			<button type="submit">Add Movie</button>
 		</form>
     </div>);

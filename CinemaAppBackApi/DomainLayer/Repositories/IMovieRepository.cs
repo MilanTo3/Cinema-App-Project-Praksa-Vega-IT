@@ -8,4 +8,6 @@ using System.Threading.Tasks;
 
 public interface IMovieRepository : IGenericRepository<Movie>
 {
+        Task<bool> AddId(Movie movie);
+
 }

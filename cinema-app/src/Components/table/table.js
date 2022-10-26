@@ -20,6 +20,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import classes from './table.module.css';
 import BasicSnackbar from '../snackbar/snackbar';
 import EditCustomerForm from '../../Pages/admin/editCustomer/editCustomer';
+import { getMovies, deleteMovie } from '../../Services/movieService';
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -30,7 +31,7 @@ const rows = [
   createCustom('Firx', "erixon@gmail.com2", "22.01.2021"),
   createCustom('dirx', "erixon@gmail.com3", "23.01.2021")],
   [{ name: "Action" }, { name: "Comedy" }, { name: "Funny" }],
-  [{ name: "Pirati sa Kariba", originalName: "Pirates of the Carribean", duration: "83m" }, { name: "Deda mrazov pomocnik", originalName: "Santa's helper", duration: "93m" }, {name: "Deda mrazov pomocnik 2", originalName: "Santa's helper", duration: "90m" }],
+  [{ nameLocal: "Pirati sa Kariba", nameOriginal: "Pirates of the Carribean", duration: "83m" }, { nameLocal: "Deda mrazov pomocnik", nameOriginal: "Santa's helper", duration: "93m" }, {nameLocal: "Deda mrazov pomocnik 2", nameOriginal: "Santa's helper", duration: "90m" }],
   [{ name: "Screening1" }, { name: "Screening2" }, { name: "Screening3" }]
 ];
 
@@ -41,13 +42,13 @@ const headersName = [["Customer name", "Email:", "Birthday:"],
                  ["Screenings name:"]];
 
 // Header keys for customers, genres, movies, screenings:
-const headersKeys = [["name", "email", "birthday"], ["name"], ["name", "originalName", "duration"], ["name"]];
+const headersKeys = [["name", "email", "birthday"], ["name"], ["nameLocal", "nameOriginal", "duration"], ["name"]];
 // Actions for customers, genres, movies, screenings:
 const actions = [["Edit"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]];
 // 1: cutomer, 2: genre, 3: movie, 4: screening.
 const addModals = ["", <AddGenreForm/>, <AddMovieForm/>, <AddScreeningForm/>];
-const idNames = ["userId", "genreId", "", ""];
-const deleteCallback = ["", deleteGenre, "", ""];
+const idNames = ["userId", "genreId", "movieId", "screeningId"];
+const deleteCallback = ["", deleteGenre, deleteMovie, ""];
 
 export default function BasicTable({dataType}) { // Koji header, i podaci.
 
@@ -144,6 +145,15 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
     }else if(dataType === "customers"){
 
       getUsers().then(function (response){
+        setData(response["data"]);
+      }).catch(function (error){
+        setheaderKeys(headersKeys[ind]);
+        setData(rows[ind]);
+      });
+
+    }else if(dataType === "movies"){
+
+      getMovies().then(function (response){
         setData(response["data"]);
       }).catch(function (error){
         setheaderKeys(headersKeys[ind]);

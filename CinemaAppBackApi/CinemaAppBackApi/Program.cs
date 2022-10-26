@@ -4,6 +4,7 @@ using ServiceLayer;
 using DomainLayer.Repositories;
 using PersistenceLayer.Repositories;
 using PersistenceLayer;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,10 @@ app.UseCors("corspolicy");
 
 //Migrations part----------------
 // Configure the HTTP request pipeline.
+app.UseStaticFiles(new StaticFileOptions(){
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+    RequestPath = new PathString("/Resources")
+});
 
 app.UseAuthorization();
 

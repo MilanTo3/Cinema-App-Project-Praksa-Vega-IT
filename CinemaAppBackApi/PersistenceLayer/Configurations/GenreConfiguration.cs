@@ -10,6 +10,8 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
     {
         builder.ToTable(nameof(Genre));
         builder.HasKey(genre => genre.genreId);
+        builder.HasMany<Movie>(genre => genre.Movies).WithMany(x => x.Genres);
+        
     }
 
 }

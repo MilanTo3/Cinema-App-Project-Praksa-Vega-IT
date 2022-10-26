@@ -70,20 +70,28 @@
     display: flex;
     text-align: center;
     justify-content: center;
-    width: 110px;
-    margin: 7.4px;
+    
   }
 
   .tagBox{
     border: 1px solid gray;
     border-radius: 4.5px;
     margin: 4px 0px 4px 0px;
-    flex: 1 0 auto;
     justify-content: center;
     margin-bottom: 17px;
+    padding: 21px;
+    background-color: firebrick;
   }
 
   .tagButton{
     padding: 4px;
 
   }
+
+  .errors{
+    color: red;
+    padding: 0px;
+    margin: 0px;
+    font-size:smaller;
+  }
+  
