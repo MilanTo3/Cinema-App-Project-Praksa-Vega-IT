@@ -84,7 +84,7 @@ public class UserService : IUserService
 
     }
 
-    public async Task<bool> RequestPassReset(string email){
+    public async Task<bool> RequestPassReset(string email, string text){
 
         var account = await _repositoryManager.userRepository.GetByEmail(email);
         bool request = false;
@@ -93,18 +93,18 @@ public class UserService : IUserService
             account.PasswordResetToken = createatoken();
             account.password = "Invalid";
             request = await _repositoryManager.userRepository.Update(account);
-            await _repositoryManager.UnitOfWork.Complete();
             try{
-                sendPasswordResetMail(email, account.PasswordResetToken);
+                sendPasswordResetMail(email, account.PasswordResetToken, text);
             }catch{
                 return false;
             }
+            await _repositoryManager.UnitOfWork.Complete();
         }
 
         return request;
     }
 
-    public void sendPasswordResetMail(string userEmail, string token){
+    public void sendPasswordResetMail(string userEmail, string token, string text){
         
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse("cinefracinema@gmail.com"));
@@ -113,7 +113,7 @@ public class UserService : IUserService
         string link = "http://localhost:3000/passwordreset?email=" + userEmail + "&token=" + token;
         string anchortag = string.Format("<a href={0}>Change the password.</a>", link);
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "" +
-            "<h2>Cinefra password reset!</h2><p>Oops. Forgot your password? Heres a link to change it.</p>" + anchortag };
+            "<h2>Cinefra password reset!</h2><p>" + text + "</p>" + anchortag };
 
         using (var smtp = new SmtpClient()) {
             smtp.Connect("smtp.gmail.com", 587, false);

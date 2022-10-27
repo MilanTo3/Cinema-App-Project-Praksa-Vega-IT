@@ -133,10 +133,24 @@ public class UserController : ControllerBase
     [Route("requestReset/{email}")]
     public async Task<IActionResult> RequestPass(string email){
 
-        bool request = await _serviceManager.UserService.RequestPassReset(email);
+        bool request = await _serviceManager.UserService.RequestPassReset(email, "Oops. Forgot your password? Heres a link to change it.");
 
         if(request){
-            return Ok();
+            return Ok("Password request sent successfully.");
+        }else{
+            return BadRequest("User doesn't exist.");
+        }
+
+    }
+
+    [HttpPut]
+    [Route("adminReset/{email}")]
+    public async Task<IActionResult> AdminResetPassword(string email){
+
+        bool request = await _serviceManager.UserService.RequestPassReset(email, "The administration has reset your password. Heres a link to set your new password.");
+
+        if(request){
+            return Ok("Password request sent successfully.");
         }else{
             return BadRequest("User doesn't exist.");
         }

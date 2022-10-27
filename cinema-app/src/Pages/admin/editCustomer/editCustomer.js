@@ -54,6 +54,11 @@ export default function EditCustomerForm({ id }){
         });
     };
 
+    const handleReset = () => {
+
+
+    };
+
     return (
         <div>
             <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} center={true} />
@@ -65,6 +70,7 @@ export default function EditCustomerForm({ id }){
                 <p className={classes.writingInfo}>Verified: <span>{verifyBlockData["verify"]}</span></p>
                 <p className={classes.writingInfo}>Blocked: <span>{verifyBlockData["blocked"]}</span></p>
                 {button}
+                <button onClick={handleReset}>Reset password</button>
             </div>
     </div>);
 }
