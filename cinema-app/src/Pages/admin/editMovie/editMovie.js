@@ -66,7 +66,7 @@ export default function EditMovieForm({ id }){
       }
       if(!formValues.duration){
         errors.duration = "Duration of the movie is a required field.";
-      }else if(formValues. duration < 1){
+      }else if(formValues.duration < 1){
         errors.duration = "Duration must be a positive number greater than zero.";
       }
   
@@ -120,7 +120,6 @@ export default function EditMovieForm({ id }){
             };
             setVal(data["genres"]);
     
-            console.log(initialFieldValues);
             setFormValues(initialFieldValues);
     
           });
@@ -151,11 +150,11 @@ export default function EditMovieForm({ id }){
         updateMovie(formData).then(function (x){
             setsnackbarType(0);
             setsnackbarContent("Movie edited successfully.");
-			setsnackbarOpen(true);
+			      setsnackbarOpen(true);
         }).catch(function (response){
             setsnackbarType(1);
             setsnackbarContent(response["data"]);
-			setsnackbarOpen(true);
+			      setsnackbarOpen(true);
         });
         
         setIsSubmit(false);
@@ -163,10 +162,7 @@ export default function EditMovieForm({ id }){
 
     }, [isSubmit]);
 
-    const [selectedFile, setSelectedFile] = useState();
-
     const changeHandler = (event) => {
-        setSelectedFile(event.target.files[0]);
 
         if(event.target.files && event.target.files[0]){
           let imageFile = event.target.files[0]

@@ -77,7 +77,7 @@ export default function AddMovieForm(){
       }
       if(!formValues.duration){
         errors.duration = "Duration of the movie is a required field.";
-      }else if(formValues. duration < 1){
+      }else if(formValues.duration < 1){
         errors.duration = "Duration must be a positive number greater than zero.";
       }
   
@@ -148,10 +148,7 @@ export default function AddMovieForm(){
 
     }, [isSubmit]);
 
-    const [selectedFile, setSelectedFile] = useState();
-
     const changeHandler = (event) => {
-        setSelectedFile(event.target.files[0]);
 
         if(event.target.files && event.target.files[0]){
           let imageFile = event.target.files[0]

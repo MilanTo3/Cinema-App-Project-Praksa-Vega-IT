@@ -517,24 +517,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\milan.tomin\\.nuget\\packages\\": {}
+    "C:\\Users\\wishm\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj",
+      "projectUniqueName": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj",
       "projectName": "Contracts",
-      "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj",
-      "packagesPath": "C:\\Users\\milan.tomin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\obj\\",
+      "projectPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj",
+      "packagesPath": "C:\\Users\\wishm\\.nuget\\packages\\",
+      "outputPath": "E:\\movieapp\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\milan.tomin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\wishm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

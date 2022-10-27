@@ -39,7 +39,7 @@ public class ScreeningController : ControllerBase
         bool added = await _serviceManager.ScreeningService.CreateAsync(dto);
 
         if(added){
-            return Ok();
+            return Ok($"Screening for {dto.name} added successfully!");
         }else{
             return BadRequest("Screening not created. Maybe that screening already exists?");
         }
@@ -62,7 +62,7 @@ public class ScreeningController : ControllerBase
 
         bool updated = await _serviceManager.ScreeningService.UpdateAsync(dto);
         if(updated){
-            return Ok();
+            return Ok("Screening updated successfully!");
         }else{
             return BadRequest("Updated not operated. Invalid screening.");
         }

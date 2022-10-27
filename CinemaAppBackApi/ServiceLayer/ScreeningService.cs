@@ -14,11 +14,12 @@ public class ScreeningService : IScreeningService
         
         var screeningDto = await _repositoryManager.screeningRepository.GetAllInclusive();
         screeningDto = screeningDto.Where(x => x.deleted == false);
-        var screeningsDto = screeningDto.Adapt<IEnumerable<ScreeningDto>>();
-        foreach(ScreeningDto dto in screeningsDto){
-            var screening = await _repositoryManager.screeningRepository.GetByIdInclusive(dto.screeningId.Value);
-            dto.name = screening.Movie.nameLocal;
+        var screeningsDto = screeningDto.Adapt<IEnumerable<ScreeningDto>>().ToList();
+        int i = 0;
 
+        for(i = 0; i < screeningsDto.Count; i++){
+            var screening = await _repositoryManager.screeningRepository.GetByIdInclusive(screeningsDto[i].screeningId.Value);
+            screeningsDto[i].name = screening.Movie.nameLocal;
         }
 
         return screeningsDto;

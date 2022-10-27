@@ -22,7 +22,8 @@ import BasicSnackbar from '../snackbar/snackbar';
 import EditCustomerForm from '../../Pages/admin/editCustomer/editCustomer';
 import { getMovies, deleteMovie } from '../../Services/movieService';
 import EditMovieForm from '../../Pages/admin/editMovie/editMovie';
-import { addScreening, deleteScreening, getScreenings } from '../../Services/screeningService';
+import { deleteScreening, getScreenings } from '../../Services/screeningService';
+import EditScreeningForm from '../../Pages/admin/editScreening/editScreening';
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -93,7 +94,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
   const determineModal = (id) => {
 
-    const editModals = [<EditCustomerForm id={id} />, <EditGenreFrom id={id}/>, <EditMovieForm id={id} />, ""];
+    const editModals = [<EditCustomerForm id={id} />, <EditGenreFrom id={id}/>, <EditMovieForm id={id} />, <EditScreeningForm id={id} />];
 
     return editModals[ind];
   }
@@ -135,45 +136,47 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
   useEffect(() => {
     
-    if(dataType === "genres"){
-      
-      getGenres().then(function (response){
-				setData(response["data"]);
-			}).catch(function (error){
-        setheaderKeys(headersKeys[ind]);
+    if(!isOpen){
+      if(dataType === "genres"){
+        
+        getGenres().then(function (response){
+          setData(response["data"]);
+        }).catch(function (error){
+          setheaderKeys(headersKeys[ind]);
+          setData(rows[ind]);
+        });
+
+      }else if(dataType === "customers"){
+
+        getUsers().then(function (response){
+          setData(response["data"]);
+        }).catch(function (error){
+          setheaderKeys(headersKeys[ind]);
+          setData(rows[ind]);
+        });
+
+      }else if(dataType === "movies"){
+
+        getMovies().then(function (response){
+          setData(response["data"]);
+        }).catch(function (error){
+          setheaderKeys(headersKeys[ind]);
+          setData(rows[ind]);
+        });
+
+      }else if(dataType === "screenings"){
+
+        getScreenings().then(function (response){
+          setData(response["data"]);
+        }).catch(function (error){
+          setheaderKeys(headersKeys[ind]);
+          setData(rows[ind]);
+        });
+
+      }else{
+        setheaderKeys(headersKeys[ind])
         setData(rows[ind]);
-			});
-
-    }else if(dataType === "customers"){
-
-      getUsers().then(function (response){
-        setData(response["data"]);
-      }).catch(function (error){
-        setheaderKeys(headersKeys[ind]);
-        setData(rows[ind]);
-      });
-
-    }else if(dataType === "movies"){
-
-      getMovies().then(function (response){
-        setData(response["data"]);
-      }).catch(function (error){
-        setheaderKeys(headersKeys[ind]);
-        setData(rows[ind]);
-      });
-
-    }else if(dataType === "screenings"){
-
-      getScreenings().then(function (response){
-        setData(response["data"]);
-      }).catch(function (error){
-        setheaderKeys(headersKeys[ind]);
-        setData(rows[ind]);
-      });
-
-    }else{
-      setheaderKeys(headersKeys[ind])
-      setData(rows[ind]);
+      }
     }
 
   }, [isOpen, snackbarOpen]);
