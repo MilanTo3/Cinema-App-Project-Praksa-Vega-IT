@@ -29,7 +29,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost, DisableRequestSizeLimit]
-        public async Task<IActionResult> AddMovie([FromForm] string nameLocal, [FromForm] string nameOriginal, [FromForm] string trailer, [FromForm] int duration, [FromForm] string genres, [FromForm] IFormFile imageFile) {
+        public async Task<IActionResult> AddMovie([FromForm] string nameLocal, [FromForm] string nameOriginal, [FromForm] string trailer, [FromForm] int duration, [FromForm] List<string> genres, [FromForm] IFormFile imageFile) {
 
             MovieDto dto = new MovieDto();
             dto.nameLocal = nameLocal;
@@ -68,6 +68,26 @@ namespace PresentationLayer.Controllers
             return Ok(genre);
         }
 
+        [HttpGet]
+        [Route("getImage/{id}")]
+        public async Task<IActionResult> GetImage(long id)
+        {
+
+            string pathToRead = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
+            DirectoryInfo d = new DirectoryInfo(pathToRead);
+            FileInfo[] Files = d.GetFiles();
+            FileInfo file = Files.ToList().FirstOrDefault(x => x.Name.Split('.')[0] == ("movie" + id.ToString()));
+            
+            if(file == null){
+                return NotFound("Poster image not found!");
+            }
+
+            string mimeType = "image/" + file.Extension.Remove(0, 1).ToLower();
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(file.FullName);
+            return File(bytes, mimeType, Path.GetFileName(file.Name));
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteMovie(long id){
@@ -78,6 +98,27 @@ namespace PresentationLayer.Controllers
             }else{
                 return BadRequest("Delete not operated. Movie does not exist.");
             }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateMovie([FromForm] long movieId, [FromForm] string nameLocal, [FromForm] string nameOriginal, [FromForm] string trailer, [FromForm] int duration, [FromForm] List<string> genres, [FromForm] IFormFile? imageFile){
+
+            MovieDto dto = new MovieDto();
+            dto.movieId = movieId;
+            dto.nameLocal = nameLocal;
+            dto.nameOriginal = nameOriginal;
+            dto.trailer = trailer;
+            dto.duration = duration;
+            dto.genres = genres;
+            dto.imageFile = imageFile;
+
+            bool updated = await _serviceManager.MovieService.UpdateAsync(dto);
+            if(updated){
+                return Ok("Movie updated successfully.");
+            }else{
+                return BadRequest("Update not operated. Movie does not exist.");
+            }
+
         }
 
     }

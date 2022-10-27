@@ -4,6 +4,7 @@ using DomainLayer.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using System.Text;
+using Contracts;
 
 public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
     
@@ -37,6 +38,31 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
         return true;
     }
 
+    public override async Task<Movie> getById(long id){
+
+        var movies = await dbSet.Include(x => x.Genres).ToListAsync();
+
+        return movies.Find(x => x.movieId == id);
+    }
+
+    public async Task<bool> UpdateMovie(MovieDto dto, List<Genre> newGen){
+
+        var movies = await dbSet.Include(x => x.Genres).ToListAsync();
+        var movie = movies.Find(x => x.movieId == dto.movieId);
+        movie.nameLocal = dto.nameLocal;
+        movie.nameOriginal = dto.nameOriginal;
+        movie.duration = dto.duration;
+        movie.trailer = dto.trailer;
+        movie.Genres = newGen;
+
+        try{
+            dbSet.Update(movie);
+        }catch{
+            return false;
+        }
+
+        return true;
+    }
 
 
 }

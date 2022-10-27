@@ -28,7 +28,7 @@ public class MovieService : IMovieService
 
         if(added){
 
-            foreach(string genre in dto.genres.Split(',')){
+            foreach(string genre in dto.genres){
                 Genre g = await _repositoryManager.genreRepository.GetByName(genre);
                 moveiReal.Genres.Add(g);
             }
@@ -83,10 +83,28 @@ public class MovieService : IMovieService
         var movie = await _repositoryManager.movieRepository.getById(id);
         var movieDto = movie.Adapt<MovieDto>();
 
+        movieDto.genres = new List<string>();
+        foreach(Genre genre in movie.Genres){
+            movieDto.genres.Add(genre.name);
+        }
+
         return movieDto;
     }
 
-    public Task<bool> UpdateAsync(MovieDto dto) {
-        throw new NotImplementedException();
+    public async Task<bool> UpdateAsync(MovieDto dto) {
+        
+        List<Genre> newGen = new List<Genre>();
+        foreach(string name in dto.genres){
+            newGen.Add(await _repositoryManager.genreRepository.GetByName(name));
+        }
+
+        bool updated = await _repositoryManager.movieRepository.UpdateMovie(dto, newGen);
+        if(updated && dto.imageFile != null){
+            string pathToWrite = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
+            saveImage(dto.imageFile, pathToWrite, "movie" + dto.movieId);
+        }
+        await _repositoryManager.UnitOfWork.Complete();
+
+        return updated;
     }
 }

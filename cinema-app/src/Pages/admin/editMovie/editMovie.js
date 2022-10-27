@@ -1,17 +1,17 @@
-import classes from './addMovie.module.css';
+import classes from './editMovie.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
-import { addmovie } from '../../../Services/movieService';
-import { getGenre, getGenres } from '../../../Services/genreService';
+import { getMovie, getImage, updateMovie } from '../../../Services/movieService';
+import { getGenres } from '../../../Services/genreService';
 import BasicSnackbar from '../../../Components/snackbar/snackbar';
 
-export default function AddMovieForm(){
+export default function EditMovieForm({ id }){
 
     const def = require("../../../Assets/uploadImage.jpg");
     const inputFileRef = useRef(null);
     const [value, setValue] = useState("");
     const [preview, setPreview] = useState(def);
-    const [val, setVal]=useState([]);
+    const [val, setVal]= useState([]);
     const [addClicked, setAddClicked] = useState(false);
     const [genreData, setGenreData] = useState([]);
 
@@ -19,15 +19,7 @@ export default function AddMovieForm(){
 	  const [snackbarContent, setsnackbarContent] = useState("");
 	  const [snackbarType, setsnackbarType] = useState(0);
 
-    const initialFieldValues = {
-      nameLocal: '',
-      nameOriginal: '',
-      trailer: '',
-      duration: '',
-      imageSrc: '',
-      imageFile: null,
-    };
-    const [formValues, setFormValues] = useState(initialFieldValues);
+    const [formValues, setFormValues] = useState({});
     const [formErrors, setFormErrors] = useState({});
 	  const [isSubmit, setIsSubmit] = useState(false);
 
@@ -66,9 +58,6 @@ export default function AddMovieForm(){
 
       const errors = {}
       
-      if(!formValues.imageFile){
-        errors.imageFile = "Poster image for the movie is required.";
-      }
       if(!formValues.nameLocal){
         errors.nameLocal = "Localized name is required.";
       }
@@ -111,14 +100,43 @@ export default function AddMovieForm(){
     };
 
     useEffect(() => {
+        getMovie(id).then(function (response){
+            const data = response["data"];
+    
+            getImage(id).then(function (response){
+    
+                const file = new Blob([response.data], {type:'image/png'});
+                const url = URL.createObjectURL(file);
+                setPreview(url);
+            });
+    
+            const initialFieldValues = {
+                movieId: data.movieId,
+                nameLocal: data.nameLocal,
+                nameOriginal: data.nameOriginal,
+                trailer: data.trailer,
+                duration: data.duration,
+                imageFile: null
+            };
+            setVal(data["genres"]);
+    
+            console.log(initialFieldValues);
+            setFormValues(initialFieldValues);
+    
+          });
+    
+          getGenres().then(function (response){
+            setGenreData(response["data"]);
+          });
 
-      getGenres().then(function (response){
-        setGenreData(response["data"]);
-      });
+    }, []);
+
+    useEffect(() => {
 
       if(Object.keys(formErrors).length === 0 && isSubmit){
 
         let formData = new FormData();
+        formData.append("movieId", formValues["movieId"]);
         formData.append("nameLocal", formValues["nameLocal"]);
         formData.append("nameOriginal", formValues["nameOriginal"]);
         if(formValues["trailer"] !== ""){
@@ -129,18 +147,15 @@ export default function AddMovieForm(){
         formData.append("duration", formValues["duration"]);
         val.map((x) => { formData.append("genres[]", x) });
         formData.append("imageFile", formValues["imageFile"]);
-  
-        addmovie(formData).then(function (response){
-          setsnackbarType(0);
-				  setsnackbarOpen(true);
-				  setsnackbarContent(response["data"]);
-          setFormValues(initialFieldValues);
-          setPreview(def);
-          setVal([]);
+
+        updateMovie(formData).then(function (x){
+            setsnackbarType(0);
+            setsnackbarContent("Movie edited successfully.");
+			setsnackbarOpen(true);
         }).catch(function (response){
-          setsnackbarType(1);
-				  setsnackbarOpen(true);
-				  setsnackbarContent(response["data"]);
+            setsnackbarType(1);
+            setsnackbarContent(response["data"]);
+			setsnackbarOpen(true);
         });
         
         setIsSubmit(false);
@@ -169,7 +184,7 @@ export default function AddMovieForm(){
       
       <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
         <BasicSnackbar center={true} type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
-			  <h1>Add a new movie:</h1>
+		<h1>Edit a movie:</h1>
         <img src={ preview } className={classes.uploadImage} onClick={onBtnClick} />
         <input name="file" onChange={changeHandler} ref={inputFileRef} type='file' hidden accept="image/*" />
         <p className={classes.errors}>{formErrors.imageFile}</p>
@@ -183,7 +198,7 @@ export default function AddMovieForm(){
         <div className={classes["search-container"]}>
           <div className={classes["search-inner"]}>
             <input type="text" placeholder="Search for a genre..." value={value} onChange={onChange} />
-            <button className={classes.searchButton} onClick={e => onsearch(e)}>Add</button>
+            <button className={classes.searchButton} onClick={e => onsearch(e)}>Edit</button>
           </div>
           <div className={classes["dropdown"]}>
             {genreData
@@ -219,7 +234,7 @@ export default function AddMovieForm(){
             )
         })}
       </Grid>
-			<button type="submit">Add Movie</button>
+			<button type="submit">Edit Movie</button>
 		</form>
     </div>);
 }

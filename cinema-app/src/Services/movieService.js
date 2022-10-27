@@ -22,4 +22,16 @@ const deleteMovie = (id) => {
     return axios.delete(baseUrl + id);
 }
 
-export {addmovie, getMovies, deleteMovie, getMovie };
+const getImage = (id) => {
+    var config = {
+        responseType: 'blob'
+    };
+
+    return axios.get(baseUrl + "getImage/" + id, config);
+}
+
+const updateMovie = (formData) => {
+    return axios.put(baseUrl, formData);
+}
+
+export {addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie };

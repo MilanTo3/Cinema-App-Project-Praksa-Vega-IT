@@ -21,6 +21,7 @@ import classes from './table.module.css';
 import BasicSnackbar from '../snackbar/snackbar';
 import EditCustomerForm from '../../Pages/admin/editCustomer/editCustomer';
 import { getMovies, deleteMovie } from '../../Services/movieService';
+import EditMovieForm from '../../Pages/admin/editMovie/editMovie';
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -91,7 +92,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
   const determineModal = (id) => {
 
-    const editModals = [<EditCustomerForm id={id} />, <EditGenreFrom id={id}/>, "", ""];
+    const editModals = [<EditCustomerForm id={id} />, <EditGenreFrom id={id}/>, <EditMovieForm id={id} />, ""];
 
     return editModals[ind];
   }
