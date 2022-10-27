@@ -22,6 +22,7 @@ import BasicSnackbar from '../snackbar/snackbar';
 import EditCustomerForm from '../../Pages/admin/editCustomer/editCustomer';
 import { getMovies, deleteMovie } from '../../Services/movieService';
 import EditMovieForm from '../../Pages/admin/editMovie/editMovie';
+import { addScreening, deleteScreening, getScreenings } from '../../Services/screeningService';
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -40,16 +41,16 @@ const rows = [
 const headersName = [["Customer name", "Email:", "Birthday:"],
                  ["Genre name:"],
                  ["Movie name:", "Original Name", "Duration"],
-                 ["Screenings name:"]];
+                 ["Screenings name:", "Projection starts:", "Row", "Column", "Price:"]];
 
 // Header keys for customers, genres, movies, screenings:
-const headersKeys = [["name", "email", "birthday"], ["name"], ["nameLocal", "nameOriginal", "duration"], ["name"]];
+const headersKeys = [["name", "email", "birthday"], ["name"], ["nameLocal", "nameOriginal", "duration"], ["name", "fromScreening", "row", "column", "price"]];
 // Actions for customers, genres, movies, screenings:
 const actions = [["Edit"], ["Edit", "Delete"], ["Edit", "Delete"], ["Edit", "Delete"]];
 // 1: cutomer, 2: genre, 3: movie, 4: screening.
 const addModals = ["", <AddGenreForm/>, <AddMovieForm/>, <AddScreeningForm/>];
 const idNames = ["userId", "genreId", "movieId", "screeningId"];
-const deleteCallback = ["", deleteGenre, deleteMovie, ""];
+const deleteCallback = ["", deleteGenre, deleteMovie, deleteScreening];
 
 export default function BasicTable({dataType}) { // Koji header, i podaci.
 
@@ -155,6 +156,15 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
     }else if(dataType === "movies"){
 
       getMovies().then(function (response){
+        setData(response["data"]);
+      }).catch(function (error){
+        setheaderKeys(headersKeys[ind]);
+        setData(rows[ind]);
+      });
+
+    }else if(dataType === "screenings"){
+
+      getScreenings().then(function (response){
         setData(response["data"]);
       }).catch(function (error){
         setheaderKeys(headersKeys[ind]);

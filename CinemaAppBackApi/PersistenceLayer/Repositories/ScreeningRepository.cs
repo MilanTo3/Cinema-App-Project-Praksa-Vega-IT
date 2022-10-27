@@ -42,4 +42,17 @@ public class ScreeningRepository: GenericRepository<Screening>, IScreeningReposi
         return true;
     }
 
+    public async Task<IEnumerable<Screening>> GetAllInclusive(){
+        var movies = await dbSet.Include(x => x.Movie).ToListAsync();
+
+        return movies;
+    }
+
+    public async Task<Screening> GetByIdInclusive(long screeningId){
+
+        var movies = await dbSet.Include(x => x.Movie).ToListAsync();
+
+        return movies.Find(x => x.screeningId == screeningId);
+    }
+
 }

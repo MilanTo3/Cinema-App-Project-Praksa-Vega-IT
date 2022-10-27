@@ -13,6 +13,7 @@ namespace DomainLayer.Repositories
         IUserRepository userRepository{get;}
         IGenreRepository genreRepository{get;}
         IMovieRepository movieRepository { get; }
+        IScreeningRepository screeningRepository {get;}
 
     }
 }

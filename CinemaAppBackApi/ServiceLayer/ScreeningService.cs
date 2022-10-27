@@ -1,28 +1,67 @@
 namespace ServiceLayer;
 using ServicesAbstraction;
 using Contracts;
+using DomainLayer.Repositories;
+using Mapster;
+using DomainLayer.Models;
 
 public class ScreeningService : IScreeningService
 {
 
+    private readonly IRepositoryManager _repositoryManager;
+    public ScreeningService(IRepositoryManager repositoryManager) => _repositoryManager = repositoryManager;
     public async Task<IEnumerable<ScreeningDto>> GetAllAsync(){
-        throw new NotImplementedException();
+        
+        var screeningDto = await _repositoryManager.screeningRepository.GetAllInclusive();
+        screeningDto = screeningDto.Where(x => x.deleted == false);
+        var screeningsDto = screeningDto.Adapt<IEnumerable<ScreeningDto>>();
+        foreach(ScreeningDto dto in screeningsDto){
+            var screening = await _repositoryManager.screeningRepository.GetByIdInclusive(dto.screeningId.Value);
+            dto.name = screening.Movie.nameLocal;
+
+        }
+
+        return screeningsDto;
     }
 
     public async Task<ScreeningDto> GetByIdAsync(long id){
-        throw new NotImplementedException();
+        var screening = await _repositoryManager.screeningRepository.GetByIdInclusive(id);
+        var screeningDto = screening.Adapt<ScreeningDto>();
+        screeningDto.name = screening.Movie.nameLocal;
+
+        return screeningDto;
     }
 
     public async Task<bool> CreateAsync(ScreeningDto dto){
-        throw new NotImplementedException();
+        
+        var Screening = dto.Adapt<Screening>();
+        Screening.Movie = await _repositoryManager.movieRepository.getById(dto.movieId);
+        bool added = await _repositoryManager.screeningRepository.Add(Screening);
+        await _repositoryManager.UnitOfWork.Complete();
+
+        return added;
     }
 
     public async Task<bool> DeleteAsync(long id){
-        throw new NotImplementedException();
+        bool deleted = false;
+        var screening = await _repositoryManager.screeningRepository.getById(id);
+        if(screening == null){
+            return false;
+        }
+
+        deleted = await _repositoryManager.screeningRepository.Delete(screening.screeningId);
+        await _repositoryManager.UnitOfWork.Complete();
+
+        return deleted;
     }
 
     public async Task<bool> UpdateAsync(ScreeningDto dto){
-        throw new NotImplementedException();
+        
+        var entity = dto.Adapt<Screening>();
+        bool updated = await _repositoryManager.screeningRepository.Update(entity);
+        await _repositoryManager.UnitOfWork.Complete();
+
+        return updated;
     }
 
 }

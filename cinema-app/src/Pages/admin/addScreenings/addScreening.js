@@ -3,6 +3,7 @@ import { Grid } from '@mui/material';
 import BasicSnackbar from '../../../Components/snackbar/snackbar';
 import classes from './addScreening.module.css';
 import { getImage, getMovies } from '../../../Services/movieService';
+import { addScreening } from '../../../Services/screeningService';
 
 export default function AddScreeningForm(){
 
@@ -109,7 +110,10 @@ export default function AddScreeningForm(){
                 price: formValues["price"],
             };
 
-            console.log(data);
+            addScreening(data).then(function (response){
+
+                
+            });
             
             setIsSubmit(false);
         }
