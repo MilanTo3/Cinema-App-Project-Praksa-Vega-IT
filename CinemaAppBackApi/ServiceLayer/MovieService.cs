@@ -118,7 +118,6 @@ public class MovieService : IMovieService
             foreach(Screening s in m.Screenings){
                 dto.movieScreenings.Add(s.Adapt<ScreeningDto2>());
             }
-            dto.movieScreenings.Sort((ps1, ps2) => DateTime.Compare(ps1.fromScreening, ps2.fromScreening));
             dtos.Add(dto);
         }
         
