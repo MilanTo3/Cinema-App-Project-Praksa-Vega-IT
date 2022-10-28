@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800');
+
+.card{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border-radius: 21px;
+    height: 450px;
+}
+
+.imagepart{
+    background-color: #222;
+    width: 50%;
+    box-shadow: 21px 0px 100px 0px #222;
+    z-index: 1;
+    border-radius: 21px;
+}
+
+.image {
+    position:absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+    border-radius: 21px;
+}
+
+.infopart{
+    color: white;
+    background-color: firebrick;
+    text-align: center;
+    width: 70%;
+    z-index: 2;
+    background: linear-gradient(-84deg, firebrick 60%, transparent 100%);
+
+}
+
+.minutes{
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.43);
+
+}
+
+.genres{
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.43);
+    margin: 7px
+}
+
+.datetimes{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+.huset{
+    margin: 0 auto;
+    color: white;
+    background-color: rgba(255,255,255,0.43);
+    width: 20%;
+    border-radius: 6px;
+    transition: 0.12s transform;
+    margin: 4px;
+}
+
+.huset p{
+    margin: 4px;
+    padding: 4px;
+}
+
+.huset:hover{
+    transform: scale(1.035);
+}
+
+@media (max-width: 1400px) {
+    .card {
+      flex-direction: column;
+      margin-right: 21px;
+    }
+    .infopart{
+        width: 100%;
+        height: 100%;
+    }
+  }

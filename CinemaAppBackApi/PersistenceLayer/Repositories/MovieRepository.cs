@@ -64,5 +64,11 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
         return true;
     }
 
+    public async Task<IEnumerable<Movie>> GetMoviesWithScreenings(){
+
+        var movies = await dbSet.Include(x => x.Genres).Include(x => x.Screenings).Where(x => x.Screenings.Count != 0).ToListAsync();
+
+        return movies;
+    }
 
 }

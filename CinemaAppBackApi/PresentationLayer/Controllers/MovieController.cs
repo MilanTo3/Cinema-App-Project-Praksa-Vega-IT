@@ -121,5 +121,14 @@ namespace PresentationLayer.Controllers
 
         }
 
+        [HttpGet]
+        [Route("getWithScreens")]
+        public async Task<IActionResult> GetWithScreens(){
+
+            var movies = await _serviceManager.MovieService.GetMoviesWithScreenings();
+            
+            return Ok(movies);
+        }
+
     }
 }

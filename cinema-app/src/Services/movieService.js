@@ -34,4 +34,8 @@ const updateMovie = (formData) => {
     return axios.put(baseUrl, formData);
 }
 
-export {addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie };
+const getMoviesWithScreenings = () => {
+    return axios.get(baseUrl + "getWithScreens");
+}
+
+export { addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie, getMoviesWithScreenings };

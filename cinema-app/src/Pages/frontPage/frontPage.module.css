@@ -1,6 +1,26 @@
 .box{
-	margin-top: 130px;
 	text-align: center;
-	margin-left: 49px;
 	padding-bottom: 100px;
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 100px;
+
+}
+
+.grid{
+	margin-top: 30px;
+}
+
+.searchbox{
+	background: linear-gradient(to left, #ff4b2b 75%, firebrick);
+	display: flex;
+	justify-content: center;
+
+
+}
+
+.summary{
+	color: white;
+	font-weight: bold;
+	margin: 0px;
 }

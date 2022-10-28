@@ -9,6 +9,8 @@ public interface IMovieService
 
     Task<MovieDto> GetByIdAsync(long id);
 
+    Task<IEnumerable<MovieScreeningDto>> GetMoviesWithScreenings();
+
     Task<bool> CreateAsync(MovieDto dto, string path);
 
     Task<bool> DeleteAsync(long id);

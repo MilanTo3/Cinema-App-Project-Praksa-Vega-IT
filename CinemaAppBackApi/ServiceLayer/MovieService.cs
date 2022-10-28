@@ -107,4 +107,22 @@ public class MovieService : IMovieService
 
         return updated;
     }
+
+    public async Task<IEnumerable<MovieScreeningDto>> GetMoviesWithScreenings(){
+
+        var moviesWithScreenings = await _repositoryManager.movieRepository.GetMoviesWithScreenings();
+        List<MovieScreeningDto> dtos = new List<MovieScreeningDto>();
+        foreach(Movie m in moviesWithScreenings){
+            MovieScreeningDto dto = m.Adapt<MovieScreeningDto>();
+            dto.genres = m.Genres.Select(x => x.name).ToList();
+            foreach(Screening s in m.Screenings){
+                dto.movieScreenings.Add(s.Adapt<ScreeningDto2>());
+            }
+            dto.movieScreenings.Sort((ps1, ps2) => DateTime.Compare(ps1.fromScreening, ps2.fromScreening));
+            dtos.Add(dto);
+        }
+        
+        return dtos;
+    }
+
 }
