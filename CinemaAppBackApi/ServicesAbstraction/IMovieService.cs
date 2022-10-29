@@ -9,7 +9,7 @@ public interface IMovieService
 
     Task<MovieDto> GetByIdAsync(long id);
 
-    Task<IEnumerable<MovieScreeningDto>> GetMoviesWithScreenings();
+    Task<IEnumerable<MovieScreeningDto>> GetMoviesWithScreenings(DateTime? day, List<string>? genres, bool? sort);
 
     Task<bool> CreateAsync(MovieDto dto, string path);
 

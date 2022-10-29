@@ -98,9 +98,7 @@ export default function AddScreeningForm(){
     }, []);
 
     useEffect(() => {
-
         if(Object.keys(formErrors).length === 0 && isSubmit){
-
             const data = {
                 movieId: idVal,
                 fromScreening: formValues["fromScreening"],

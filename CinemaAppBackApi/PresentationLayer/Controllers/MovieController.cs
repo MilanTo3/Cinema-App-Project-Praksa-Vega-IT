@@ -122,10 +122,19 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpGet]
-        [Route("getWithScreens")]
+        [Route("getWithScreens/")]
         public async Task<IActionResult> GetWithScreens(){
 
-            var movies = await _serviceManager.MovieService.GetMoviesWithScreenings();
+            var movies = await _serviceManager.MovieService.GetMoviesWithScreenings(null, null, false);
+            
+            return Ok(movies);
+        }
+
+        [HttpGet]
+        [Route("getWithScreensFilter/")]
+        public async Task<IActionResult> GetWithScreensFilter([FromQuery]bool sort = false, [FromQuery]DateTime? day = null, [FromQuery(Name = "genres[]")]List<string>? genres = null){
+
+            var movies = await _serviceManager.MovieService.GetMoviesWithScreenings(day, genres, sort);
             
             return Ok(movies);
         }

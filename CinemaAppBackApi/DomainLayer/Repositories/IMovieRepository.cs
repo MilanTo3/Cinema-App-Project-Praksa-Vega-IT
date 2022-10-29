@@ -12,6 +12,6 @@ public interface IMovieRepository : IGenericRepository<Movie>
         Task<bool> AddId(Movie movie);
         Task<bool> UpdateMovie(MovieDto dto, List<Genre> newGen);
 
-        Task<IEnumerable<Movie>> GetMoviesWithScreenings();
+        Task<IEnumerable<Movie>> GetMoviesWithScreenings(DateTime? day, List<Genre>? genres, bool? sort);
 
 }

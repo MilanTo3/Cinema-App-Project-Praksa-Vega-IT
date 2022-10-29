@@ -64,11 +64,21 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
         return true;
     }
 
-    public async Task<IEnumerable<Movie>> GetMoviesWithScreenings(){
+    public async Task<IEnumerable<Movie>> GetMoviesWithScreenings(DateTime? day, List<Genre>? genres, bool? sort){
 
-        var movies = await dbSet.Include(x => x.Genres).Include(x => x.Screenings).Where(x => x.Screenings.Count != 0).OrderBy(x => x.Screenings.OrderBy(x => x.fromScreening).FirstOrDefault()).ToListAsync();
+        var movies = dbSet.Include(x => x.Genres).Include(x => x.Screenings).Where(x => x.Screenings.Count != 0).OrderBy(x => x.Screenings.Min(x => x.fromScreening)).AsSplitQuery();
+        if(day != null){
+            movies = movies.Where(x => x.Screenings.Any(x => x.fromScreening.Date == ((DateTime)day).Date));
+        }
+        if(genres != null){
+            movies = movies.Where(x => x.Genres.Any(item => genres.Contains(item)));
+            // movies = movies.Where(x => genres.All(j => x.Genres.Contains(j)));   ?
+        }
+        if(sort == true){
+            movies = movies.OrderBy(x => x.nameLocal);
+        }
 
-        return movies;
+        return await movies.ToListAsync();
     }
 
 }

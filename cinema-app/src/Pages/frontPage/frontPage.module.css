@@ -20,7 +20,7 @@
 }
 
 .form{
-	display:inline-flex;
+	display:flex;
 
 }
 
@@ -42,6 +42,7 @@
     margin-bottom: 17px;
     padding: 21px;
     background-color: firebrick;
+	overflow: auto;
   }
 
   .tagButton{
@@ -70,7 +71,89 @@
   }
 
   .genreAC{
-	height: 40px;
 	margin: 4px;
 	
+  }
+
+  @media (max-width: 1200px) {
+    .form{
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		align-items: center;
+	}
+	.genreAC{
+		margin-bottom: 24px;
+		width: 30%;
+	}
+  }
+
+  .Datepicker{
+	border-radius: 4px;
+	color: white;
+	background-color: firebrick;
+  }
+
+  .sortbutton{
+	border-radius: 20px;
+	border: 1px solid firebrick;
+	background-color: firebrick;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+	height: 40px;
+	margin: 4px;
+	display: flex;
+
+  }
+
+  .alphabetIcon{
+	align-self: center;
+  }
+
+  .sortClicked{
+	background-color: black;
+  }
+
+  .dates{
+	display: inline-flex;
+	margin-bottom: 24px;
+  }
+
+  .timestamp{
+	display: unset;
+	margin: 6px;
+	color: white;
+	background-color: unset;
+	padding: 5px;
+	border-radius: 5px;
+    border: 2.4px solid rgba(255,255,255,0.43);
+	text-transform: unset;
+	transition: 0.3s all;
+  }
+
+  .timestamp:hover{
+	background-color: firebrick;
+  }
+
+  .grid {
+	animation-duration: 1s;
+	animation-name: animate-pop;
+	animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
+  }
+  
+  @keyframes animate-pop {
+	0% {
+	  opacity: 0;
+	  transform: scale(0.5, 0.5);
+	}
+  
+	100% {
+	  opacity: 1;
+	  transform: scale(1, 1);
+	}
   }

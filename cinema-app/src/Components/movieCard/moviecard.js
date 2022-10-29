@@ -23,9 +23,8 @@ export default function MediaCard({cardData}) {
       setImage(url);
     });
     setData(cardData);
-    console.log(cardData.genres);
 
-  }, []);
+  }, [cardData]);
   
   return (
     <div className={classes.card}>

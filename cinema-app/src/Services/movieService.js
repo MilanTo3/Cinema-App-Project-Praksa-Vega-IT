@@ -34,8 +34,19 @@ const updateMovie = (formData) => {
     return axios.put(baseUrl, formData);
 }
 
-const getMoviesWithScreenings = () => {
-    return axios.get(baseUrl + "getWithScreens");
+const getMoviesWithScreenings1 = (data) => {
+
+    var day = data.date ? data.date:new Date();
+    var genres = data.genres ? data.genres:[];
+
+    var parameters = { sort: data.sort, day: day, genres: genres };
+
+    return axios.get(baseUrl + "getWithScreensFilter/", { params: parameters });
 }
 
-export { addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie, getMoviesWithScreenings };
+const getMoviesWithScreenings = () => {
+
+    return axios.get(baseUrl + "getWithScreens/");
+}
+
+export { addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie, getMoviesWithScreenings, getMoviesWithScreenings1 };

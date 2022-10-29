@@ -117,7 +117,6 @@ export default function AddMovieForm(){
       });
 
       if(Object.keys(formErrors).length === 0 && isSubmit){
-
         let formData = new FormData();
         formData.append("nameLocal", formValues["nameLocal"]);
         formData.append("nameOriginal", formValues["nameOriginal"]);
