@@ -14,18 +14,36 @@ export default function CinemaReservation(){
     const [image, setImage] = useState(poster);
 
     const [media, setMedia] = useState(<img src={image} className={classes.posterImage} />);
+    const [chosenSeats, setchosenSeats] = useState(1); //span
+    const [seatList, setSeatList] = useState([]);
 
     const k = useParams().id;
 
-    const handleClick = (event) => {
+    const handleClick = (event, k, p) => {
 
-        event.target.classList.toggle(classes["seatClicked"]);
-        event.target.classList.toggle(classes["hover"]);
-        if(event.target.classList.contains(classes["seatClicked"])){
-            setTotal(total + 250);
-        }else{
-            setTotal(total - 250);
+        const i = k;
+        const j = p;
+        var totalprice = total;
+        var seatsTaken = seatList;
+
+        for(let k = 0; k < chosenSeats; k++){
+            var el = document.getElementById(i + "," + (j + k));
+            if(el){
+                el.classList.toggle(classes["seatClicked"]);
+                el.classList.toggle(classes["hover"]);
+                if(el.classList.contains(classes["seatClicked"])){
+                    totalprice += data.price;
+                    seatsTaken.push(i + "," + (j + k));
+                }else{
+                    totalprice -= data.price;
+                    seatsTaken = seatsTaken.filter(x => x !== (i + "," + (j + k)));
+                }
+            }else{
+                break;
+            }
         }
+        setTotal(totalprice);
+        setSeatList(seatsTaken);
         
     };
 
@@ -53,32 +71,37 @@ export default function CinemaReservation(){
 
     }, []);
 
+    const seatSpanChange = (e) => {
+        console.log(e.target.value);
+        setchosenSeats(e.target.value);
+    };
+
     return (<div className={classes.page}>
         <div className={classes.box}>
             <div className={classes.projection}>
                 <h1>Screening Seatings:</h1>
                 <div className={classes.screen}></div>    
-                <div className={classes.row}>
-                    <div className={`${classes.seat} ${classes.hover}`} onClick={e => handleClick(e)}></div>
-                    <div className={`${classes.seat} ${classes.hover}`} onClick={e => handleClick(e)}></div>
-                    <div className={`${classes.seat} ${classes.hover}`} onClick={e => handleClick(e)}></div>
-                    <div className={`${classes.seat} ${classes.hover}`} onClick={e => handleClick(e)}></div>
-                    <div className={`${classes.seat} ${classes.hover}`} onClick={e => handleClick(e)}></div>
-                    <div className={`${classes.seat} ${classes.hover}`} onClick={e => handleClick(e)}></div>
-                    <div className={classes.seat} onClick={e => handleClick(e)}></div>
-                    <div className={classes.seat}></div>
-                </div>
-                <div className={classes.row}>
-                    <div className={classes.seat}></div>
-                    <div className={classes.seat}></div>
-                    <div className={classes.seat}></div>
-                    <div className={classes.seat}></div>
-                    <div className={classes.seat}></div>
-                    <div className={classes.seat}></div>
-                    <div className={classes.seat}></div>
-                    <div className={classes.seat}></div>
-                </div>
+                {
+                    
+                    Array.from(Array(data.row)).map((x, i) => {
+                        return (<div className={classes.row}>
+                            {
+                            Array.from(Array(data.column)).map((x, j) => {
+                                return(<div id={i + "," + j} className={`${classes.seat} ${classes.hover}`} onClick={e => handleClick(e, i, j)}></div>)
+                            })
+                            }
+                        </div>)
+                    })
+                }
+
                     <h3>Reserve your tickets:</h3>
+                    <h5>Seating span: <select onChange={(e) => seatSpanChange(e)} className={classes.seatSpan}>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                    </select></h5>
                     <h4>Total price:</h4>
                     <h2>{ total } rsd.</h2>
                     <button className={classes.buyButton}>Buy</button>

@@ -66,6 +66,9 @@ export default function EditMovieForm({ id }){
       }
       if(!formValues.duration){
         errors.duration = "Duration of the movie is a required field.";
+      if(formValues.trailer && !formValues.trailer.startsWith('https://www.youtube.com')){
+          errors.trailer = "We only accept youtube videos as the source material.";
+      }
       }else if(formValues.duration < 1){
         errors.duration = "Duration must be a positive number greater than zero.";
       }
@@ -191,6 +194,7 @@ export default function EditMovieForm({ id }){
         <input type="number" name="duration" placeholder="Duration (minutes)" value={formValues.duration} onChange={handleChange} />
         <p className={classes.errors}>{formErrors.duration}</p>
         <input type="text" name="trailer" placeholder="Trailer link" value={formValues.trailer} onChange={handleChange} />
+        <p className={classes.errors}>{formErrors.trailer}</p>
         <div className={classes["search-container"]}>
           <div className={classes["search-inner"]}>
             <input type="text" placeholder="Search for a genre..." value={value} onChange={onChange} />

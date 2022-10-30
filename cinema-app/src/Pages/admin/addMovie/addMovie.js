@@ -75,7 +75,7 @@ export default function AddMovieForm(){
       if(!formValues.nameOriginal){
         errors.nameOriginal = "Original movie title is a required field.";
       }
-      if(!formValues.trailer.startsWith('https://www.youtube.com')){
+      if(formValues.trailer && !formValues.trailer.startsWith('https://www.youtube.com')){
         errors.trailer = "We only accept youtube videos as the source material.";
       }
       if(!formValues.duration){
