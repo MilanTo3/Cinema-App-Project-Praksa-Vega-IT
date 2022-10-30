@@ -66,7 +66,7 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
 
     public async Task<IEnumerable<Movie>> GetMoviesWithScreenings(DateTime? day, List<Genre>? genres, bool? sort){
 
-        var movies = dbSet.Include(x => x.Genres).Include(x => x.Screenings).Where(x => x.Screenings.Count != 0).OrderBy(x => x.Screenings.Min(x => x.fromScreening)).AsSplitQuery();
+        var movies = dbSet.Include(x => x.Genres).Include(x => x.Screenings.Where(x => x.deleted == false)).Where(x => x.Screenings.Count != 0 && x.deleted == false).OrderBy(x => x.Screenings.Min(x => x.fromScreening)).AsSplitQuery();
         if(day != null){
             movies = movies.Where(x => x.Screenings.Any(x => x.fromScreening.Date == ((DateTime)day).Date));
         }

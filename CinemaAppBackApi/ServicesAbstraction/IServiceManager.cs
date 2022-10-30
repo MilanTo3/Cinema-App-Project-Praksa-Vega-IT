@@ -7,5 +7,6 @@ public interface IServiceManager
     IGenreService GenreService {get;}
     IMovieService MovieService {get;}
     IScreeningService ScreeningService {get;}
+    IReservationService ReservationService{get;}
 
 }

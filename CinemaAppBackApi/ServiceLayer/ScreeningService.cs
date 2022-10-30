@@ -16,12 +16,17 @@ public class ScreeningService : IScreeningService
         screeningDto = screeningDto.Where(x => x.deleted == false);
         var screeningsDto = screeningDto.Adapt<IEnumerable<ScreeningDto>>().ToList();
 
+        for(int i = 0; i < screeningDto.Count(); i++){
+            screeningsDto[i].name = screeningDto.ToList()[i].Movie.nameLocal;
+        }
+
         return screeningsDto;
     }
 
     public async Task<ScreeningDto> GetByIdAsync(long id){
         var screening = await _repositoryManager.screeningRepository.GetByIdInclusive(id);
         var screeningDto = screening.Adapt<ScreeningDto>();
+        screeningDto.name = screening.Movie.nameLocal;
 
         return screeningDto;
     }

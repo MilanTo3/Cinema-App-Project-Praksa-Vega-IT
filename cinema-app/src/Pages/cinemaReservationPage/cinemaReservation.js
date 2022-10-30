@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { getScreening } from "../../Services/screeningService";
 import { getImage, getMovie } from "../../Services/movieService";
+import { addReservation } from '../../Services/reservationService';
+import { confirmAlert } from 'react-confirm-alert';
+import BasicSnackbar from '../../Components/snackbar/snackbar';
 
 export default function CinemaReservation(){
 
@@ -16,6 +19,20 @@ export default function CinemaReservation(){
     const [media, setMedia] = useState(<img src={image} className={classes.posterImage} />);
     const [chosenSeats, setchosenSeats] = useState(1); //span
     const [seatList, setSeatList] = useState([]);
+
+    const [email, setEmail] = useState("");
+    const [buyClicked, setBuyClicked] = useState(false);
+    const [formErrors, setFormErrors] = useState("");
+
+    //snackbar
+    const [snackbarOpen, setsnackbarOpen] = useState(false);
+	const [snackbarContent, setsnackbarContent] = useState("");
+	const [snackbarType, setsnackbarType] = useState(0);
+
+    var user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if(user !== null){
+        setEmail(user.email);
+    }
 
     const k = useParams().id;
 
@@ -47,6 +64,48 @@ export default function CinemaReservation(){
         
     };
 
+    const handleSnackbarClose = () => {
+
+		setsnackbarOpen(false);
+  	};
+
+    const confirmDialog = () => {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className={classes["custom-ui"]}>
+                <h1>Are you sure?</h1>
+                <p>Do you wish to book tickets for this screening?</p>
+                <button
+                  onClick={() => {
+
+                    const form = new FormData();
+                    form.append("email", email);
+                    form.append("screeningId", data.screeningId);
+                    form.append("totalPrice", total);
+                    seatList.map((x) => { form.append("seats[]", x) });
+
+                    addReservation(form).then(function (response){
+                      setsnackbarType(0);
+                      setsnackbarContent(response["data"]);
+                      setsnackbarOpen(true);
+                    }).catch(function (response){
+                      setsnackbarType(1);
+                      setsnackbarContent(response["data"]);
+                      setsnackbarOpen(true);
+                    });
+                    onClose();
+                  }}
+                >
+                  Confirm
+                </button>
+                <button onClick={onClose}>No</button>
+              </div>
+            );
+          }
+        });
+      };
+
     useEffect(() => {
 
         async function fetchData() {
@@ -71,15 +130,46 @@ export default function CinemaReservation(){
 
     }, []);
 
+    useEffect(() => {
+
+        if(Object.keys(formErrors).length === 0 && buyClicked){
+            confirmDialog();
+        }
+        setBuyClicked(false);
+    }, [buyClicked]);
+
     const seatSpanChange = (e) => {
-        console.log(e.target.value);
         setchosenSeats(e.target.value);
+
+    };
+
+    const handleChange = (e) => {
+		setEmail(e.target.value);
+	};
+
+    const validate = (e) => {
+
+        const errors = {}
+		
+		if(!email){
+			errors.email = "Email is required.";
+		}
+
+        return errors;
+    }
+
+    const handleReservation = (e) => {
+        e.preventDefault();
+        setFormErrors(validate(email));
+        setBuyClicked(true);
+
     };
 
     return (<div className={classes.page}>
+        <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
         <div className={classes.box}>
             <div className={classes.projection}>
-                <h1>Screening Seatings:</h1>
+                <h2>Reserve your tickets:</h2>
                 <div className={classes.screen}></div>    
                 {
                     
@@ -94,17 +184,24 @@ export default function CinemaReservation(){
                     })
                 }
 
-                    <h3>Reserve your tickets:</h3>
-                    <h5>Seating span: <select onChange={(e) => seatSpanChange(e)} className={classes.seatSpan}>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                    </select></h5>
-                    <h4>Total price:</h4>
-                    <h2>{ total } rsd.</h2>
-                    <button className={classes.buyButton}>Buy</button>
+                <div className={classes.buyoptions}>
+                    <div>
+                        <h4>Seating span: <select onChange={(e) => seatSpanChange(e)} className={classes.seatSpan}>
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                        </select></h4>
+                        <h4>Total price:</h4>
+                        <h2>{ total } rsd.</h2>
+                    </div>
+                    <form className={classes.form} onSubmit={handleReservation}>
+                        <input type="email" name="email" placeholder="Email" value={email} onChange={handleChange}/>
+			            <p className={classes.errors}>{formErrors.email}</p>
+                        <button type="submit" className={classes.buyButton}>Buy</button>
+                    </form>
+                </div>
             </div>
             <div className={classes.movieInfo}>
                 <div className={classes.posterOkvir}>
