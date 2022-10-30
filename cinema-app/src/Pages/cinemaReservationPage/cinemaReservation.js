@@ -1,11 +1,21 @@
 import classes from './cinemaReservation.module.css';
 import MovieIcon from '@mui/icons-material/Movie';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
+import { getScreening } from "../../Services/screeningService";
+import { getImage, getMovie } from "../../Services/movieService";
 
 export default function CinemaReservation(){
 
     const poster = require('../../Assets/img1.jpg');
     const [total, setTotal] = useState(0);
+    const [data, setData] = useState({});
+    const [movieData, setMovieData] = useState({});
+    const [image, setImage] = useState(poster);
+
+    const [media, setMedia] = useState(<img src={image} className={classes.posterImage} />);
+
+    const k = useParams().id;
 
     const handleClick = (event) => {
 
@@ -18,6 +28,30 @@ export default function CinemaReservation(){
         }
         
     };
+
+    useEffect(() => {
+
+        async function fetchData() {
+            let j = await getScreening(k);
+            setData(j["data"]);
+
+            let l = await getMovie(j["data"].movieId);
+            setMovieData(l["data"]);
+
+            if(l["data"].trailer.startsWith('https://www.youtube.com/')){
+                setMedia(<iframe className={classes.posterImage} src={l["data"].trailer.replace("watch?v=", "embed/")}></iframe>);
+            }else{
+
+                let img = await getImage(j["data"].movieId);
+                const file = new Blob([img.data], {type:'image/png'});
+                const url = URL.createObjectURL(file);
+                setImage(url);
+            }
+
+        }
+        fetchData();
+
+    }, []);
 
     return (<div className={classes.page}>
         <div className={classes.box}>
@@ -44,27 +78,23 @@ export default function CinemaReservation(){
                     <div className={classes.seat}></div>
                     <div className={classes.seat}></div>
                 </div>
-            </div>
-            <div className={classes.movieInfo}>
-                <div className={classes.posterOkvir}>
-                    <img src={poster} className={classes.posterImage} />
-                </div>
-                <h1 className={classes.title}>Zelena milja (The Green mile)</h1>
-                <div className={classes.info}>
-                    <p className={classes.writingInfo}>Name (Localized): <span>Green mile</span></p>
-                    <p className={classes.writingInfo}>Original Name: <span>Green mile</span></p>
-                    <p className={classes.writingInfo}>Screening start: <span>Green mile</span></p>
-                    <p className={classes.writingInfo}>Duration: <span>Green mile</span></p>
-                    <p className={classes.writingInfo}>Tickets left: <span>Green mile</span></p>
-                    <p className={classes.writingInfo}>Price per ticket: <span>Green mile</span></p>
-                </div>
-                <div className={classes.ticket}>
-                    <h3>Watch the trailer:</h3>
-                    <button className={classes.ticketButtons}><span className={classes.buttonWriting}>Trailer: <MovieIcon></MovieIcon></span></button>
                     <h3>Reserve your tickets:</h3>
                     <h4>Total price:</h4>
                     <h2>{ total } rsd.</h2>
                     <button className={classes.buyButton}>Buy</button>
+            </div>
+            <div className={classes.movieInfo}>
+                <div className={classes.posterOkvir}>
+                {media}
+                </div>
+                <h1 className={classes.title}>{movieData.nameLocal} ({movieData.nameOriginal})</h1>
+                <div className={classes.info}>
+                    <p className={classes.writingInfo}>Name (Localized): <span>{movieData.nameLocal}</span></p>
+                    <p className={classes.writingInfo}>Original Name: <span>{movieData.nameOriginal}</span></p>
+                    <p className={classes.writingInfo}>Screening start: <span>{new Date(data["fromScreening"]).toLocaleString()}</span></p>
+                    <p className={classes.writingInfo}>Duration: <span>{movieData.duration} min.</span></p>
+                    <p className={classes.writingInfo}>Tickets left: <span>Green mile</span></p>
+                    <p className={classes.writingInfo}>Price per ticket: <span>{data.price} RSD.</span></p>
                 </div>
             </div>
         </div>

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import classes from './moviecard.module.css';
 import { useEffect, useReact } from 'react';
 import { getImage } from '../../Services/movieService';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import { Link } from 'react-router-dom';
 
 export default function MediaCard({cardData}) {
   
@@ -40,10 +37,10 @@ export default function MediaCard({cardData}) {
         <h2>Projection dates:</h2>
         <div className={classes.datetimes}>
           { cardData.movieScreenings.map((screening) => (
-            <div className={classes.huset}>
+            <div className={classes.huset}><Link to={"/screening/" + screening.screeningId}>
               <ConfirmationNumberIcon style={{ color: "green" }}/>
               <p>{new Date(screening.fromScreening).toLocaleDateString()}</p>
-              <p>{new Date(screening.fromScreening).toLocaleTimeString()}</p>
+              <p>{new Date(screening.fromScreening).toLocaleTimeString()}</p></Link>
             </div>
           ))}
         </div>

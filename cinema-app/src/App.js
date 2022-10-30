@@ -19,7 +19,7 @@ function App() {
             <Route path='/loginregpage' element={<LogRegPage/>} />
             <Route exact path='/admin' element={<AdminPanel/>} />
             <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
-            <Route exact path='/screening' element={<CinemaReservation/>} />
+            <Route exact path='/screening/:id' element={<CinemaReservation/>} />
             <Route exact path='/reservations' element={<TicketReservationPage/>} />
             <Route path='/passwordreset' element={<PasswordReset />} />
           </Routes>
