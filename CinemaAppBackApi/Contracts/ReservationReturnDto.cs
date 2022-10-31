@@ -2,6 +2,8 @@ namespace Contracts;
 
 public class ReservationReturnDto
 {
+
+    public long reservationId{get;set;}
     public string email{get;set;}
     public string title{get;set;}
     public DateTime start{get;set;}

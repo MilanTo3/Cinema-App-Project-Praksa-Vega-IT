@@ -37,6 +37,7 @@ export default function Frontpage(){
 
     getMoviesWithScreenings1(data).then(function (response){
       setValue(response["data"]);
+      console.log(response["data"]);
     });
 
     getGenres().then(function (response){

@@ -31,6 +31,7 @@ public class ReservationService : IReservationService
         foreach(Reservation r in reservations){
             ReservationReturnDto rrd = new ReservationReturnDto();
             var screening = await _repositoryManager.screeningRepository.GetByIdInclusive(r.screeningId);
+            rrd.reservationId = r.reservationId;
             rrd.title = screening.Movie.nameLocal;
             rrd.email = r.email;
             rrd.start = screening.fromScreening;
@@ -80,7 +81,7 @@ public class ReservationService : IReservationService
         email.Subject = "Cinefra Ticket Booking Information";
         string k = "";
         foreach(ReservedSeat rs in reservation.reservedSeats){
-            k += rs.rowColumnId;
+            k += "[" + rs.rowColumnId + "]" + " ";
         }
         string text = "Your reservation has been successfull!<br/><br>Your reserved seat numbers are: " + k + ".<br/>" + "Total price payed: " + reservation.totalPrice + " rsd.<br/>";
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "" +
@@ -96,6 +97,7 @@ public class ReservationService : IReservationService
     }
 
     public async Task<bool> DeleteAsync(long id){
+
         bool deleted = false;
         var reservation = await _repositoryManager.reservationRepository.getById(id);
         if(reservation == null){

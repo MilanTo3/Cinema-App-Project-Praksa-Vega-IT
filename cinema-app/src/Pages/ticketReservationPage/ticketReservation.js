@@ -10,12 +10,17 @@ export default function TicketReservationPage(){
 
     const [alignment, setAlignment] = React.useState(0);
     const [userData, setUserData] = React.useState();
+    const [reloader, setReloader] = React.useState(false);
 
     const [data, setData] = React.useState([]);
 
     const handleChange = (event, newAlignment) => {
       setAlignment(newAlignment);
     };
+
+    const reloaderFunc = () => {
+        setReloader(!reloader);
+    }
 
     useEffect(() => {
 
@@ -26,10 +31,9 @@ export default function TicketReservationPage(){
 
         getMyReservations(alignment, user.email).then(function (response){
             setData(response["data"]);
-            console.log(response["data"]);
         });
 
-    }, [alignment]);
+    }, [alignment, reloader]);
 
     return (
     
@@ -50,7 +54,7 @@ export default function TicketReservationPage(){
                 data.map((ticketDatt) => {
                     return (
                         <Grid item xs={12} sm={12} md={6}>
-                            <Ticket type={alignment} data={ticketDatt} />
+                            <Ticket type={alignment} data={ticketDatt} handler={reloaderFunc} />
                         </Grid>
                     )
                 })

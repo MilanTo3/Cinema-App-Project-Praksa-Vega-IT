@@ -41,6 +41,11 @@ export default function CinemaReservation(){
         var totalprice = total;
         var seatsTaken = seatList;
 
+        var el = document.getElementById(event.target.id);
+        if(el.classList.contains(classes["takenSeat"])){
+            return;
+        }
+
         for(let k = 0; k < chosenSeats; k++){
             var el = document.getElementById(i + "," + (j + k));
             if(el){
@@ -61,7 +66,7 @@ export default function CinemaReservation(){
             }
         }
 
-        if(user !== {} && totalprice !== 0 && totalprice > 0){
+        if(user.email && (totalprice > 0)){
             totalprice = Math.round(totalprice - (totalprice/20));
         }
         setTotal(totalprice);
@@ -94,6 +99,9 @@ export default function CinemaReservation(){
                       setsnackbarType(0);
                       setsnackbarContent(response["data"]);
                       setsnackbarOpen(true);
+                      signSeats();
+                      setSeatList([]);
+                      setTotal(0);
                     }).catch(function (response){
                       setsnackbarType(1);
                       setsnackbarContent(response["data"]);
@@ -114,7 +122,7 @@ export default function CinemaReservation(){
     useEffect(() => {
 
         var user = JSON.parse(localStorage.getItem("loggedInUser"));
-        if(user !== null){
+        if(user){
             setEmail(user.email);
             setUser(user);
             setDiscount(<p className={classes.discount}>5% discount!</p>);
@@ -138,20 +146,7 @@ export default function CinemaReservation(){
                     setImage(url);
                 }
 
-                getReservedSeats(k).then(function (response){
-
-                    var arr = response.data;
-                    console.log(arr);
-                    arr.map((seatid) => {
-                        var el = document.getElementById(seatid);
-                        if(el){
-                            el.classList.add(classes["takenSeat"]);
-                            el.classList.remove(classes["hover"]);
-                            el.id = el.id + "Taken";
-                        }
-                    });
-        
-                });
+                signSeats();
 
             }
             await fetchData();
@@ -167,6 +162,24 @@ export default function CinemaReservation(){
         }
         setBuyClicked(false);
     }, [buyClicked]);
+
+    const signSeats = () => {
+        
+        getReservedSeats(k).then(function (response){
+
+            var arr = response.data;
+            console.log(arr);
+            arr.map((seatid) => {
+                var el = document.getElementById(seatid);
+                if(el){
+                    el.classList.add(classes["takenSeat"]);
+                    el.classList.remove(classes["hover"]);
+                    el.id = el.id + "Taken";
+                }
+            });
+
+        });
+    }
 
     const seatSpanChange = (e) => {
         setchosenSeats(e.target.value);

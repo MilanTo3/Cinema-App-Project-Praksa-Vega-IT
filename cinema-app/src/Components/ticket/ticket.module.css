@@ -101,6 +101,17 @@
     width: 80px;
 }
 
+.custom-ui {
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 21px;
+    padding: 14px;
+}
+
+.custom-ui button{
+    margin: 4px;
+}
+
 @media (max-width: 1400px) {
     .info {
       flex-direction: column;
