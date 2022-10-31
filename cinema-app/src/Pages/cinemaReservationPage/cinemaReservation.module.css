@@ -19,12 +19,14 @@ body{
 	justify-content: center;
     border-radius: 12px;
     width: 100%;
+    margin-top: 70px;
     height: 90vh;
     border-top-left-radius: 21px;
     border-bottom-left-radius: 21px;
 }
 
 .projection{
+    margin-top: -34px;
     perspective: 1000px;
     display: flex;
     flex-direction: column;
@@ -180,4 +182,15 @@ body{
 
 .custom-ui button{
     margin: 4px;
+}
+
+.takenSeat{
+    background-color: black;
+    background-image: radial-gradient(circle at center, white 4px, transparent 4px)
+}
+
+.discount{
+    font-weight: bold;
+    color: lightgreen;
+    margin: 7px;
 }

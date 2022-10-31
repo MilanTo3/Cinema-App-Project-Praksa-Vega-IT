@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { getScreening } from "../../Services/screeningService";
 import { getImage, getMovie } from "../../Services/movieService";
-import { addReservation } from '../../Services/reservationService';
+import { addReservation, getReservedSeats } from '../../Services/reservationService';
 import { confirmAlert } from 'react-confirm-alert';
 import BasicSnackbar from '../../Components/snackbar/snackbar';
 
@@ -23,16 +23,14 @@ export default function CinemaReservation(){
     const [email, setEmail] = useState("");
     const [buyClicked, setBuyClicked] = useState(false);
     const [formErrors, setFormErrors] = useState("");
+    const [discount, setDiscount] = useState("");
 
     //snackbar
     const [snackbarOpen, setsnackbarOpen] = useState(false);
 	const [snackbarContent, setsnackbarContent] = useState("");
 	const [snackbarType, setsnackbarType] = useState(0);
 
-    var user = JSON.parse(localStorage.getItem("loggedInUser"));
-    if(user !== null){
-        setEmail(user.email);
-    }
+    const [user, setUser] = useState({});
 
     const k = useParams().id;
 
@@ -49,15 +47,22 @@ export default function CinemaReservation(){
                 el.classList.toggle(classes["seatClicked"]);
                 el.classList.toggle(classes["hover"]);
                 if(el.classList.contains(classes["seatClicked"])){
-                    totalprice += data.price;
+                    totalprice += Math.round(data.price);
                     seatsTaken.push(i + "," + (j + k));
                 }else{
-                    totalprice -= data.price;
+                    totalprice -= Math.round(data.price);
+                    if(totalprice < 0){
+                        totalprice = 0;
+                    }
                     seatsTaken = seatsTaken.filter(x => x !== (i + "," + (j + k)));
                 }
             }else{
                 break;
             }
+        }
+
+        if(user !== {} && totalprice !== 0 && totalprice > 0){
+            totalprice = Math.round(totalprice - (totalprice/20));
         }
         setTotal(totalprice);
         setSeatList(seatsTaken);
@@ -108,25 +113,50 @@ export default function CinemaReservation(){
 
     useEffect(() => {
 
-        async function fetchData() {
-            let j = await getScreening(k);
-            setData(j["data"]);
-
-            let l = await getMovie(j["data"].movieId);
-            setMovieData(l["data"]);
-
-            if(l["data"].trailer.startsWith('https://www.youtube.com/')){
-                setMedia(<iframe className={classes.posterImage} src={l["data"].trailer.replace("watch?v=", "embed/")}></iframe>);
-            }else{
-
-                let img = await getImage(j["data"].movieId);
-                const file = new Blob([img.data], {type:'image/png'});
-                const url = URL.createObjectURL(file);
-                setImage(url);
-            }
-
+        var user = JSON.parse(localStorage.getItem("loggedInUser"));
+        if(user !== null){
+            setEmail(user.email);
+            setUser(user);
+            setDiscount(<p className={classes.discount}>5% discount!</p>);
         }
-        fetchData();
+
+        async function awaiter(){
+            async function fetchData() {
+                let j = await getScreening(k);
+                setData(j["data"]);
+
+                let l = await getMovie(j["data"].movieId);
+                setMovieData(l["data"]);
+
+                if(l["data"].trailer.startsWith('https://www.youtube.com/')){
+                    setMedia(<iframe className={classes.posterImage} src={l["data"].trailer.replace("watch?v=", "embed/")}></iframe>);
+                }else{
+
+                    let img = await getImage(j["data"].movieId);
+                    const file = new Blob([img.data], {type:'image/png'});
+                    const url = URL.createObjectURL(file);
+                    setImage(url);
+                }
+
+                getReservedSeats(k).then(function (response){
+
+                    var arr = response.data;
+                    console.log(arr);
+                    arr.map((seatid) => {
+                        var el = document.getElementById(seatid);
+                        if(el){
+                            el.classList.add(classes["takenSeat"]);
+                            el.classList.remove(classes["hover"]);
+                            el.id = el.id + "Taken";
+                        }
+                    });
+        
+                });
+
+            }
+            await fetchData();
+        }
+        awaiter();
 
     }, []);
 
@@ -154,6 +184,9 @@ export default function CinemaReservation(){
 		if(!email){
 			errors.email = "Email is required.";
 		}
+        if(!seatList || seatList.length === 0){
+            errors.seating = "Please choose the seatings!";
+        }
 
         return errors;
     }
@@ -169,7 +202,7 @@ export default function CinemaReservation(){
         <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
         <div className={classes.box}>
             <div className={classes.projection}>
-                <h2>Reserve your tickets:</h2>
+                <h3>Reserve your tickets:</h3>
                 <div className={classes.screen}></div>    
                 {
                     
@@ -196,9 +229,11 @@ export default function CinemaReservation(){
                         <h4>Total price:</h4>
                         <h2>{ total } rsd.</h2>
                     </div>
+                    {discount}
                     <form className={classes.form} onSubmit={handleReservation}>
                         <input type="email" name="email" placeholder="Email" value={email} onChange={handleChange}/>
 			            <p className={classes.errors}>{formErrors.email}</p>
+                        <p className={classes.errors}>{formErrors.seating}</p>
                         <button type="submit" className={classes.buyButton}>Buy</button>
                     </form>
                 </div>
@@ -207,7 +242,7 @@ export default function CinemaReservation(){
                 <div className={classes.posterOkvir}>
                 {media}
                 </div>
-                <h1 className={classes.title}>{movieData.nameLocal} ({movieData.nameOriginal})</h1>
+                <h2 className={classes.title}>{movieData.nameLocal} ({movieData.nameOriginal})</h2>
                 <div className={classes.info}>
                     <p className={classes.writingInfo}>Name (Localized): <span>{movieData.nameLocal}</span></p>
                     <p className={classes.writingInfo}>Original Name: <span>{movieData.nameOriginal}</span></p>

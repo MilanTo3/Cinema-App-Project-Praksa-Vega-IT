@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 public class Screening
 {
+
+    public Screening(){
+        Reservations = new List<Reservation>();
+    }
+
     [Key]
     public long screeningId{get;set;} 
     public long movieId {get;set;}
@@ -13,5 +18,6 @@ public class Screening
     public float price {get;set;}
     public bool deleted{get;set;}
     public Movie Movie{get;set;}
+    public ICollection<Reservation> Reservations{get;set;}
     public DateTime updateDateTime { get; set; }
 }

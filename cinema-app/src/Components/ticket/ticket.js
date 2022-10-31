@@ -1,8 +1,23 @@
+import { useEffect, useState } from 'react';
 import classes from './ticket.module.css';
+import { getImage } from '../../Services/movieService';
 
-export default function Ticket(prop){
+export default function Ticket({type, data}){
 
-    const k = prop.type;
+    const k = type;
+    const img = require('../../Assets/img1.jpg');
+    const [poster, setPoster] = useState(img);
+
+    useEffect(() => {
+
+        getImage(data.movieId).then(function (response){
+            setPoster(response["data"]);
+            const file = new Blob([response.data], {type:'image/png'});
+            const url = URL.createObjectURL(file);
+            setPoster(url);
+        });
+
+    }, []);
 
     if(k === 0){
     return (
@@ -10,15 +25,26 @@ export default function Ticket(prop){
         <div className={classes.wrapper}>
 
             <div className={classes.info}>
-                <h3>Movie title: <span>spanning</span></h3>
-                <h3>Issued to: <span>spanning</span></h3>
-                <h3>Start: <span>12:00</span></h3>
+                <div className={classes.imageContainer}>
+                    <img className={classes.poster} src={poster} />
+                </div>
+                <div className={classes.information}>
+                    <h4>Movie title: <span>{data.title}</span></h4>
+                    <h4>Issued to: <span>{data.email}</span></h4>
+                    <h4>Start: <span>{new Date(data.start).toLocaleString()}</span></h4>
+                    <h4>Seats: <span>{ data.seats.map((x) => {
+                        return (
+                            <span>[{x}] </span>
+                        )
+                    }) }</span></h4>
+                </div>
             </div>
             <div className={classes["vertical-dotted-line"]}></div>
-            <div className={classes.torn}>
+            <div className={classes.supply}>
                 <h3 style={{ color: "#ff4b2b" }}>Cinefra</h3>
-                <h2>Seat num:</h2>
-                <h2>2</h2>
+                <h3>Total price:</h3>
+                <h3>{data.totalprice} rsd.</h3>
+                <button className={classes.cancelButton}>Cancel</button>
             </div>
         </div>
 
@@ -26,19 +52,25 @@ export default function Ticket(prop){
         else{
             return (
             <div className={classes.wrapper}>
-
             <div className={classes.info}>
-                <h3>Movie title: <span>spanning</span></h3>
-                <h3>Issued to: <span>spanning</span></h3>
-                <h3>Start: <span>12:00</span></h3>
-            </div>
-            <div style={{ borderLeft: "8px solid red" }}>
-                <p className={classes.writing}>USED</p>
+                <div className={classes.imageContainer}>
+                    <img className={classes.poster} src={poster} />
+                </div>
+                <div className={classes.information}>
+                    <h4>Movie title: <span>{data.title}</span></h4>
+                    <h4>Issued to: <span>{data.email}</span></h4>
+                    <h4>Start: <span>{new Date(data.start).toLocaleString()}</span></h4>
+                    <h4>Seats: <span>{ data.seats.map((x) => {
+                        return (
+                            <span>[{x}] </span>
+                        )
+                    }) }</span></h4>
+                </div>
             </div>
             <div className={classes.torn}>
                 <h3 style={{ color: "#ff4b2b" }}>Cinefra</h3>
-                <h2>Seat num:</h2>
-                <h2>2</h2>
+                <h3>Total price:</h3>
+                <h3>{data.totalprice} rsd.</h3>
             </div>
         </div>);
         }

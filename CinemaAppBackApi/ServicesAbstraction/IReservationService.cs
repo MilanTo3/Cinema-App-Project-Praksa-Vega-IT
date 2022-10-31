@@ -14,4 +14,8 @@ public interface IReservationService
 
     Task<bool> UpdateAsync(ReservationDto dto);
 
+    Task<IEnumerable<string>> GetReservedSeats(long id);
+
+    Task<IEnumerable<ReservationReturnDto>> GetAllRelP(int indicator, string email);
+
 }

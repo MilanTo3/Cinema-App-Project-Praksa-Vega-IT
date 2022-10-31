@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersistenceLayer;
 
@@ -11,9 +12,10 @@ using PersistenceLayer;
 namespace PersistenceLayer.Migrations
 {
     [DbContext(typeof(RepositoryDbContext))]
-    partial class RepositoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221031082410_migr9")]
+    partial class migr9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,12 +96,11 @@ namespace PersistenceLayer.Migrations
                     b.Property<long>("screeningId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("totalPrice")
-                        .HasColumnType("bigint");
+                    b.Property<string>("totalPrice")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("reservationId");
-
-                    b.HasIndex("screeningId");
 
                     b.ToTable("Reservation", (string)null);
                 });
@@ -233,17 +234,6 @@ namespace PersistenceLayer.Migrations
                     b.ToTable("GenreMovie");
                 });
 
-            modelBuilder.Entity("DomainLayer.Models.Reservation", b =>
-                {
-                    b.HasOne("DomainLayer.Models.Screening", "screening")
-                        .WithMany("Reservations")
-                        .HasForeignKey("screeningId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("screening");
-                });
-
             modelBuilder.Entity("DomainLayer.Models.ReservedSeat", b =>
                 {
                     b.HasOne("DomainLayer.Models.Reservation", "reservation")
@@ -289,11 +279,6 @@ namespace PersistenceLayer.Migrations
             modelBuilder.Entity("DomainLayer.Models.Reservation", b =>
                 {
                     b.Navigation("reservedSeats");
-                });
-
-            modelBuilder.Entity("DomainLayer.Models.Screening", b =>
-                {
-                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

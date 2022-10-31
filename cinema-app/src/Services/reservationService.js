@@ -26,4 +26,13 @@ const updateReservation = (formData) => {
     return axios.put(baseUrl, formData);
 }
 
-export { addReservation, getReservation, getReservations, deleteReservation, updateReservation };
+const getReservedSeats = (id) => {
+    return axios.get(baseUrl + "getReserved/" + id);
+
+}
+
+const getMyReservations = (direction, email) => {
+    return axios.get(baseUrl + "getReservations/" + direction + "/" + email);
+};
+
+export { addReservation, getReservation, getReservations, deleteReservation, updateReservation, getReservedSeats, getMyReservations };

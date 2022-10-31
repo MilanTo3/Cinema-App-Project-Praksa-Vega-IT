@@ -9,6 +9,7 @@ public class ReservationConfiguration: IEntityTypeConfiguration<Reservation>
     {
         builder.ToTable(nameof(Reservation));
         builder.HasKey(reservation => reservation.reservationId);
+        builder.HasOne(s => s.screening).WithMany(g => g.Reservations).HasForeignKey(x => x.screeningId).IsRequired();
 
     }
 

@@ -51,7 +51,7 @@ public class ReservationController : ControllerBase
         bool added = await _serviceManager.ReservationService.CreateAsync(dto);
 
         if(added){
-            return Ok("Rservation added.");
+            return Ok("Reservation added. Check your mail!");
         }else{
             return BadRequest("Reservation not created.");
         }
@@ -67,6 +67,24 @@ public class ReservationController : ControllerBase
         }else{
             return BadRequest("Delete not operated. Reservation does not exist.");
         }
+    }
+
+    [HttpGet]
+    [Route("getReserved/{id}")]
+    public async Task<IActionResult> getReservedSeats(long id){
+
+        var seats = await _serviceManager.ReservationService.GetReservedSeats(id);
+
+        return Ok(seats);
+    }
+
+    [HttpGet]
+    [Route("getReservations/{direction}/{email}")]
+    public async Task<IActionResult> getReservedSeats(int direction, string email){
+
+        var seats = await _serviceManager.ReservationService.GetAllRelP(direction, email);
+
+        return Ok(seats);
     }
 
 }

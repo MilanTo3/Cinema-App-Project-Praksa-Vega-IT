@@ -11,31 +11,113 @@
 }
 
 .info{
-    width: 64%;
-    box-sizing: content-box;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     background-color: #222;
     text-align: left;
     color: white;
 }
 
-.info h3{
-    margin-left: 24px;
+.information{
+
+    width: 100%;
+    background-color: #222;
+    text-align: left;
+    color: white;
+}
+
+.information h4{
+    margin-left: 21px;
 }
 
 .torn{
-    width: 36%;
+    width: 50%;
     height: 100%;
+}
+
+.supply{
+    width: 50%;
+    height: 100%;
+}
+
+.supply h3{
+    margin: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .vertical-dotted-line
 {
-    border-left: 2px dotted white;
+    border-left: 4.4px dotted white;
     box-sizing: content-box;
     margin-left: -4px;
-} 
-
-.writing{
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-weight: bold;
 }
+
+.torn:before {
+    background: linear-gradient(45deg, #fff 12px, transparent 0), linear-gradient(-230deg, #fff 11px, transparent 0);
+    background-position: right;
+    background-repeat: repeat-y;
+    background-size: 24px 24px;
+    content: " ";
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 67%;
+    height: 100%;
+}
+
+.torn:after {
+    background: linear-gradient(-45deg, #fff 11.7px, transparent 0), linear-gradient(230deg, #fff 11px, transparent 0);
+    background-position: right;
+    background-position-y: 0px;
+    background-repeat: repeat-y;
+    background-size: 24px 24px;
+    content: " ";
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 67%;
+    height: 100%;
+}
+
+.poster{
+    height: 180px;
+    width: 200px;
+    border-radius: 21px;
+}
+
+.imageContainer{
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+}
+
+.cancelButton{
+    padding: 10px;
+    width: 80px;
+}
+
+@media (max-width: 1400px) {
+    .info {
+      flex-direction: column;
+      width: 100%;
+
+    }
+    .imageContainer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .information{
+        text-align: center;
+    }
+
+    .torn:after{
+        background-position-y: -7px;
+    }
+
+  }

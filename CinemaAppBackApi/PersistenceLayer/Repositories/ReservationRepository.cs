@@ -40,4 +40,25 @@ public class ReservationRepository: GenericRepository<Reservation>, IReservation
         return true;
     }
 
+    public async Task<bool> AddReservation(Reservation reservation){
+        throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<Reservation>> GetReservationsForScreening(long id){
+
+        var reservations = await dbSet.Include(x => x.reservedSeats).Where(x => x.screeningId == id && x.deleted == false).ToListAsync();
+        return reservations;
+    }
+
+    public async Task<IEnumerable<Reservation>> GetAllTimely(int indicator, string email){
+
+        var reservations = await dbSet.Include(x => x.reservedSeats).Include(x => x.screening).Where(x => x.deleted == false && x.screening.fromScreening >= DateTime.Now && x.email == email).ToListAsync();
+        
+        if(indicator == 1){
+            reservations = await dbSet.Include(x => x.reservedSeats).Include(x => x.screening).Where(x => x.deleted == false && x.screening.fromScreening < DateTime.Now && x.email == email).ToListAsync();
+        }
+
+        return reservations;
+    }
+
 }

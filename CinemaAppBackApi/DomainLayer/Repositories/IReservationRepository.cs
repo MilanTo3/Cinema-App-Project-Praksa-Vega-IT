@@ -9,4 +9,7 @@ using Contracts;
 
 public interface IReservationRepository : IGenericRepository<Reservation>
 {
+    public Task<bool> AddReservation(Reservation dto);
+    public Task<IEnumerable<Reservation>> GetReservationsForScreening(long id);
+    public Task<IEnumerable<Reservation>> GetAllTimely(int indicator, string email);
 }
