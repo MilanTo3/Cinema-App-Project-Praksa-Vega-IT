@@ -7,6 +7,7 @@ import { getImage, getMovie } from "../../Services/movieService";
 import { addReservation, getReservedSeats } from '../../Services/reservationService';
 import { confirmAlert } from 'react-confirm-alert';
 import BasicSnackbar from '../../Components/snackbar/snackbar';
+import {motion} from "framer-motion";
 
 export default function CinemaReservation(){
 
@@ -211,7 +212,7 @@ export default function CinemaReservation(){
 
     };
 
-    return (<div className={classes.page}>
+    return (<motion.div className={classes.page} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
         <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
         <div className={classes.box}>
             <div className={classes.projection}>
@@ -266,5 +267,5 @@ export default function CinemaReservation(){
                 </div>
             </div>
         </div>
-    </div>);
+    </motion.div>);
 }

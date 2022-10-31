@@ -7,10 +7,11 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
 import MovieIcon from '@mui/icons-material/Movie';
 import AnimationIcon from '@mui/icons-material/Animation';
+import {motion} from "framer-motion";
 
 export default function AdminPanel(){
 
-    return (<Box className={classes.box}>
+    return (<motion.div className={classes.box}>
       <Grid container align="center" >
         <Grid item xs={12} md={12}>
           <div>
@@ -39,5 +40,5 @@ export default function AdminPanel(){
             <div className={ `${classes["managbox"]} ${classes["uniform"]}` }><p className={classes.managwrite}>Uniform entity search</p></div>
         </Grid>
       </Grid>
-    </Box>);
+    </motion.div>);
 }

@@ -8,22 +8,27 @@ import AdminCrudPage from './Pages/admin/adminCrudPage/adminCrudPage';
 import CinemaReservation from './Pages/cinemaReservationPage/cinemaReservation';
 import TicketReservationPage from './Pages/ticketReservationPage/ticketReservation';
 import PasswordReset from './Pages/passwordResetPage/passwordReset';
+import { AnimatePresence } from 'framer-motion';
+import {motion} from "framer-motion";
 
 function App() {
+
   return (
     <div>
       <Mainnavigation/>
-        <div>
-          <Routes>
-            <Route path="/" element={<Frontpage/>}/>
-            <Route path='/loginregpage' element={<LogRegPage/>} />
-            <Route exact path='/admin' element={<AdminPanel/>} />
-            <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
-            <Route exact path='/screening/:id' element={<CinemaReservation/>} />
-            <Route exact path='/reservations' element={<TicketReservationPage/>} />
-            <Route path='/passwordreset' element={<PasswordReset />} />
-          </Routes>
-        </div>
+          <AnimatePresence>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+            <Routes>
+              <Route path="/" element={<Frontpage/>}/>
+              <Route path='/loginregpage' element={<LogRegPage/>} />
+              <Route exact path='/admin' element={<AdminPanel/>} />
+              <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
+              <Route exact path='/screening/:id' element={<CinemaReservation/>} />
+              <Route exact path='/reservations' element={<TicketReservationPage/>} />
+              <Route path='/passwordreset' element={<PasswordReset />} />
+            </Routes>
+            </motion.div>
+          </AnimatePresence>
       <Footer/>
     </div>
   );

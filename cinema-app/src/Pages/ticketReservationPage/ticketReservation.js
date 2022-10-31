@@ -5,6 +5,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import React, { useEffect } from "react";
 import { getMyReservations } from '../../Services/reservationService';
+import {motion} from "framer-motion";
 
 export default function TicketReservationPage(){
 
@@ -37,7 +38,7 @@ export default function TicketReservationPage(){
 
     return (
     
-    <div className={ classes.wrapper }>
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className={ classes.wrapper }>
         <h2 className={classes.title}>My reservation tickets:</h2>
         <ToggleButtonGroup className={classes.group}
             color="primary"
@@ -60,5 +61,5 @@ export default function TicketReservationPage(){
                 })
             }
         </Grid>
-    </div>);
+    </motion.div>);
 }

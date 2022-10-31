@@ -8,6 +8,7 @@ import BasicSnackbar from '../../Components/snackbar/snackbar';
 import { useNavigate } from "react-router-dom";
 import PasswordRequestModal from '../PasswordRequestModal/passwordRequestModal';
 import BasicModal from '../../Components/modal/modal';
+import { motion } from 'framer-motion';
 
 export default function LogRegPage(){
 
@@ -161,7 +162,7 @@ export default function LogRegPage(){
 		setsnackbarOpen(false);
   	};
 
-    return <div id="container" className={`${classes["container"]} ${classes["body"]} ${ isActive ? classes["right-panel-active"] : classes["container"] }`}>
+    return <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} id="container" className={`${classes["container"]} ${classes["body"]} ${ isActive ? classes["right-panel-active"] : classes["container"] }`}>
 
 	<div className={ `${classes["form-container"]} ${classes["sign-up-container"]}` }>
 		<form onSubmit={handleSubmit} className={classes.form}>
@@ -212,5 +213,5 @@ export default function LogRegPage(){
 
 	<BasicModal content={modal} isDialogOpened={open} handleCloseDialog={handleClose} />
 
-</div>;
+</motion.div>;
 }

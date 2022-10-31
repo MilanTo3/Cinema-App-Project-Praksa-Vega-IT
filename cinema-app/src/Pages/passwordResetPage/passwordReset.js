@@ -5,6 +5,7 @@ import { passwordReset } from '../../Services/userService';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import BasicSnackbar from '../../Components/snackbar/snackbar';
+import {motion} from 'framer-motion';
 
 export default function PasswordReset(){
 
@@ -85,17 +86,17 @@ export default function PasswordReset(){
     };
 
     return (
-        <div className={classes.container}>
-            	<BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
-            <form onSubmit={handleSubmit} className={classes.form}>
-                <h1>Reset the password:</h1>
-                <span>choose a new password:</span>
-                <input type="password" name="password" placeholder="New Password" value={formValues.password} onChange={handleChange}/>
-                <p className={classes.errors}>{formErrors.password}</p>
-                <input type="password" name="confirmedpassword" placeholder="Confirm your Password" value={formValues.confirmedpassword} onChange={handleChange}/>
-                <p className={classes.errors}>{formErrors.confirmedpassword}</p>
-                <button type="submit">Submit</button>
-		    </form>
-        </div>
+        <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className={classes.container}>
+            <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <h1>Reset the password:</h1>
+            <span>choose a new password:</span>
+            <input type="password" name="password" placeholder="New Password" value={formValues.password} onChange={handleChange}/>
+            <p className={classes.errors}>{formErrors.password}</p>
+            <input type="password" name="confirmedpassword" placeholder="Confirm your Password" value={formValues.confirmedpassword} onChange={handleChange}/>
+            <p className={classes.errors}>{formErrors.confirmedpassword}</p>
+            <button type="submit">Submit</button>
+		      </form>
+        </motion.div>
     );
 }

@@ -13,6 +13,7 @@ import { getGenres } from '../../Services/genreService';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+import {motion} from "framer-motion";
 
 export default function Frontpage(){
 
@@ -121,7 +122,7 @@ export default function Frontpage(){
   }
 
     return (
-      <Box className={classes.box} >
+      <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className={classes.box} >
         <Accordion className={classes.searchbox}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -172,6 +173,6 @@ export default function Frontpage(){
               </Grid>
             ))}
         </Grid>
-        </Box>
+        </motion.div>
     );
 }
