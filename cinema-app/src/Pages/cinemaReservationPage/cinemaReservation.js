@@ -15,9 +15,9 @@ export default function CinemaReservation(){
     const [total, setTotal] = useState(0);
     const [data, setData] = useState({});
     const [movieData, setMovieData] = useState({});
-    const [image, setImage] = useState(poster);
+    const [image, setImage] = useState({});
 
-    const [media, setMedia] = useState(<img src={image} className={classes.posterImage} />);
+    const [media, setMedia] = useState("");
     const [chosenSeats, setchosenSeats] = useState(1); //span
     const [seatList, setSeatList] = useState([]);
 
@@ -34,6 +34,9 @@ export default function CinemaReservation(){
     const [user, setUser] = useState({});
 
     const k = useParams().id;
+    const [dis, setDis] = useState(false);
+    
+    const [seatnum, setSeatLeft] = useState(0);
 
     const handleClick = (event, k, p) => {
 
@@ -122,6 +125,12 @@ export default function CinemaReservation(){
 
     useEffect(() => {
 
+        setMedia(<img src={image} className={classes.posterImage} />);
+
+    }, [image]);
+
+    useEffect(() => {
+
         var user = JSON.parse(localStorage.getItem("loggedInUser"));
         if(user){
             setEmail(user.email);
@@ -133,6 +142,7 @@ export default function CinemaReservation(){
             async function fetchData() {
                 let j = await getScreening(k);
                 setData(j["data"]);
+                setDis(new Date(j.data["fromScreening"]) >= new Date() ? false: true);
 
                 let l = await getMovie(j["data"].movieId);
                 setMovieData(l["data"]);
@@ -178,6 +188,7 @@ export default function CinemaReservation(){
                     el.id = el.id + "Taken";
                 }
             });
+            setSeatLeft((data.row * data.column) - response.data.length); 
 
         });
     }
@@ -217,7 +228,7 @@ export default function CinemaReservation(){
         <div className={classes.box}>
             <div className={classes.projection}>
                 <h3>Reserve your tickets:</h3>
-                <div className={classes.screen}></div>    
+                <div className={classes.screen}></div>
                 {
                     
                     Array.from(Array(data.row)).map((x, i) => {
@@ -230,6 +241,7 @@ export default function CinemaReservation(){
                         </div>)
                     })
                 }
+                        { dis ? <p className={classes.passedInfo}>Screening passed, tickets cannot be reserved!</p>: "" }
 
                 <div className={classes.buyoptions}>
                     <div>
@@ -248,7 +260,7 @@ export default function CinemaReservation(){
                         <input type="email" name="email" placeholder="Email" value={email} onChange={handleChange}/>
 			            <p className={classes.errors}>{formErrors.email}</p>
                         <p className={classes.errors}>{formErrors.seating}</p>
-                        <button type="submit" className={classes.buyButton}>Buy</button>
+                        <button disabled={dis} type="submit" className={classes.buyButton}>Buy</button>
                     </form>
                 </div>
             </div>
@@ -262,7 +274,7 @@ export default function CinemaReservation(){
                     <p className={classes.writingInfo}>Original Name: <span>{movieData.nameOriginal}</span></p>
                     <p className={classes.writingInfo}>Screening start: <span>{new Date(data["fromScreening"]).toLocaleString()}</span></p>
                     <p className={classes.writingInfo}>Duration: <span>{movieData.duration} min.</span></p>
-                    <p className={classes.writingInfo}>Tickets left: <span>Green mile</span></p>
+                    <p className={classes.writingInfo}>Tickets left: <span>{seatnum}</span></p>
                     <p className={classes.writingInfo}>Price per ticket: <span>{data.price} RSD.</span></p>
                 </div>
             </div>

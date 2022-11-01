@@ -9,8 +9,6 @@ body{
 	align-items: center;
 	justify-content: center;
     color: #fff;
-    margin: 0;
-
 }
 
 .box{
@@ -194,3 +192,18 @@ body{
     color: lightgreen;
     margin: 7px;
 }
+
+.passedInfo{
+    overflow-wrap: break-word;
+    margin: 0px;
+    font-weight: bold;
+    text-align: center;
+}
+
+@media (max-width: 1400px) {
+    .page{
+        margin-top: 15px;
+        margin-bottom: 80px;
+    }
+
+  }

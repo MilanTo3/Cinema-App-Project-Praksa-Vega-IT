@@ -24,6 +24,14 @@ import { getMovies, deleteMovie } from '../../Services/movieService';
 import EditMovieForm from '../../Pages/admin/editMovie/editMovie';
 import { deleteScreening, getScreenings } from '../../Services/screeningService';
 import EditScreeningForm from '../../Pages/admin/editScreening/editScreening';
+import TablePagination from '@mui/material/TablePagination';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material'
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -55,6 +63,28 @@ const deleteCallback = ["", deleteGenre, deleteMovie, deleteScreening];
 
 export default function BasicTable({dataType}) { // Koji header, i podaci.
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+    console.log(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  };
+
+  // toggle
+  const [selectedLetters, setLetters] = React.useState([]);
+  const [text, setText] = React.useState("");
+
+  const handleFormat = (event, newFormats) => {
+    setLetters(newFormats);
+    
+  };
+
   // za basicModal komponentu:
   const [isOpen, setIsOpen] = React.useState(false);
   const [data, setData] = React.useState([]);
@@ -74,6 +104,14 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   const [snackbarOpen, setsnackbarOpen] = React.useState(false);
 	const [snackbarContent, setsnackbarContent] = React.useState("");
 	const [snackbarType, setsnackbarType] = React.useState(0);
+
+  let startChar = "A";
+  let endChar = "Z";
+  const letters = [];
+        
+  for (let c = startChar.charCodeAt(0); c <= endChar.charCodeAt(0); c++) {
+   letters.push(c); 
+  }
 
   const handleSnackbarClose = () => {
 
@@ -181,44 +219,110 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
   }, [isOpen, snackbarOpen]);
 
+  const CustomToggle = styled(ToggleButton)({
+    color: '#ffffff',
+    backgroundColor: "#ff4b2b",
+    root: {
+      "&.Mui-selected": {
+        color: "#00FF00",
+        backgroundColor: '#00FF00'
+      },
+      "&:hover": {
+        color: '#00FF00',
+        backgroundColor: '#00FF00'
+      }
+    }
+  });
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+
+  useEffect(() => {
+
+    const data = {
+      type: dataType,
+      letters: selectedLetters,
+      searchTerm: text
+    }
+    console.log(data);
+
+  }, [selectedLetters, text]);
+  
   return (
-    <TableContainer component={Paper} className={classes.container}>
-      <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {headerName.map((header) => (
-                <TableCell align="left">
-                    {header}
-                </TableCell>
-            ))}
-            <TableCell align="left">
-                    Action:
-                </TableCell>
-                <TableCell align="left">
-                    <Button style={{backgroundColor: "#FF4B2B", color: "white"}} onClick={() => handleOpenModal()}>Add New</Button>
-                </TableCell>
-          </TableRow>
-          
-        </TableHead>
-        <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={row[idName]}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              { headerKey.map((key) => (
-                <TableCell align="left">{row[key]}</TableCell>
-              ))}
-
-              <TableCell align="left">{action.map((action) => ( <Button onClick={() => handleAction(action, row[idName])} style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div>
+      <ToggleButtonGroup
+      color="primary"
+      aria-label="Platform"
+      value={selectedLetters}
+      onChange={handleFormat}
+      className={classes.letters} >
+        {letters.map((x) => {
+          return (<CustomToggle color="primary" value={String.fromCharCode(x)} className={classes.letter} >{String.fromCharCode(x)}</CustomToggle>)
+        })}
+      </ToggleButtonGroup>
       
-      <BasicModal isDialogOpened={isOpen} handleCloseDialog={() => setIsOpen(false)} content={modal} />
+    <Paper sx={{ width: '100%', overflow: 'hidden' }} className={classes.container}>
+      <TableContainer component={Paper}>
+        <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {headerName.map((header) => (
+                  <TableCell align="left">
+                      {header}
+                  </TableCell>
+              ))}
+              <TableCell align="left">
+                      Action:
+                  </TableCell>
+                  <TableCell align="left">
+                      <Button style={{backgroundColor: "#FF4B2B", color: "white"}} onClick={() => handleOpenModal()}>Add New</Button>
+                      <TextField
+                      label="Search Name" size="small" style={{ float: 'right' }} onChange={handleChange}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment>
+                            <IconButton>
+                              <SearchIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                      />
+                  </TableCell>
+            </TableRow>
+            
+          </TableHead>
+          <TableBody>
+            {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+              <TableRow
+                key={row[idName]}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                { headerKey.map((key) => (
+                  <TableCell align="left">{row[key]}</TableCell>
+                ))}
 
-    </TableContainer>
+                <TableCell align="left">{action.map((action) => ( <Button onClick={() => handleAction(action, row[idName])} style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        
+        <BasicModal isDialogOpened={isOpen} handleCloseDialog={() => setIsOpen(false)} content={modal} />
+
+      </TableContainer>
+      <TablePagination
+      rowsPerPageOptions={[5, 10, 25]}
+      component="div"
+      count={data.length}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+  </Paper>
+  </div>
   );
 }

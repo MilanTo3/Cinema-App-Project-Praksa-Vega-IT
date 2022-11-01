@@ -1,6 +1,6 @@
 
 .container{
-    width: 90%;
+    width: 90% !important;
     margin: 0 auto;
 }
 
@@ -13,4 +13,23 @@
 
 .custom-ui button{
     margin: 4px;
+}
+
+.letters{
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    margin-bottom: 21px !important;
+}
+
+.letter{
+    color: white;
+    font-weight: bold !important;
+    padding-left: 6px;
+    background-color: #ff4b2b;
+    transition: 0.1s transform;
+}
+
+.letter:hover{
+    transform: scale(1.4);
 }

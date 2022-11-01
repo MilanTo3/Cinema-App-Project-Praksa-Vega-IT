@@ -8,6 +8,7 @@ import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
 import MovieIcon from '@mui/icons-material/Movie';
 import AnimationIcon from '@mui/icons-material/Animation';
 import {motion} from "framer-motion";
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 
 export default function AdminPanel(){
 
@@ -15,7 +16,7 @@ export default function AdminPanel(){
       <Grid container align="center" >
         <Grid item xs={12} md={12}>
           <div>
-            <p className={classes.managtitle}>Administrator Panel Options</p>
+            <p className={classes.managtitle}>Administrator Panel Options <SettingsSuggestIcon /></p>
           </div>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -35,9 +36,6 @@ export default function AdminPanel(){
         <Grid item xs={12} md={6}>
         <Link to={{ pathname: "/admin/screenings" }}><div className={classes.managbox}>
             <p className={classes.managwrite}>Manage Screenings <SmartDisplayIcon /></p>        </div></Link>
-        </Grid>
-        <Grid item md={12}>
-            <div className={ `${classes["managbox"]} ${classes["uniform"]}` }><p className={classes.managwrite}>Uniform entity search</p></div>
         </Grid>
       </Grid>
     </motion.div>);
