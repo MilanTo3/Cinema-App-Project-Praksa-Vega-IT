@@ -55,18 +55,21 @@ public class ScreeningRepository: GenericRepository<Screening>, IScreeningReposi
         return movies.Find(x => x.screeningId == screeningId);
     }
 
-    public async Task<IEnumerable<Screening>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+    public async Task<IEnumerable<Screening>> GetPaginated(int page, int itemCount, char[]? letters, string? searchTerm){
 
-        var movies = dbSet.Include(x => x.Movie);
+        var movies = dbSet.Include(x => x.Movie).Where(x => x.deleted == false);
 
-        if(letters != null){
-            movies.Where(x => letters.Contains(x.Movie.nameLocal.ToUpper()[0].ToString()));
-        }
         if(searchTerm != null){
-            movies.Where(x => x.Movie.nameLocal.ToLower().Contains(searchTerm.ToLower()));
+            movies = movies.Where(x => x.Movie.nameLocal.ToLower().Contains(searchTerm.ToLower()));
         }
 
-        return await movies.ToListAsync();
+        var k = await movies.ToListAsync();
+        if(letters != null && letters.Count() != 0){
+            //movies = movies.Where(x => letters.Contains(x.Movie.nameLocal[0])); Eh, why is this not working??
+            k = k.Where(x => letters.Contains(x.Movie.nameLocal.ToUpper()[0])).ToList();
+        }
+
+        return k;
     }
 
 }

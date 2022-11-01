@@ -22,7 +22,7 @@ import BasicSnackbar from '../snackbar/snackbar';
 import EditCustomerForm from '../../Pages/admin/editCustomer/editCustomer';
 import { getMovies, deleteMovie } from '../../Services/movieService';
 import EditMovieForm from '../../Pages/admin/editMovie/editMovie';
-import { deleteScreening, getScreenings } from '../../Services/screeningService';
+import { deleteScreening, getPaginated, getScreenings } from '../../Services/screeningService';
 import EditScreeningForm from '../../Pages/admin/editScreening/editScreening';
 import TablePagination from '@mui/material/TablePagination';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -65,6 +65,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [actualLength, setActualLength] = React.useState(0);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -204,8 +205,17 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
       }else if(dataType === "screenings"){
 
-        getScreenings().then(function (response){
-          setData(response["data"]);
+        const data = {
+          page: page,
+          itemCount: rowsPerPage,
+          letters: selectedLetters,
+          searchTerm: text
+    
+        }
+
+        getPaginated(data).then(function (response){
+          setData(response["data"].data);
+          setActualLength(response["data"].actualCount);
         }).catch(function (error){
           setheaderKeys(headersKeys[ind]);
           setData(rows[ind]);
@@ -241,13 +251,25 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   useEffect(() => {
 
     const data = {
-      type: dataType,
+      page: page,
+      itemCount: rowsPerPage,
       letters: selectedLetters,
       searchTerm: text
-    }
-    console.log(data);
 
-  }, [selectedLetters, text]);
+    }
+
+    const happ = { count: actualLength, rows: rowsPerPage, page: page }
+    
+    if(dataType === "screenings"){
+      getPaginated(data).then(function (response){
+        setData(response["data"].data);
+        setActualLength(response["data"].actualCount);
+        console.log(response["data"]);
+      });
+    }
+    console.log(happ);
+
+  }, [selectedLetters, text, page]);
   
   return (
     <div>
@@ -295,7 +317,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
             
           </TableHead>
           <TableBody>
-            {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+            {data.map((row) => (
               <TableRow
                 key={row[idName]}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -316,7 +338,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
       <TablePagination
       rowsPerPageOptions={[5, 10, 25]}
       component="div"
-      count={data.length}
+      count={actualLength}
       rowsPerPage={rowsPerPage}
       page={page}
       onPageChange={handleChangePage}
