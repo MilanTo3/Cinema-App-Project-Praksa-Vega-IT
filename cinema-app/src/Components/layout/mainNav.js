@@ -99,6 +99,7 @@ export default function MainNavigation() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
+        <MenuItem className={classes["dropDown"]} onClick={handleClose}><Link to="/myProfile">My Profile</Link></MenuItem>
         <MenuItem className={classes["dropDown"]} onClick={handleClose}><Link to="/reservations">My Reservations</Link></MenuItem>
         {adminOpt}
         <MenuItem className={classes["dropDown"]} onClick={logout}>Logout</MenuItem>

@@ -62,16 +62,18 @@ export default function PasswordReset(){
                 password: formValues["password"]
             }
 
-            passwordReset(data).then(function (response){
-				setsnackbarType(0);
-				setsnackbarOpen(true);
-				setsnackbarContent("Password reset successfully.");
-                navigate("/loginregpage");
-			}).catch(function (error){
-				setsnackbarType(1);
-				setsnackbarOpen(true);
-				setsnackbarContent(error["response"]["data"]);
-			});
+        passwordReset(data).then(function (response){
+          setsnackbarType(0);
+          setsnackbarOpen(true);
+          setsnackbarContent("Password reset successfully.");
+          setTimeout(() => {
+            navigate("/loginregpage");
+          }, 1000);
+        }).catch(function (error){
+          setsnackbarType(1);
+          setsnackbarOpen(true);
+          setsnackbarContent(error["response"]["data"]);
+        });
 	
 	    }
 

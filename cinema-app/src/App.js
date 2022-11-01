@@ -10,6 +10,7 @@ import TicketReservationPage from './Pages/ticketReservationPage/ticketReservati
 import PasswordReset from './Pages/passwordResetPage/passwordReset';
 import { AnimatePresence } from 'framer-motion';
 import {motion} from "framer-motion";
+import MyProfile from './Pages/myProfile/myProfile';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
               <Route exact path='/screening/:id' element={<CinemaReservation/>} />
               <Route exact path='/reservations' element={<TicketReservationPage/>} />
               <Route path='/passwordreset' element={<PasswordReset />} />
+              <Route path='/myProfile' element={<MyProfile />} />
             </Routes>
             </motion.div>
           </AnimatePresence>

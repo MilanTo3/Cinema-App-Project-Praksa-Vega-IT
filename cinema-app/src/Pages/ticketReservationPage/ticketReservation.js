@@ -50,6 +50,7 @@ export default function TicketReservationPage(){
             <ToggleButton className={classes.groupButton} value={0}>Relevant Reservations</ToggleButton>
             <ToggleButton className={classes.groupButton} value={1}>Passed Reservations</ToggleButton>
         </ToggleButtonGroup>
+
         <Grid container align="center" spacing={2} className={classes.ticketContainer}>
             {
                 data.map((ticketDatt) => {

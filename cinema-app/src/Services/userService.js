@@ -28,9 +28,14 @@ const passwordReset = (data) => {
     return axios.put(baseUrl + "passwordReset/" + data.email + "/" + data.token + "/" + data.password);
 }
 
+const adminReset = (email) => {
+
+    return axios.put(baseUrl + "adminReset/" + email);
+}
+
 const blockUser = (id) => {
 
     return axios.put(baseUrl + "block/" + id);
 }
 
-export { getUsers, registerUser, loginUser, passwordReset, requestReset, getUser, blockUser }
+export { getUsers, registerUser, loginUser, passwordReset, requestReset, getUser, blockUser, adminReset }

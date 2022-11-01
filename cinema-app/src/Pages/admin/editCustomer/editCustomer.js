@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { getUser, blockUser } from "../../../Services/userService";
+import { getUser, blockUser, adminReset } from "../../../Services/userService";
 import BasicSnackbar from "../../../Components/snackbar/snackbar";
 import classes from "./editCustomer.module.css";
 
@@ -56,7 +56,15 @@ export default function EditCustomerForm({ id }){
 
     const handleReset = () => {
 
-
+        adminReset(data["email"]).then(function (response){
+            setsnackbarType(0);
+            setsnackbarContent(response["data"]);
+            setsnackbarOpen(true);
+        }).catch(function (error){
+            setsnackbarType(1);
+            setsnackbarContent(error["data"]);
+            setsnackbarOpen(true);
+        });
     };
 
     return (
@@ -70,7 +78,7 @@ export default function EditCustomerForm({ id }){
                 <p className={classes.writingInfo}>Verified: <span>{verifyBlockData["verify"]}</span></p>
                 <p className={classes.writingInfo}>Blocked: <span>{verifyBlockData["blocked"]}</span></p>
                 {button}
-                <button onClick={handleReset}>Reset password</button>
+                <button style={{ marginTop: "12px"}} onClick={handleReset}>Reset password</button>
             </div>
     </div>);
 }
