@@ -13,4 +13,6 @@ public interface IScreeningService
 
     Task<bool> UpdateAsync(ScreeningDto dto);
 
+    Task<IEnumerable<ScreeningDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
+
 }

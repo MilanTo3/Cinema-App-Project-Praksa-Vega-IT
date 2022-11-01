@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj": {}
+    "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj": {}
   },
   "projects": {
     "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\Contracts\\Contracts.csproj": {
@@ -126,14 +126,14 @@
         }
       }
     },
-    "c:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj": {
+    "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj",
+        "projectUniqueName": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj",
         "projectName": "PersistenceLayer",
-        "projectPath": "c:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj",
+        "projectPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\PersistenceLayer.csproj",
         "packagesPath": "C:\\Users\\milan.tomin\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\obj\\",
+        "outputPath": "C:\\Users\\milan.tomin\\Documents\\Project\\delta-internship-cinema-app\\CinemaAppBackApi\\PersistenceLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\milan.tomin\\AppData\\Roaming\\NuGet\\NuGet.Config"

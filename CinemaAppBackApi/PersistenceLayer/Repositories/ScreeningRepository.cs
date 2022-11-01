@@ -55,4 +55,18 @@ public class ScreeningRepository: GenericRepository<Screening>, IScreeningReposi
         return movies.Find(x => x.screeningId == screeningId);
     }
 
+    public async Task<IEnumerable<Screening>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+
+        var movies = dbSet.Include(x => x.Movie);
+
+        if(letters != null){
+            movies.Where(x => letters.Contains(x.Movie.nameLocal.ToUpper()[0].ToString()));
+        }
+        if(searchTerm != null){
+            movies.Where(x => x.Movie.nameLocal.ToLower().Contains(searchTerm.ToLower()));
+        }
+
+        return await movies.ToListAsync();
+    }
+
 }
