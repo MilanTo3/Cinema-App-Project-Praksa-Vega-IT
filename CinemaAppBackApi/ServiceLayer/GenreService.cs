@@ -35,7 +35,7 @@ public class GenreService : IGenreService{
 
         var genre = await _repositoryManager.genreRepository.GetByName(dto.name);
         if(genre != null && genre.deleted == false){
-           return false; 
+           return false;
         }
 
         var genreReal = dto.Adapt<Genre>();
