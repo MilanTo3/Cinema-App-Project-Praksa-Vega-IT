@@ -5,7 +5,7 @@ const user = JSON.parse(localStorage.getItem("loggedInUser"));
 const authAxios = axios.create({
 
     headers: {
-        Authorization: `Bearer ${user.token}`
+        Authorization: `Bearer ${user ? user.token:''}`
     }
 });
 

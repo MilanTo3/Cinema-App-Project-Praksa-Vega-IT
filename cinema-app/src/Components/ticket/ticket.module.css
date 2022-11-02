@@ -114,7 +114,7 @@
 
 .rateButton{
     padding: 8px;
-    margin: 0px;
+    margin-left: 4px;
 }
 
 .ratingStuff{
@@ -124,26 +124,11 @@
     flex-wrap:wrap
 }
 
-#ratingbar > span:before {
-    color: #c7c5c5;
-    cursor:pointer;
-    font-size:3em;
+.on {
+  color: goldenrod;
 }
-#ratingbar:hover > span:before {
-    color: #4bce32;
-}
-
-#ratingbar > span:hover ~ span:before {
-    color: #c7c5c5;
-}
-
-.star{
-    transition: 0.3s transform;
-}
-
-.star:hover{
-    color: goldenrod;
-    transform: scale(1.3);
+.off {
+  color: black;
 }
 
 @media (max-width: 1400px) {
@@ -169,4 +154,4 @@
         background-position-y: -7px;
     }
 
-  }
+}

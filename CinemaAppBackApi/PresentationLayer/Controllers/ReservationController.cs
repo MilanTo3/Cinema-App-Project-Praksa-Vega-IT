@@ -92,4 +92,19 @@ public class ReservationController : ControllerBase
         return Ok(seats);
     }
 
+    [HttpPut]
+    [Authorize(Roles = "admin,consumer")]
+    [Route("rateReservation/")]
+    public async Task<IActionResult> rateReservation([FromForm]long id, [FromForm]long movieid, [FromForm]int rating){
+
+        bool rated = await _serviceManager.ReservationService.RateReservation(id, movieid, rating);
+
+        if(rated){
+            return Ok("Reservation rated successfully.");
+        }else{
+            return BadRequest("Error requesting a reservation rate.");
+        }
+
+    }
+
 }

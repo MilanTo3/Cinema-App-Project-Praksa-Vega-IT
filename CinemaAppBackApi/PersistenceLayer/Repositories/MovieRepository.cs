@@ -45,6 +45,12 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
         return movies.Find(x => x.movieId == id);
     }
 
+    public async Task<Movie> getByIdInclusive(long id){
+        var movies = await dbSet.Include(x => x.Screenings).Where(x => x.deleted == false).ToListAsync();
+
+        return movies.Find(x => x.movieId == id);
+    }
+
     public async Task<bool> UpdateMovie(MovieDto dto, List<Genre> newGen){
 
         var movies = await dbSet.Include(x => x.Genres).ToListAsync();
@@ -94,6 +100,26 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
         }
 
         return await movies.ToListAsync();
+    }
+
+    public override async Task<bool> Update(Movie movie){
+
+        try {
+            var exist = await dbSet.Where(x => x.movieId == movie.movieId).FirstOrDefaultAsync();
+            if (exist != null) {
+                exist.nameLocal = movie.nameLocal;
+                exist.nameOriginal = movie.nameOriginal;
+                exist.duration = movie.duration;
+                exist.trailer = movie.trailer;
+                exist.averageRating = movie.averageRating;
+                exist.deleted = movie.deleted;
+            }
+        }
+        catch (Exception ex) {
+            return false;
+        }
+
+        return true;
     }
 
 }

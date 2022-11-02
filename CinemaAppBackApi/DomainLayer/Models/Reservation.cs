@@ -15,6 +15,7 @@ public class Reservation
     public long totalPrice {get;set;}
     public ICollection<ReservedSeat> reservedSeats{get;set;}
     public Screening screening{get;set;}
+    public int rating{get;set;}
     public bool deleted { get;set; }
 
 }

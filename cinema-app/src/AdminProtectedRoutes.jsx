@@ -16,14 +16,14 @@ const UseAuth = () => {
 
 const IsAdmin = () => {
     var user = JSON.parse(localStorage.getItem("loggedInUser"));
-    var role = user.role;
+    var role = user ? user.role:'';
 
     return role === "admin" ? <Outlet/> : <Navigate to="/" />
 }
 
 const IsLoggedIn = () => {
     var user = JSON.parse(localStorage.getItem("loggedInUser"));
-    var role = user.role;
+    var role = user ? user.role:'';
 
     return role ? <Outlet/> : <Navigate to="/" />
 }

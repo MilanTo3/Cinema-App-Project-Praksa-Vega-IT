@@ -18,4 +18,6 @@ public interface IReservationService
 
     Task<IEnumerable<ReservationReturnDto>> GetAllRelP(int indicator, string email);
 
+    Task<bool> RateReservation(long id, long movieid, int rating);
+
 }

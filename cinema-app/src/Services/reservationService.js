@@ -5,7 +5,7 @@ const user = JSON.parse(localStorage.getItem("loggedInUser"));
 const authAxios = axios.create({
 
     headers: {
-        Authorization: `Bearer ${user.token}`
+        Authorization: `Bearer ${user ? user.token:''}`
     }
 });
 
@@ -42,4 +42,8 @@ const getMyReservations = (direction, email) => {
     return authAxios.get(baseUrl + "getReservations/" + direction + "/" + email);
 };
 
-export { addReservation, getReservation, getReservations, deleteReservation, updateReservation, getReservedSeats, getMyReservations };
+const rateReservation = (form) => {
+    return authAxios.put(baseUrl + "rateReservation/", form);
+}
+
+export { addReservation, getReservation, getReservations, deleteReservation, updateReservation, getReservedSeats, getMyReservations, rateReservation };

@@ -13,6 +13,8 @@ public class Movie
     public string nameOriginal { get; set; }
     public string trailer { get;set; }
     public int duration { get;set; }
+
+    public float averageRating{get;set;}
     public virtual ICollection<Genre> Genres { get;set; }
     public ICollection<Screening> Screenings{get;set;}
     public bool deleted { get;set; }

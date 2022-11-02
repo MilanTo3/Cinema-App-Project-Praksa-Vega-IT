@@ -29,7 +29,7 @@ public class ReservationRepository: GenericRepository<Reservation>, IReservation
 
         try {
             var updatereservation = await dbSet.Where(x => x.reservationId == reservation.reservationId).FirstOrDefaultAsync();
-
+            updatereservation.rating = reservation.rating;
             updatereservation.totalPrice = reservation.totalPrice;
             updatereservation.deleted = reservation.deleted;
             

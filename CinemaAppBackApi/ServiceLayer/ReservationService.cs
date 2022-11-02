@@ -132,4 +132,19 @@ public class ReservationService : IReservationService
         return seatsId;
     }
 
+    public async Task<bool> RateReservation(long id, long movieid, int rating){
+
+        var reservation = await _repositoryManager.reservationRepository.getById(id);
+        reservation.rating = rating;
+        bool updated = await _repositoryManager.reservationRepository.Update(reservation);
+        await _repositoryManager.UnitOfWork.Complete();
+
+        //Update average movie rating score;
+        var movie = await _repositoryManager.movieRepository.getByIdInclusive(movieid);
+        
+        await _repositoryManager.UnitOfWork.Complete();
+
+        return updated;
+    }
+
 }

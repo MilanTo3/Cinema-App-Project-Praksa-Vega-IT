@@ -78,11 +78,13 @@ export default function LogRegPage(){
 			}
 
 			loginUser(formData).then(function (response){
-				localStorage.setItem("loggedInUser", JSON.stringify(response["data"]));
 				setsnackbarType(0);
 				setsnackbarOpen(true);
 				setsnackbarContent("Welcome back :)");
-				navigate("/");
+				setTimeout(() => {
+					localStorage.setItem("loggedInUser", JSON.stringify(response["data"]));
+					navigate("/");
+				}, 1000);
 				
 			}).catch(function (error) {
 				setsnackbarType(1);

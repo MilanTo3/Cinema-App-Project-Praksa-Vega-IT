@@ -2,9 +2,8 @@ import classes from './frontPage.module.css'
 import MediaCard from '../../Components/movieCard/moviecard';
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { useEffect, useState } from 'react';
-import { getMoviesWithScreenings, getMoviesWithScreenings1 } from '../../Services/movieService';
+import { useEffect } from 'react';
+import { getMoviesWithScreenings1 } from '../../Services/movieService';
 import Accordion from "@mui/material/Accordion";
 import { AccordionSummary } from '@mui/material';
 import AccordionDetails from '@mui/material/AccordionDetails';
