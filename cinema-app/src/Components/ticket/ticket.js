@@ -4,6 +4,7 @@ import { getImage } from '../../Services/movieService';
 import { deleteReservation } from '../../Services/reservationService';
 import BasicSnackbar from '../snackbar/snackbar';
 import { confirmAlert } from 'react-confirm-alert';
+import LocalActivitySharpIcon from '@mui/icons-material/LocalActivitySharp';
 
 export default function Ticket({type, data, handler}){
 
@@ -115,6 +116,14 @@ export default function Ticket({type, data, handler}){
                 <h3 style={{ color: "#ff4b2b" }}>Cinefra</h3>
                 <h3>Total price:</h3>
                 <h3>{data.totalprice} rsd.</h3>
+                <div id={classes.ratingbar} className={classes.ratingStuff}>
+                  <LocalActivitySharpIcon className={classes.star} id={classes.rate1} />
+                  <LocalActivitySharpIcon className={classes.star} id={classes.rate2}/>
+                  <LocalActivitySharpIcon className={classes.star} id={classes.rate3}/>
+                  <LocalActivitySharpIcon className={classes.star} id={classes.rate4}/>
+                  <LocalActivitySharpIcon className={classes.star} id={classes.rate5}/>
+                  <button className={classes.rateButton}>Rate</button>
+                </div>
             </div>
         </div>);
         }

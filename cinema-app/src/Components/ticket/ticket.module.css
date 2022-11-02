@@ -112,6 +112,40 @@
     margin: 4px;
 }
 
+.rateButton{
+    padding: 8px;
+    margin: 0px;
+}
+
+.ratingStuff{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    flex-wrap:wrap
+}
+
+#ratingbar > span:before {
+    color: #c7c5c5;
+    cursor:pointer;
+    font-size:3em;
+}
+#ratingbar:hover > span:before {
+    color: #4bce32;
+}
+
+#ratingbar > span:hover ~ span:before {
+    color: #c7c5c5;
+}
+
+.star{
+    transition: 0.3s transform;
+}
+
+.star:hover{
+    color: goldenrod;
+    transform: scale(1.3);
+}
+
 @media (max-width: 1400px) {
     .info {
       flex-direction: column;
@@ -122,9 +156,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-left: 0px;
     }
     .information{
         text-align: center;
+    }
+    .information h4{
+        margin-left: 0px;
     }
 
     .torn:after{
