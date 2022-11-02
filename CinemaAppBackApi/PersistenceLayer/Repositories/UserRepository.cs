@@ -9,7 +9,9 @@ using System.Security.Cryptography;
 public class UserRepository: GenericRepository<User>, IUserRepository
 {
 
+    RepositoryDbContext cont;
     public UserRepository(RepositoryDbContext _context): base(_context) {
+        cont = _context;
     }
 
     public async Task<User> LoginUserAsync(string email, string password) {
@@ -62,4 +64,22 @@ public class UserRepository: GenericRepository<User>, IUserRepository
 
         return await dbSet.Where(x => x.email == email).FirstOrDefaultAsync();
     }
+
+    public async Task<IEnumerable<User>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+
+        var users = dbSet.AsQueryable();
+
+        if(searchTerm != null){
+            users = users.Where(x => x.name.ToLower().Contains(searchTerm.ToLower()));
+        }
+
+        if(letters != null && letters.Count() != 0){
+            //movies = movies.Where(x => letters.Contains(x.Movie.nameLocal[0])); Eh, why is this not working??
+            //k = k.Where(x => letters.Contains(x.Movie.nameLocal.ToUpper()[0])).ToList();
+            users = users.Where(x => letters.Contains(x.name.ToUpper().Substring(0, 1)));
+        }
+
+        return await users.ToListAsync();
+    }
+
 }

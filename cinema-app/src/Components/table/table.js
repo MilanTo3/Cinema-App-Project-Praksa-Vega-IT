@@ -12,17 +12,17 @@ import AddGenreForm from '../../Pages/admin/addGenre/addGenre';
 import AddScreeningForm from '../../Pages/admin/addScreenings/addScreening';
 import BasicModal from '../modal/modal';
 import {useEffect} from 'react';
-import { getGenres, deleteGenre } from '../../Services/genreService';
-import { getUsers } from '../../Services/userService';
+import { deleteGenre, getPaginatedGenres } from '../../Services/genreService';
+import { getPaginatedUsers } from '../../Services/userService';
 import EditGenreFrom from '../../Pages/admin/editGenre/editGenre';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import classes from './table.module.css';
 import BasicSnackbar from '../snackbar/snackbar';
 import EditCustomerForm from '../../Pages/admin/editCustomer/editCustomer';
-import { getMovies, deleteMovie } from '../../Services/movieService';
+import { deleteMovie, getPaginatedMovies } from '../../Services/movieService';
 import EditMovieForm from '../../Pages/admin/editMovie/editMovie';
-import { deleteScreening, getPaginated, getScreenings } from '../../Services/screeningService';
+import { deleteScreening, getPaginatedScreenings } from '../../Services/screeningService';
 import EditScreeningForm from '../../Pages/admin/editScreening/editScreening';
 import TablePagination from '@mui/material/TablePagination';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -32,6 +32,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material'
+import { tableCellClasses } from '@mui/material/TableCell';
 
 function createCustom(name, email, birthday) {
   return { name, email, birthday };
@@ -45,6 +46,26 @@ const rows = [
   [{ nameLocal: "Pirati sa Kariba", nameOriginal: "Pirates of the Carribean", duration: "83m" }, { nameLocal: "Deda mrazov pomocnik", nameOriginal: "Santa's helper", duration: "93m" }, {nameLocal: "Deda mrazov pomocnik 2", nameOriginal: "Santa's helper", duration: "90m" }],
   [{ name: "Screening1" }, { name: "Screening2" }, { name: "Screening3" }]
 ];
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 // Header names for customers, genres, movies, screenings.
 const headersName = [["Customer name", "Email:", "Birthday:"],
@@ -101,6 +122,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   var addmodal = addModals[ind];
   var idName = idNames[ind];
   var deletecall = deleteCallback[ind];
+  var typeTimeout = 0;
 
   const [snackbarOpen, setsnackbarOpen] = React.useState(false);
 	const [snackbarContent, setsnackbarContent] = React.useState("");
@@ -176,10 +198,20 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   useEffect(() => {
     
     if(!isOpen){
+
+      const data = {
+        page: page,
+        itemCount: rowsPerPage,
+        letters: selectedLetters,
+        searchTerm: text
+  
+      }
+
       if(dataType === "genres"){
         
-        getGenres().then(function (response){
-          setData(response["data"]);
+        getPaginatedGenres(data).then(function (response){
+          setData(response["data"].data);
+          setActualLength(response["data"].actualCount);
         }).catch(function (error){
           setheaderKeys(headersKeys[ind]);
           setData(rows[ind]);
@@ -187,8 +219,9 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
       }else if(dataType === "customers"){
 
-        getUsers().then(function (response){
-          setData(response["data"]);
+        getPaginatedUsers(data).then(function (response){
+          setData(response["data"].data);
+          setActualLength(response["data"].actualCount);
         }).catch(function (error){
           setheaderKeys(headersKeys[ind]);
           setData(rows[ind]);
@@ -196,8 +229,9 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
       }else if(dataType === "movies"){
 
-        getMovies().then(function (response){
-          setData(response["data"]);
+        getPaginatedMovies(data).then(function (response){
+          setData(response["data"].data);
+          setActualLength(response["data"].actualCount);
         }).catch(function (error){
           setheaderKeys(headersKeys[ind]);
           setData(rows[ind]);
@@ -205,15 +239,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
 
       }else if(dataType === "screenings"){
 
-        const data = {
-          page: page,
-          itemCount: rowsPerPage,
-          letters: selectedLetters,
-          searchTerm: text
-    
-        }
-
-        getPaginated(data).then(function (response){
+        getPaginatedScreenings(data).then(function (response){
           setData(response["data"].data);
           setActualLength(response["data"].actualCount);
         }).catch(function (error){
@@ -227,7 +253,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
       }
     }
 
-  }, [isOpen, snackbarOpen]);
+  }, [selectedLetters, text, page, rowsPerPage, isOpen, snackbarOpen]);
 
   const CustomToggle = styled(ToggleButton)({
     color: '#ffffff',
@@ -245,31 +271,12 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
   });
 
   const handleChange = (e) => {
-    setText(e.target.value);
+
+    if(typeTimeout) clearTimeout(typeTimeout);
+    typeTimeout = setTimeout(() => {
+      setText(e.target.value);
+    }, 1500);
   };
-
-  useEffect(() => {
-
-    const data = {
-      page: page,
-      itemCount: rowsPerPage,
-      letters: selectedLetters,
-      searchTerm: text
-
-    }
-
-    const happ = { count: actualLength, rows: rowsPerPage, page: page }
-    
-    if(dataType === "screenings"){
-      getPaginated(data).then(function (response){
-        setData(response["data"].data);
-        setActualLength(response["data"].actualCount);
-        console.log(response["data"]);
-      });
-    }
-    console.log(happ);
-
-  }, [selectedLetters, text, page]);
   
   return (
     <div>
@@ -289,20 +296,20 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
         <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <StyledTableRow>
               {headerName.map((header) => (
-                  <TableCell align="left">
+                  <StyledTableCell align="left">
                       {header}
-                  </TableCell>
+                  </StyledTableCell>
               ))}
-              <TableCell align="left">
+              <StyledTableCell align="left">
                       Action:
-                  </TableCell>
-                  <TableCell align="left">
+                  </StyledTableCell>
+                  <StyledTableCell align="left">
                       <Button style={{backgroundColor: "#FF4B2B", color: "white"}} onClick={() => handleOpenModal()}>Add New</Button>
-                      <TextField
+                      <TextField 
                       label="Search Name" size="small" style={{ float: 'right' }} onChange={handleChange}
-                      InputProps={{
+                      InputProps={{ style: {backgroundColor: "white"},
                         endAdornment: (
                           <InputAdornment>
                             <IconButton>
@@ -312,22 +319,22 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
                         )
                       }}
                       />
-                  </TableCell>
-            </TableRow>
+                  </StyledTableCell>
+            </StyledTableRow>
             
           </TableHead>
           <TableBody>
             {data.map((row) => (
-              <TableRow
+              <StyledTableRow
                 key={row[idName]}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 { headerKey.map((key) => (
-                  <TableCell align="left">{row[key]}</TableCell>
+                  <StyledTableCell align="left">{row[key]}</StyledTableCell>
                 ))}
 
-                <TableCell align="left">{action.map((action) => ( <Button onClick={() => handleAction(action, row[idName])} style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</TableCell>
-              </TableRow>
+                <StyledTableCell align="left">{action.map((action) => ( <Button onClick={() => handleAction(action, row[idName])} style={{backgroundColor: "#FF4B2B", color: "white", marginLeft: "4px"}}>{action}</Button> ))}</StyledTableCell>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>

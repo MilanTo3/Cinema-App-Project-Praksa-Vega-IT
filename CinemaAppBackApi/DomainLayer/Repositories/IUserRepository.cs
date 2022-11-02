@@ -12,6 +12,8 @@ namespace DomainLayer.Repositories
 
         Task<User> LoginUserAsync(string email, string password);
         Task<User> GetByEmail(string email);
+        Task<IEnumerable<User>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
+
 
     }
 }

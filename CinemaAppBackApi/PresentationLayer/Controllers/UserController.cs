@@ -170,4 +170,13 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpGet]
+    [Route("getPaginated/")]
+    public async Task<IActionResult> getPaginated([FromQuery]int page = 0, [FromQuery]int itemCount = 5, [FromQuery(Name = "letters[]")] string[]? letters = null, [FromQuery] string? searchTerm = null){
+
+        var results = await _serviceManager.UserService.GetPaginated(page, itemCount, letters, searchTerm);
+
+        return Ok(results);
+    }
+
 }

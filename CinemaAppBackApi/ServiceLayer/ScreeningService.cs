@@ -63,7 +63,7 @@ public class ScreeningService : IScreeningService
         return updated;
     }
 
-    public async Task<ScreeningsListDtoPaginated> GetPaginated(int page, int itemCount, char[]? letters, string? searchTerm){
+    public async Task<DtoPaginated<ScreeningDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var screeningDto = await _repositoryManager.screeningRepository.GetPaginated(page, itemCount, letters, searchTerm);
         var screeningsDto = screeningDto.Adapt<IEnumerable<ScreeningDto>>().ToList();
@@ -76,7 +76,7 @@ public class ScreeningService : IScreeningService
             paginatedDtos[i].name = screen.Movie.nameLocal;
         }
 
-        ScreeningsListDtoPaginated sdto = new ScreeningsListDtoPaginated(){Data = paginatedDtos, ActualCount = screeningsDto.Count};
+        var sdto = new DtoPaginated<ScreeningDto>(){Data = paginatedDtos, ActualCount = screeningsDto.Count};
 
         return sdto;
     }

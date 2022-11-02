@@ -17,4 +17,6 @@ public interface IMovieService
 
     Task<bool> UpdateAsync(MovieDto dto);
 
+    Task<DtoPaginated<MovieDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
+
 }

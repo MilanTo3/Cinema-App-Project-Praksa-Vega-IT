@@ -12,6 +12,7 @@ namespace DomainLayer.Repositories
 
         Task<Genre> GetByName(string name);
         Task<bool> UpdateName(Genre genre, string newname);
+        Task<IEnumerable<Genre>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
 
     }
 }

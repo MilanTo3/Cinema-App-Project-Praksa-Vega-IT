@@ -222,4 +222,17 @@ public class UserService : IUserService
 
         return changed;
     }
+
+    public async Task<DtoPaginated<UserDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+
+        var userDto = await _repositoryManager.userRepository.GetPaginated(page, itemCount, letters, searchTerm);
+        var usersDto = userDto.Adapt<IEnumerable<UserDto>>().ToList();
+
+        var pageCount = Math.Ceiling((double)(usersDto.Count / itemCount));
+        var paginatedDtos = usersDto.Skip((page * (int)itemCount)).Take((int)itemCount).ToList();
+
+        var sdto = new DtoPaginated<UserDto>(){Data = paginatedDtos, ActualCount = usersDto.Count};
+
+        return sdto;
+    }
 }

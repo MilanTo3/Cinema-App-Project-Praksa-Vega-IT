@@ -50,4 +50,19 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
         return await dbSet.Where(x => x.name == name).FirstOrDefaultAsync();
     }
 
+    public async Task<IEnumerable<Genre>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+
+        var genres = dbSet.Where(x => x.deleted == false);
+
+        if(searchTerm != null){
+            genres = genres.Where(x => x.name.ToLower().Contains(searchTerm.ToLower()));
+        }
+
+        if(letters != null && letters.Count() != 0){
+            genres = genres.Where(x => letters.Contains(x.name.ToUpper().Substring(0, 1)));
+        }
+
+        return await genres.ToListAsync();
+    }
+
 }

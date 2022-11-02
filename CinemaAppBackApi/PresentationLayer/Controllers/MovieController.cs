@@ -139,5 +139,14 @@ namespace PresentationLayer.Controllers
             return Ok(movies);
         }
 
+        [HttpGet]
+        [Route("getPaginated/")]
+        public async Task<IActionResult> getPaginated([FromQuery]int page = 0, [FromQuery]int itemCount = 5, [FromQuery(Name = "letters[]")] string[]? letters = null, [FromQuery] string? searchTerm = null){
+
+            var results = await _serviceManager.MovieService.GetPaginated(page, itemCount, letters, searchTerm);
+
+            return Ok(results);
+        }
+
     }
 }

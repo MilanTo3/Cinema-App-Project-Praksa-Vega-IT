@@ -1,8 +1,8 @@
 namespace Contracts;
 
-public class ScreeningsListDtoPaginated
+public class DtoPaginated<T>
 {
-    public List<ScreeningDto> Data {get;set;}
+    public List<T> Data {get;set;}
     public int ActualCount{get;set;}
 }
 

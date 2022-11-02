@@ -49,4 +49,9 @@ const getMoviesWithScreenings = () => {
     return axios.get(baseUrl + "getWithScreens/");
 }
 
-export { addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie, getMoviesWithScreenings, getMoviesWithScreenings1 };
+const getPaginatedMovies = (data) => {
+
+    return axios.get(baseUrl + "getPaginated/", { params: data });
+}
+
+export { addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie, getMoviesWithScreenings, getMoviesWithScreenings1, getPaginatedMovies };

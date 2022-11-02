@@ -81,4 +81,19 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
         return await movies.ToListAsync();
     }
 
+    public async Task<IEnumerable<Movie>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+
+        var movies = dbSet.Where(x => x.deleted == false);
+
+        if(searchTerm != null){
+            movies = movies.Where(x => x.nameLocal.ToLower().Contains(searchTerm.ToLower()));
+        }
+
+        if(letters != null && letters.Count() != 0){
+            movies = movies.Where(x => letters.Contains(x.nameLocal.ToUpper().Substring(0, 1)));
+        }
+
+        return await movies.ToListAsync();
+    }
+
 }

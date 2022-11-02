@@ -38,4 +38,9 @@ const blockUser = (id) => {
     return axios.put(baseUrl + "block/" + id);
 }
 
-export { getUsers, registerUser, loginUser, passwordReset, requestReset, getUser, blockUser, adminReset }
+const getPaginatedUsers = (data) => {
+
+    return axios.get(baseUrl + "getPaginated/", { params: data });
+}
+
+export { getUsers, registerUser, loginUser, passwordReset, requestReset, getUser, blockUser, adminReset, getPaginatedUsers }

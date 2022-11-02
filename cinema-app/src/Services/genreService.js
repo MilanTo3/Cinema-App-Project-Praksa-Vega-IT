@@ -23,4 +23,9 @@ const updateGenre = (formData) => {
     return axios.put(baseUrl + formData.id + "/" + formData.name);
 }
 
-export { getGenres, addGenre, getGenre, deleteGenre, updateGenre }
+const getPaginatedGenres = (data) => {
+
+    return axios.get(baseUrl + "getPaginated/", { params: data });
+}
+
+export { getGenres, addGenre, getGenre, deleteGenre, updateGenre, getPaginatedGenres }

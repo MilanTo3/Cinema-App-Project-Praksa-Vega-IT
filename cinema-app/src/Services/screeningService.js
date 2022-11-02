@@ -26,9 +26,9 @@ const updateScreening = (formData) => {
     return axios.put(baseUrl, formData);
 }
 
-const getPaginated = (data) => {
+const getPaginatedScreenings = (data) => {
 
     return axios.get(baseUrl + "getPaginated/", { params: data });
 }
 
-export { addScreening, getScreening, getScreenings, deleteScreening, updateScreening, getPaginated };
+export { addScreening, getScreening, getScreenings, deleteScreening, updateScreening, getPaginatedScreenings };

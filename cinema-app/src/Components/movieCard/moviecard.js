@@ -38,7 +38,7 @@ export default function MediaCard({cardData}) {
         <div className={classes.datetimes}>
           { cardData.movieScreenings.map((screening) => (
             <div className={classes.huset}><Link to={"/screening/" + screening.screeningId}>
-              <ConfirmationNumberIcon style={{ color: "green" }}/>
+              <ConfirmationNumberIcon style={{ color: new Date(screening.fromScreening) > new Date() ? "green":"red" }}/>
               <p>{new Date(screening.fromScreening).toLocaleDateString()}</p>
               <p>{new Date(screening.fromScreening).toLocaleTimeString()}</p></Link>
             </div>

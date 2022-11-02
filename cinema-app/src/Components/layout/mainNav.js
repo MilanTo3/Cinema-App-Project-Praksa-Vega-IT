@@ -40,7 +40,8 @@ export default function MainNavigation() {
     isLogged = true;
     var role = loggedUser.role;
     if(role === "admin"){
-      adminOpt = <Link to="/admin"><MenuItem className={classes["dropDown"]} onClick={handleClick}>Admin Panel</MenuItem></Link>
+      adminOpt = <MenuItem className={classes["dropDown"]} onClick={handleClose}><Link to="/admin">Admin Panel</Link></MenuItem>
+
     }
 
   }
@@ -99,9 +100,9 @@ export default function MainNavigation() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
+        {adminOpt}
         <MenuItem className={classes["dropDown"]} onClick={handleClose}><Link to="/myProfile">My Profile</Link></MenuItem>
         <MenuItem className={classes["dropDown"]} onClick={handleClose}><Link to="/reservations">My Reservations</Link></MenuItem>
-        {adminOpt}
         <MenuItem className={classes["dropDown"]} onClick={logout}>Logout</MenuItem>
       </Menu>
     </div>

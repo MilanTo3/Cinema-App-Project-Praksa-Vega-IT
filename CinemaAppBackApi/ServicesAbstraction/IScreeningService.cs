@@ -13,6 +13,6 @@ public interface IScreeningService
 
     Task<bool> UpdateAsync(ScreeningDto dto);
 
-    Task<ScreeningsListDtoPaginated> GetPaginated(int page, int itemCount, char[]? letters, string? searchTerm);
+    Task<DtoPaginated<ScreeningDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
 
 }

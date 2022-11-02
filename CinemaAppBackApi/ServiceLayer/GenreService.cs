@@ -77,4 +77,17 @@ public class GenreService : IGenreService{
         return genreDto;
     }
 
+    public async Task<DtoPaginated<GenreDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+
+        var genreDto = await _repositoryManager.genreRepository.GetPaginated(page, itemCount, letters, searchTerm);
+        var genresDto = genreDto.Adapt<IEnumerable<GenreDto>>().ToList();
+
+        var pageCount = Math.Ceiling((double)(genresDto.Count / itemCount));
+        var paginatedDtos = genresDto.Skip((page * (int)itemCount)).Take((int)itemCount).ToList();
+
+        var sdto = new DtoPaginated<GenreDto>(){Data = paginatedDtos, ActualCount = genresDto.Count};
+
+        return sdto;
+    }
+
 }

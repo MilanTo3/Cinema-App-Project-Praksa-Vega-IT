@@ -134,4 +134,17 @@ public class MovieService : IMovieService
         return dtos;
     }
 
+    public async Task<DtoPaginated<MovieDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+
+        var movieDto = await _repositoryManager.movieRepository.GetPaginated(page, itemCount, letters, searchTerm);
+        var moviesDto = movieDto.Adapt<IEnumerable<MovieDto>>().ToList();
+
+        var pageCount = Math.Ceiling((double)(moviesDto.Count / itemCount));
+        var paginatedDtos = moviesDto.Skip((page * (int)itemCount)).Take((int)itemCount).ToList();
+
+        var sdto = new DtoPaginated<MovieDto>(){Data = paginatedDtos, ActualCount = moviesDto.Count};
+
+        return sdto;
+    }
+
 }

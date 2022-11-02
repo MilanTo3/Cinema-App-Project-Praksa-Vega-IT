@@ -22,5 +22,6 @@ public interface IUserService
     Task<bool> RequestPassReset(string email, string text);
 
     Task<bool> ResetPassword(string email, string token, string newpassword);
+    Task<DtoPaginated<UserDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
 
 }

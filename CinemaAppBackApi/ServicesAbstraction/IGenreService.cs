@@ -17,4 +17,6 @@ public interface IGenreService
 
     Task<bool> UpdateAsync(long id, string newname);
 
+    Task<DtoPaginated<GenreDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
+
 }

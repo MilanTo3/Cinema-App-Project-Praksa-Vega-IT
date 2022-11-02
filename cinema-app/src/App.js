@@ -11,6 +11,7 @@ import PasswordReset from './Pages/passwordResetPage/passwordReset';
 import { AnimatePresence } from 'framer-motion';
 import {motion} from "framer-motion";
 import MyProfile from './Pages/myProfile/myProfile';
+import { IsAdmin, IsLoggedIn } from './AdminProtectedRoutes';
 
 function App() {
 
@@ -22,12 +23,18 @@ function App() {
             <Routes>
               <Route path="/" element={<Frontpage/>}/>
               <Route path='/loginregpage' element={<LogRegPage/>} />
-              <Route exact path='/admin' element={<AdminPanel/>} />
-              <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
               <Route exact path='/screening/:id' element={<CinemaReservation/>} />
-              <Route exact path='/reservations' element={<TicketReservationPage/>} />
-              <Route path='/passwordreset' element={<PasswordReset />} />
-              <Route path='/myProfile' element={<MyProfile />} />
+
+              <Route element={IsAdmin()}>
+                <Route exact path='/admin' element={<AdminPanel/>} />
+                <Route exact path='/admin/:type' element={<AdminCrudPage/>} />
+              </Route>
+
+              <Route element={IsLoggedIn()}>
+                <Route exact path='/reservations' element={<TicketReservationPage/>} />
+                <Route path='/passwordreset' element={<PasswordReset />} />
+                <Route path='/myProfile' element={<MyProfile />} />
+              </Route>
             </Routes>
             </motion.div>
           </AnimatePresence>
