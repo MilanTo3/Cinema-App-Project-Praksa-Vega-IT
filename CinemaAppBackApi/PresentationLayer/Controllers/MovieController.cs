@@ -15,6 +15,7 @@ using System.Security.Cryptography.Xml;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PresentationLayer.Controllers
 {
@@ -29,6 +30,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost, DisableRequestSizeLimit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddMovie([FromForm] string nameLocal, [FromForm] string nameOriginal, [FromForm] string trailer, [FromForm] int duration, [FromForm] List<string> genres, [FromForm] IFormFile imageFile) {
 
             MovieDto dto = new MovieDto();
@@ -89,6 +91,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "admin")]
         [Route("{id}")]
         public async Task<IActionResult> DeleteMovie(long id){
 
@@ -101,6 +104,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateMovie([FromForm] long movieId, [FromForm] string nameLocal, [FromForm] string nameOriginal, [FromForm] string trailer, [FromForm] int duration, [FromForm] List<string> genres, [FromForm] IFormFile? imageFile){
 
             MovieDto dto = new MovieDto();
@@ -140,6 +144,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         [Route("getPaginated/")]
         public async Task<IActionResult> getPaginated([FromQuery]int page = 0, [FromQuery]int itemCount = 5, [FromQuery(Name = "letters[]")] string[]? letters = null, [FromQuery] string? searchTerm = null){
 

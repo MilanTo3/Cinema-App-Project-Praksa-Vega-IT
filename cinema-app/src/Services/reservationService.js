@@ -1,6 +1,13 @@
 import axios from "axios";
 
 const baseUrl = "http://localhost:5174/api/reservations/";
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+const authAxios = axios.create({
+
+    headers: {
+        Authorization: `Bearer ${user.token}`
+    }
+});
 
 const addReservation = (formData) => {
  
@@ -19,7 +26,7 @@ const getReservation = (id) => {
 
 const deleteReservation = (id) => {
 
-    return axios.delete(baseUrl + id);
+    return authAxios.delete(baseUrl + id);
 }
 
 const updateReservation = (formData) => {
@@ -32,7 +39,7 @@ const getReservedSeats = (id) => {
 }
 
 const getMyReservations = (direction, email) => {
-    return axios.get(baseUrl + "getReservations/" + direction + "/" + email);
+    return authAxios.get(baseUrl + "getReservations/" + direction + "/" + email);
 };
 
 export { addReservation, getReservation, getReservations, deleteReservation, updateReservation, getReservedSeats, getMyReservations };

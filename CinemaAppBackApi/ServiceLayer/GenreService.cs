@@ -34,7 +34,7 @@ public class GenreService : IGenreService{
     public async Task<bool> CreateAsync(GenreDto dto){
 
         var genre = await _repositoryManager.genreRepository.GetByName(dto.name);
-        if(genre != null){
+        if(genre != null && genre.deleted == false){
            return false; 
         }
 

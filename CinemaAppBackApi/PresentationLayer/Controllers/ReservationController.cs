@@ -15,6 +15,7 @@ using System.Security.Cryptography.Xml;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PresentationLayer.Controllers;
 
@@ -29,6 +30,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin,consumer")]
     public async Task<IActionResult> GetReservations()
     {
         var reservations = await _serviceManager.ReservationService.GetAllAsync();
@@ -37,6 +39,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin,consumer")]
     [Route("{id}")]
     public async Task<IActionResult> GetReservation(long id) {
 
@@ -58,6 +61,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize(Roles = "admin,consumer")]
     [Route("{id}")]
     public async Task<IActionResult> DeleteReservation(long id){
 
@@ -79,6 +83,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin,consumer")]
     [Route("getReservations/{direction}/{email}")]
     public async Task<IActionResult> getReservedSeats(int direction, string email){
 

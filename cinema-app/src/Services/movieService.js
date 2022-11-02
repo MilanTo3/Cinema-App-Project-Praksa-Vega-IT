@@ -1,10 +1,17 @@
 import axios from 'axios';
 
 const baseUrl = "http://localhost:5174/api/movies/";
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+const authAxios = axios.create({
+
+    headers: {
+        Authorization: `Bearer ${user.token}`
+    }
+});
 
 const addmovie = (formData) => {
  
-    return axios.post(baseUrl, formData);
+    return authAxios.post(baseUrl, formData);
 }
 
 const getMovies = () => {
@@ -19,7 +26,7 @@ const getMovie = (id) => {
 
 const deleteMovie = (id) => {
 
-    return axios.delete(baseUrl + id);
+    return authAxios.delete(baseUrl + id);
 }
 
 const getImage = (id) => {
@@ -31,7 +38,7 @@ const getImage = (id) => {
 }
 
 const updateMovie = (formData) => {
-    return axios.put(baseUrl, formData);
+    return authAxios.put(baseUrl, formData);
 }
 
 const getMoviesWithScreenings1 = (data) => {
@@ -51,7 +58,7 @@ const getMoviesWithScreenings = () => {
 
 const getPaginatedMovies = (data) => {
 
-    return axios.get(baseUrl + "getPaginated/", { params: data });
+    return authAxios.get(baseUrl + "getPaginated/", { params: data });
 }
 
 export { addmovie, getMovies, deleteMovie, getMovie, getImage, updateMovie, getMoviesWithScreenings, getMoviesWithScreenings1, getPaginatedMovies };

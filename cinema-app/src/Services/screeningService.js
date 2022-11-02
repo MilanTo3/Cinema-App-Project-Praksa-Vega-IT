@@ -1,10 +1,17 @@
 import axios from "axios";
 
 const baseUrl = "http://localhost:5174/api/screenings/";
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+const authAxios = axios.create({
+
+    headers: {
+        Authorization: `Bearer ${user.token}`
+    }
+});
 
 const addScreening = (formData) => {
  
-    return axios.post(baseUrl, formData);
+    return authAxios.post(baseUrl, formData);
 }
 
 const getScreenings = () => {
@@ -19,16 +26,16 @@ const getScreening = (id) => {
 
 const deleteScreening = (id) => {
 
-    return axios.delete(baseUrl + id);
+    return authAxios.delete(baseUrl + id);
 }
 
 const updateScreening = (formData) => {
-    return axios.put(baseUrl, formData);
+    return authAxios.put(baseUrl, formData);
 }
 
 const getPaginatedScreenings = (data) => {
 
-    return axios.get(baseUrl + "getPaginated/", { params: data });
+    return authAxios.get(baseUrl + "getPaginated/", { params: data });
 }
 
 export { addScreening, getScreening, getScreenings, deleteScreening, updateScreening, getPaginatedScreenings };

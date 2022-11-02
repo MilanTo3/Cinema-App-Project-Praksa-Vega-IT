@@ -1,13 +1,20 @@
 import axios from 'axios';
 
 const baseUrl = "http://localhost:5174/api/users/";
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+const authAxios = axios.create({
+
+    headers: {
+        Authorization: `Bearer ${user.token}`
+    }
+});
 
 const getUsers = () => {
-    return axios.get(baseUrl + "getusers");
+    return authAxios.get(baseUrl + "getusers");
 }
 
 const getUser = (id) => {
-    return axios.get(baseUrl + "getuser/" + id);
+    return authAxios.get(baseUrl + "getuser/" + id);
 }
 
 const registerUser = (formData) => {
@@ -30,17 +37,17 @@ const passwordReset = (data) => {
 
 const adminReset = (email) => {
 
-    return axios.put(baseUrl + "adminReset/" + email);
+    return authAxios.put(baseUrl + "adminReset/" + email);
 }
 
 const blockUser = (id) => {
 
-    return axios.put(baseUrl + "block/" + id);
+    return authAxios.put(baseUrl + "block/" + id);
 }
 
 const getPaginatedUsers = (data) => {
 
-    return axios.get(baseUrl + "getPaginated/", { params: data });
+    return authAxios.get(baseUrl + "getPaginated/", { params: data });
 }
 
 export { getUsers, registerUser, loginUser, passwordReset, requestReset, getUser, blockUser, adminReset, getPaginatedUsers }

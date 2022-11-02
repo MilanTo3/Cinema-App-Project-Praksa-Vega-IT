@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography.Xml;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/genres")]
@@ -43,6 +44,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> AddGenre(GenreDto dto){
 
         bool added = await _serviceManager.GenreService.CreateAsync(dto);
@@ -55,6 +57,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize(Roles = "admin")]
     [Route("{id}")]
     public async Task<IActionResult> DeleteGenre(long id){
 
@@ -67,6 +70,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "admin")]
     [Route("{id}/{name}")]
     public async Task<IActionResult> UpdateGenre(long id, string name){
 
@@ -80,6 +84,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     [Route("getPaginated/")]
     public async Task<IActionResult> getPaginated([FromQuery]int page = 0, [FromQuery]int itemCount = 5, [FromQuery(Name = "letters[]")] string[]? letters = null, [FromQuery] string? searchTerm = null){
 

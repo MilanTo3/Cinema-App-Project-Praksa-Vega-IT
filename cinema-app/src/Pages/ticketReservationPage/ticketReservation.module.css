@@ -15,15 +15,15 @@
 }
 
 .group{
-    display: flex;
-    justify-content: center;
-    margin: 21px;
+    display: flex !important;
+    justify-content: center !important;
+    margin: 21px !important;
 }
 
 .groupButton{
-    background-color: #ff4b2b;
-    font-weight: bold;
-    color: white;
+    background-color: #ff4b2b !important;
+    font-weight: bold !important;
+    color: white !important;
 }
 
 .groupButton:hover{

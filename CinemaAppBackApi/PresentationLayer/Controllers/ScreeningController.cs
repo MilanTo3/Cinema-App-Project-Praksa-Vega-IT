@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using ServicesAbstraction;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/screenings")]
@@ -25,6 +26,7 @@ public class ScreeningController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [Route("{id}")]
     public async Task<IActionResult> GetScreening(long id) {
 
@@ -34,6 +36,7 @@ public class ScreeningController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> AddGenre(ScreeningDto dto){
 
         bool added = await _serviceManager.ScreeningService.CreateAsync(dto);
@@ -46,6 +49,7 @@ public class ScreeningController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize(Roles = "admin")]
     [Route("{id}")]
     public async Task<IActionResult> DeleteScreening(long id){
 
@@ -58,7 +62,8 @@ public class ScreeningController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateGenre(ScreeningDto dto){
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> UpdateScreening(ScreeningDto dto){
 
         bool updated = await _serviceManager.ScreeningService.UpdateAsync(dto);
         if(updated){
@@ -70,6 +75,7 @@ public class ScreeningController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     [Route("getPaginated/")]
     public async Task<IActionResult> getPaginated([FromQuery]int page = 0, [FromQuery]int itemCount = 5, [FromQuery(Name = "letters[]")] string[]? letters = null, [FromQuery] string? searchTerm = null){
 

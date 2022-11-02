@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography.Xml;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/users")]
@@ -26,6 +27,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     [Route("getUsers")]
     public async Task<IActionResult> GetAccounts()
     {
@@ -35,6 +37,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [Route("registerUser")]
     public async Task<IActionResult> AddUser(UserDto user){
 
@@ -49,6 +52,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [Route("loginUser")]
     public async Task<IActionResult> LoginUser(LoginUserDto loginUser) {
 
@@ -60,7 +64,7 @@ public class UserController : ControllerBase
             var tokenDescriptor = new SecurityTokenDescriptor {
                 Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("userId", loginUser.email),
+                        new Claim("userId", loginUser.email), new Claim(ClaimTypes.Role, user.role)
                     }),
                 Expires = DateTime.UtcNow.AddHours(5), // token expires in 5 hours.
                                                        //Key min: 16 characters
@@ -79,6 +83,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin,consumer")]
     [Route("getuser/{id?}")]
     public async Task<IActionResult> GetUserByID(long id) {
 
@@ -88,6 +93,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize(Roles = "admin")]
     [Route("delete/{id?}")]
     public async Task<IActionResult> DeleteUser(long id) {
 
@@ -102,6 +108,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [Route("verify/{email}/{token}")]
     public async Task<IActionResult> VerifyUser(string email, string token) {
         
@@ -116,6 +123,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
+    [AllowAnonymous]
     [Route("passwordReset/{email}/{token}/{password}")]
     public async Task<IActionResult> ResetPassword(string email, string token, string password) {
         
@@ -130,6 +138,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
+    [AllowAnonymous]
     [Route("requestReset/{email}")]
     public async Task<IActionResult> RequestPass(string email){
 
@@ -144,6 +153,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "admin")]
     [Route("adminReset/{email}")]
     public async Task<IActionResult> AdminResetPassword(string email){
 
@@ -158,6 +168,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "admin")]
     [Route("block/{id}")]
     public async Task<IActionResult> BlockUser(long id) {
 
@@ -171,6 +182,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     [Route("getPaginated/")]
     public async Task<IActionResult> getPaginated([FromQuery]int page = 0, [FromQuery]int itemCount = 5, [FromQuery(Name = "letters[]")] string[]? letters = null, [FromQuery] string? searchTerm = null){
 
