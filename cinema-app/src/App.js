@@ -24,6 +24,7 @@ function App() {
               <Route path="/" element={<Frontpage/>}/>
               <Route path='/loginregpage' element={<LogRegPage/>} />
               <Route exact path='/screening/:id' element={<CinemaReservation/>} />
+              <Route path='/passwordreset' element={<PasswordReset />} />
 
               <Route element={IsAdmin()}>
                 <Route exact path='/admin' element={<AdminPanel/>} />
@@ -32,7 +33,6 @@ function App() {
 
               <Route element={IsLoggedIn()}>
                 <Route exact path='/reservations' element={<TicketReservationPage/>} />
-                <Route path='/passwordreset' element={<PasswordReset />} />
                 <Route path='/myProfile' element={<MyProfile />} />
               </Route>
             </Routes>

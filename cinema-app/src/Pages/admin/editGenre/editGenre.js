@@ -45,7 +45,7 @@ export default function EditGenreFrom({ id }){
 
         if(Object.keys(formErrors).length === 0 && isSubmit){
             const data = {
-                id: formValues.genreId,
+                genreId: formValues.genreId,
                 name: formValues.name
             }
             console.log(data);

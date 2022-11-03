@@ -33,7 +33,7 @@ const requestReset = (formData) => {
 
 const passwordReset = (data) => {
 
-    return axios.put(baseUrl + "passwordReset/" + data.email + "/" + data.token + "/" + data.password);
+    return axios.put(baseUrl + "passwordReset?email=" + data.email + "&token=" + data.token + "&password" + data.password);
 }
 
 const adminReset = (email) => {

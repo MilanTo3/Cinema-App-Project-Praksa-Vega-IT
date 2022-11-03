@@ -39,7 +39,7 @@ public class EmailService{
         email.From.Add(MailboxAddress.Parse("cinefracinema@gmail.com"));
         email.To.Add(MailboxAddress.Parse(userEmail));
         email.Subject = "Cinefra Account Verfication";
-        string link = "http://localhost:5174/api/users/verify/" + userEmail + "/" + token;
+        string link = "http://localhost:5174/api/users/verify?email=" + userEmail + "&token=" + token;
         string anchortag = string.Format("<a href={0}>Confirm the registration.</a>", link);
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "" +
             "<h2>Hello new user!</h2><p>We welcome you to the Cinefra cinema family, last thing you need to do to complete the registration process is confirm the registration.</p>" + anchortag };

@@ -27,7 +27,7 @@ const deleteGenre = (id) => {
 }
 
 const updateGenre = (formData) => {
-    return authAxios.put(baseUrl + formData.id + "/" + formData.name);
+    return authAxios.put(baseUrl, formData);
 }
 
 const getPaginatedGenres = (data) => {

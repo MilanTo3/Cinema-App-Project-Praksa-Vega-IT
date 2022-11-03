@@ -71,10 +71,9 @@ public class GenreController : ControllerBase
 
     [HttpPut]
     [Authorize(Roles = "admin")]
-    [Route("{id}/{name}")]
-    public async Task<IActionResult> UpdateGenre(long id, string name){
+    public async Task<IActionResult> UpdateGenre(GenreDto dto){
 
-        bool updated = await _serviceManager.GenreService.UpdateAsync(id, name);
+        bool updated = await _serviceManager.GenreService.UpdateAsync(dto.genreId, dto.name);
         if(updated){
             return Ok();
         }else{

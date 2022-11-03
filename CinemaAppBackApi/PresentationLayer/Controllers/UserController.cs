@@ -62,8 +62,8 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    [Route("verify/{email}/{token}")]
-    public async Task<IActionResult> VerifyUser(string email, string token) {
+    [Route("verify")]
+    public async Task<IActionResult> VerifyUser([FromQuery]string email, [FromQuery]string token) {
         
         bool verified = await _serviceManager.UserService.VerifyUser(email, token);
 
@@ -77,8 +77,8 @@ public class UserController : ControllerBase
 
     [HttpPut]
     [AllowAnonymous]
-    [Route("passwordReset/{email}/{token}/{password}")]
-    public async Task<IActionResult> ResetPassword(string email, string token, string password) {
+    [Route("passwordReset")]
+    public async Task<IActionResult> ResetPassword([FromQuery]string email, [FromQuery]string token, [FromQuery]string password) {
         
         bool reset = await _serviceManager.UserService.ResetPassword(email, token, password);
 
