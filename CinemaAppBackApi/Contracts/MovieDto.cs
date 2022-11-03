@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Http;
 public class MovieDto
 {
 
+    public MovieDto(){
+        
+    }
+
     public MovieDto(long id, string nameloc, string nameori, string tr, int dur, List<string> gen, IFormFile image){
 
         movieId = id;

@@ -34,12 +34,14 @@ const updateReservation = (formData) => {
 }
 
 const getReservedSeats = (id) => {
-    return axios.get(baseUrl + "getReserved/" + id);
+    return axios.get(baseUrl + id + "/getReserved");
 
 }
 
 const getMyReservations = (direction, email) => {
-    return authAxios.get(baseUrl + "getReservations/" + direction + "/" + email);
+
+    const data = { state: direction, email: email }
+    return authAxios.get(baseUrl + "getReservations/", { params: data });
 };
 
 const rateReservation = (form) => {

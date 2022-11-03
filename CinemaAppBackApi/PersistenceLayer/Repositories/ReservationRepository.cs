@@ -68,11 +68,11 @@ public class ReservationRepository : GenericRepository<Reservation>, IReservatio
 
         if (indicator == 1)
         {
-            reservations.Where(x => x.screening.fromScreening < DateTime.Now);
+            reservations = reservations.Where(x => x.screening.fromScreening < DateTime.Now);
         }
         else
         {
-            reservations.Where(x => x.screening.fromScreening >= DateTime.Now);
+            reservations = reservations.Where(x => x.screening.fromScreening >= DateTime.Now);
         }
 
         return await reservations.ToListAsync();

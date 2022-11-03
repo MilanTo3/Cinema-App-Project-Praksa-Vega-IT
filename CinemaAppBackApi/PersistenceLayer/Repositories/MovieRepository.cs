@@ -100,7 +100,7 @@ public class MovieRepository: GenericRepository<Movie>, IMovieRepository{
         }
 
         var pageCount = Math.Ceiling((double)(movies.Count() / itemCount));
-        var paginatedDtos = await movies.Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+        var paginatedDtos = await movies.OrderBy(x => x.nameLocal).Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
 
         DtoPaginated<Movie> paginatedp = new DtoPaginated<Movie>(){ Data = paginatedDtos, ActualCount = movies.Count() };
 

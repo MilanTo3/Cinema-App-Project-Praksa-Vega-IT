@@ -80,7 +80,7 @@ public class UserRepository: GenericRepository<User>, IUserRepository
         }
 
         var pageCount = Math.Ceiling((double)(users.Count() / itemCount));
-        var paginatedDtos = await users.Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+        var paginatedDtos = await users.OrderBy(x => x.name).Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
 
         DtoPaginated<User> paginated = new DtoPaginated<User>(){ Data = paginatedDtos, ActualCount = users.Count() };
 

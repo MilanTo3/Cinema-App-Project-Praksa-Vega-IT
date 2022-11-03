@@ -10,6 +10,7 @@ public class ReservedSeatConfiguration: IEntityTypeConfiguration<ReservedSeat>
         builder.ToTable(nameof(ReservedSeat));
         builder.HasKey(seat => seat.seatId);
         builder.HasOne(s => s.reservation).WithMany(g => g.reservedSeats).HasForeignKey(x => x.reservationId).IsRequired();
+        builder.HasQueryFilter(x => !x.deleted);
 
     }
 

@@ -64,7 +64,7 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
         }
 
         var pageCount = Math.Ceiling((double)(genres.Count() / itemCount));
-        var paginated = await genres.Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+        var paginated = await genres.OrderBy(x => x.name).Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
 
         DtoPaginated<Genre> paginatedp = new DtoPaginated<Genre>(){ Data = paginated, ActualCount = genres.Count() };
 

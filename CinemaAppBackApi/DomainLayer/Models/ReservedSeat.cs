@@ -10,5 +10,6 @@ public class ReservedSeat
     public string rowColumnId{get;set;}
     public Reservation reservation{get;set;}
     public string email{get;set;}
+    public bool deleted{get;set;}
 
 }

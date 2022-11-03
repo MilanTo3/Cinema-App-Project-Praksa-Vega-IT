@@ -74,7 +74,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getReserved/{id}")]
+    [Route("{id}/getReserved")]
     public async Task<IActionResult> getReservedSeats(long id){
 
         var seats = await _serviceManager.ReservationService.GetReservedSeats(id);
@@ -84,10 +84,10 @@ public class ReservationController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "admin,consumer")]
-    [Route("getReservations/{direction}/{email}")]
-    public async Task<IActionResult> getReservedSeats(int direction, string email){
+    [Route("getReservations/")]
+    public async Task<IActionResult> getReservedSeats([FromQuery]int state, [FromQuery]string email){
 
-        var seats = await _serviceManager.ReservationService.GetAllRelP(direction, email);
+        var seats = await _serviceManager.ReservationService.GetAllRelP(state, email);
 
         return Ok(seats);
     }

@@ -71,7 +71,7 @@ public class ScreeningRepository: GenericRepository<Screening>, IScreeningReposi
         }
 
         var pageCount = Math.Ceiling((double)(movies.Count() / itemCount));
-        var paginatedDtos = await movies.Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+        var paginatedDtos = await movies.OrderBy(x => x.Movie.nameLocal).Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
 
         DtoPaginated<Screening> paginated = new DtoPaginated<Screening>(){ Data = paginatedDtos, ActualCount = movies.Count() };
 
