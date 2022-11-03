@@ -33,13 +33,7 @@ namespace PresentationLayer.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddMovie([FromForm] string nameLocal, [FromForm] string nameOriginal, [FromForm] string trailer, [FromForm] int duration, [FromForm] List<string> genres, [FromForm] IFormFile imageFile) {
 
-            MovieDto dto = new MovieDto();
-            dto.nameLocal = nameLocal;
-            dto.nameOriginal = nameOriginal;
-            dto.trailer = trailer;
-            dto.duration = duration;
-            dto.genres = genres;
-            dto.imageFile = imageFile;
+            MovieDto dto = new MovieDto(0, nameLocal, nameOriginal, trailer, duration, genres, imageFile);
 
             string pathToWrite = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
             if (!System.IO.Directory.Exists(pathToWrite))
@@ -71,21 +65,17 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpGet]
-        [Route("getImage/{id}")]
+        [Route("{id}/image")]
         public async Task<IActionResult> GetImage(long id)
         {
 
-            string pathToRead = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
-            DirectoryInfo d = new DirectoryInfo(pathToRead);
-            FileInfo[] Files = d.GetFiles();
-            FileInfo file = Files.ToList().FirstOrDefault(x => x.Name.Split('.')[0] == ("movie" + id.ToString()));
+            FileInfo file = _serviceManager.MovieService.GetImageFile(id);
             
             if(file == null){
                 return NotFound("Poster image not found!");
             }
 
             string mimeType = "image/" + file.Extension.Remove(0, 1).ToLower();
-
             var bytes = await System.IO.File.ReadAllBytesAsync(file.FullName);
             return File(bytes, mimeType, Path.GetFileName(file.Name));
         }
@@ -107,14 +97,7 @@ namespace PresentationLayer.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateMovie([FromForm] long movieId, [FromForm] string nameLocal, [FromForm] string nameOriginal, [FromForm] string trailer, [FromForm] int duration, [FromForm] List<string> genres, [FromForm] IFormFile? imageFile){
 
-            MovieDto dto = new MovieDto();
-            dto.movieId = movieId;
-            dto.nameLocal = nameLocal;
-            dto.nameOriginal = nameOriginal;
-            dto.trailer = trailer;
-            dto.duration = duration;
-            dto.genres = genres;
-            dto.imageFile = imageFile;
+            MovieDto dto = new MovieDto(movieId, nameLocal, nameOriginal, trailer, duration, genres, imageFile);
 
             bool updated = await _serviceManager.MovieService.UpdateAsync(dto);
             if(updated){

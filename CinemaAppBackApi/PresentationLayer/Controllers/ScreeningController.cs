@@ -37,7 +37,7 @@ public class ScreeningController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "admin")]
-    public async Task<IActionResult> AddGenre(ScreeningDto dto){
+    public async Task<IActionResult> AddScreening(ScreeningDto dto){
 
         bool added = await _serviceManager.ScreeningService.CreateAsync(dto);
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contracts;
 
 namespace DomainLayer.Repositories
 {
@@ -12,7 +13,7 @@ namespace DomainLayer.Repositories
 
         Task<Genre> GetByName(string name);
         Task<bool> UpdateName(Genre genre, string newname);
-        Task<IEnumerable<Genre>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
+        Task<DtoPaginated<Genre>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
 
     }
 }

@@ -40,6 +40,16 @@ public class MovieService : IMovieService
         return added && madeImage;
     }
 
+    public FileInfo GetImageFile(long id){
+
+        string pathToRead = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
+        DirectoryInfo d = new DirectoryInfo(pathToRead);
+        FileInfo[] Files = d.GetFiles();
+        FileInfo file = Files.ToList().FirstOrDefault(x => x.Name.Split('.')[0] == ("movie" + id.ToString()));
+
+        return file;
+    }
+
     private bool saveImage(IFormFile image, string path, string name)
     {
 
@@ -73,7 +83,6 @@ public class MovieService : IMovieService
 
     public async Task<IEnumerable<MovieDto>> GetAllAsync() {
         var movieDto = await _repositoryManager.movieRepository.getAll();
-        movieDto = movieDto.Where(x => x.deleted == false);
         var genresDto = movieDto.Adapt<IEnumerable<MovieDto>>();
 
         return genresDto;
@@ -137,12 +146,9 @@ public class MovieService : IMovieService
     public async Task<DtoPaginated<MovieDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var movieDto = await _repositoryManager.movieRepository.GetPaginated(page, itemCount, letters, searchTerm);
-        var moviesDto = movieDto.Adapt<IEnumerable<MovieDto>>().ToList();
+        var moviesDto = movieDto.Data.Adapt<IEnumerable<MovieDto>>().ToList();
 
-        var pageCount = Math.Ceiling((double)(moviesDto.Count / itemCount));
-        var paginatedDtos = moviesDto.Skip((page * (int)itemCount)).Take((int)itemCount).ToList();
-
-        var sdto = new DtoPaginated<MovieDto>(){Data = paginatedDtos, ActualCount = moviesDto.Count};
+        var sdto = new DtoPaginated<MovieDto>(){Data = moviesDto, ActualCount = movieDto.ActualCount};
 
         return sdto;
     }

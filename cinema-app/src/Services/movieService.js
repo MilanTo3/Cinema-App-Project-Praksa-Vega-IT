@@ -34,7 +34,7 @@ const getImage = (id) => {
         responseType: 'blob'
     };
 
-    return axios.get(baseUrl + "getImage/" + id, config);
+    return axios.get(baseUrl + id + "/image", config);
 }
 
 const updateMovie = (formData) => {

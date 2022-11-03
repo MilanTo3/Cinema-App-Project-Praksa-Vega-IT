@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using System.Text;
 using System.Security.Cryptography;
+using Contracts;
 
 public class UserRepository: GenericRepository<User>, IUserRepository
 {
@@ -65,7 +66,7 @@ public class UserRepository: GenericRepository<User>, IUserRepository
         return await dbSet.Where(x => x.email == email).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<User>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+    public async Task<DtoPaginated<User>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var users = dbSet.AsQueryable();
 
@@ -74,12 +75,16 @@ public class UserRepository: GenericRepository<User>, IUserRepository
         }
 
         if(letters != null && letters.Count() != 0){
-            //movies = movies.Where(x => letters.Contains(x.Movie.nameLocal[0])); Eh, why is this not working??
-            //k = k.Where(x => letters.Contains(x.Movie.nameLocal.ToUpper()[0])).ToList();
+
             users = users.Where(x => letters.Contains(x.name.ToUpper().Substring(0, 1)));
         }
 
-        return await users.ToListAsync();
+        var pageCount = Math.Ceiling((double)(users.Count() / itemCount));
+        var paginatedDtos = await users.Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+
+        DtoPaginated<User> paginated = new DtoPaginated<User>(){ Data = paginatedDtos, ActualCount = users.Count() };
+
+        return paginated;
     }
 
 }

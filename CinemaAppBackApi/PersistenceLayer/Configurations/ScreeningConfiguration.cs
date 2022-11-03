@@ -11,6 +11,7 @@ public class ScreeningConfiguration : IEntityTypeConfiguration<Screening>
         builder.ToTable(nameof(Screening));
         builder.HasKey(screening => screening.screeningId);
         builder.HasOne(s => s.Movie).WithMany(g => g.Screenings).HasForeignKey(x => x.movieId).IsRequired();
+        builder.HasQueryFilter(x => !x.deleted);
 
     }
 

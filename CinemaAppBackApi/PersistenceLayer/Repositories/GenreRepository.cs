@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using System.Text;
 using System.Security.Cryptography;
+using Contracts;
 
 public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
 
@@ -50,7 +51,7 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
         return await dbSet.Where(x => x.name == name).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Genre>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+    public async Task<DtoPaginated<Genre>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var genres = dbSet.Where(x => x.deleted == false);
 
@@ -62,7 +63,12 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
             genres = genres.Where(x => letters.Contains(x.name.ToUpper().Substring(0, 1)));
         }
 
-        return await genres.ToListAsync();
+        var pageCount = Math.Ceiling((double)(genres.Count() / itemCount));
+        var paginated = await genres.Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+
+        DtoPaginated<Genre> paginatedp = new DtoPaginated<Genre>(){ Data = paginated, ActualCount = genres.Count() };
+
+        return paginatedp;
     }
 
 }

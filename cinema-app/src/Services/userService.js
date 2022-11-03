@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const baseUrl = "http://localhost:5174/api/users/";
+const authBase = "http://localhost:5174/api/auth/";
 const user = JSON.parse(localStorage.getItem("loggedInUser"));
 const authAxios = axios.create({
 
@@ -10,24 +11,24 @@ const authAxios = axios.create({
 });
 
 const getUsers = () => {
-    return authAxios.get(baseUrl + "getusers");
+    return authAxios.get(baseUrl);
 }
 
 const getUser = (id) => {
-    return authAxios.get(baseUrl + "getuser/" + id);
+    return authAxios.get(baseUrl + id);
 }
 
 const registerUser = (formData) => {
-    return axios.post(baseUrl + "registerUser", formData);
+    return axios.post(authBase + "registerUser", formData);
 }
 
 const loginUser = (formData) => {
-    return axios.post(baseUrl + "loginUser", formData);
+    return axios.post(authBase + "loginUser", formData);
 }
 
 const requestReset = (formData) => {
 
-    return axios.put(baseUrl + "requestReset/" + formData.email);
+    return axios.put(baseUrl + formData.email);
 }
 
 const passwordReset = (data) => {

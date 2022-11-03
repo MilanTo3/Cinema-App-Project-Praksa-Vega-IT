@@ -17,7 +17,6 @@ public class GenreService : IGenreService{
     public async Task<IEnumerable<GenreDto>> GetAllAsync(){
 
         var genres = await _repositoryManager.genreRepository.getAll();
-        genres = genres.Where(x => x.deleted == false);
         var genresDto = genres.Adapt<IEnumerable<GenreDto>>();
 
         return genresDto;
@@ -34,7 +33,7 @@ public class GenreService : IGenreService{
     public async Task<bool> CreateAsync(GenreDto dto){
 
         var genre = await _repositoryManager.genreRepository.GetByName(dto.name);
-        if(genre != null && genre.deleted == false){
+        if(genre != null){
            return false;
         }
 
@@ -80,12 +79,9 @@ public class GenreService : IGenreService{
     public async Task<DtoPaginated<GenreDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var genreDto = await _repositoryManager.genreRepository.GetPaginated(page, itemCount, letters, searchTerm);
-        var genresDto = genreDto.Adapt<IEnumerable<GenreDto>>().ToList();
+        var genresDto = genreDto.Data.Adapt<IEnumerable<GenreDto>>().ToList();
 
-        var pageCount = Math.Ceiling((double)(genresDto.Count / itemCount));
-        var paginatedDtos = genresDto.Skip((page * (int)itemCount)).Take((int)itemCount).ToList();
-
-        var sdto = new DtoPaginated<GenreDto>(){Data = paginatedDtos, ActualCount = genresDto.Count};
+        var sdto = new DtoPaginated<GenreDto>(){Data = genresDto, ActualCount = genreDto.ActualCount};
 
         return sdto;
     }

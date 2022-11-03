@@ -11,13 +11,22 @@ using System.Security.Principal;
 using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc;
+using ServiceLayer;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using static CryptoService;
+using static EmailService;
 
 public class UserService : IUserService
 {
 
     private readonly IRepositoryManager _repositoryManager;
     public UserService(IRepositoryManager repositoryManager) => _repositoryManager = repositoryManager;
-    private const string pepper = "i love you";
 
     public async Task<IEnumerable<UserDto>> GetAllAsync(CancellationToken cancellationToken = default) {
         var users = await _repositoryManager.userRepository.getAll();
@@ -45,43 +54,9 @@ public class UserService : IUserService
 
         await _repositoryManager.userRepository.Add(account);
         await _repositoryManager.UnitOfWork.Complete();
-        sendVerificationEmail(account.email, account.VerificationToken);
+        EmailService.sendVerificationEmail(account.email, account.VerificationToken);
 
         return account.Adapt<UserDto>();
-    }
-
-    private string hashPassword(string password){
-
-        SHA256 hash = SHA256.Create();
-        var hashedPasswordBytes = hash.ComputeHash(Encoding.Default.GetBytes(password + pepper));
-        var hashedPasswordString = Convert.ToHexString(hashedPasswordBytes);
-        return hashedPasswordString;
-    }
-
-    private void sendVerificationEmail(string userEmail, string token) {
-
-        var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse("cinefracinema@gmail.com"));
-        email.To.Add(MailboxAddress.Parse(userEmail));
-        email.Subject = "Cinefra Account Verfication";
-        string link = "http://localhost:5174/api/users/verify/" + userEmail + "/" + token;
-        string anchortag = string.Format("<a href={0}>Confirm the registration.</a>", link);
-        email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "" +
-            "<h2>Hello new user!</h2><p>We welcome you to the Cinefra cinema family, last thing you need to do to complete the registration process is confirm the registration.</p>" + anchortag };
-
-        using (var smtp = new SmtpClient()) {
-            smtp.Connect("smtp.gmail.com", 587, false);
-            smtp.Authenticate("cinefracinema@gmail.com", "xcqrblozlhgqreub");
-            smtp.Send(email);
-            smtp.Disconnect(true);
-        }
-
-    }
-
-    private string createatoken() {
-
-        return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-
     }
 
     public async Task<bool> RequestPassReset(string email, string text){
@@ -94,7 +69,7 @@ public class UserService : IUserService
             account.password = "Invalid";
             request = await _repositoryManager.userRepository.Update(account);
             try{
-                sendPasswordResetMail(email, account.PasswordResetToken, text);
+                EmailService.sendPasswordResetMail(email, account.PasswordResetToken, text);
             }catch{
                 return false;
             }
@@ -102,26 +77,6 @@ public class UserService : IUserService
         }
 
         return request;
-    }
-
-    public void sendPasswordResetMail(string userEmail, string token, string text){
-        
-        var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse("cinefracinema@gmail.com"));
-        email.To.Add(MailboxAddress.Parse(userEmail));
-        email.Subject = "Cinefra Password Reset";
-        string link = "http://localhost:3000/passwordreset?email=" + userEmail + "&token=" + token;
-        string anchortag = string.Format("<a href={0}>Change the password.</a>", link);
-        email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "" +
-            "<h2>Cinefra password reset!</h2><p>" + text + "</p>" + anchortag };
-
-        using (var smtp = new SmtpClient()) {
-            smtp.Connect("smtp.gmail.com", 587, false);
-            smtp.Authenticate("cinefracinema@gmail.com", "xcqrblozlhgqreub");
-            smtp.Send(email);
-            smtp.Disconnect(true);
-        }
-
     }
 
     public async Task<bool> ResetPassword(string email, string token, string newpassword){
@@ -165,9 +120,7 @@ public class UserService : IUserService
         TokenDto tokendto = new TokenDto();
 
         if (user != null) {
-            SHA256 hash = SHA256.Create();
-            var hashedPasswordBytes = hash.ComputeHash(Encoding.Default.GetBytes(loginUser.password + pepper));
-            var hashedPasswordString = Convert.ToHexString(hashedPasswordBytes);
+            var hashedPasswordString = hashPassword(loginUser.password);
 
             if (user.verified == false) {
                 tokendto.errorMessage = "Check your email for a verification link.";
@@ -182,7 +135,21 @@ public class UserService : IUserService
                 return tokendto;
             }
 
-            TokenDto userDto = new TokenDto() { id = user.userId, name = user.name, email = user.email, role = user.role, errorMessage = "" };
+            JWTSetting setting = new JWTSetting();
+            var tokenDescriptor = new SecurityTokenDescriptor {
+                Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("userId", loginUser.email), new Claim(ClaimTypes.Role, user.role)
+                    }),
+                Expires = DateTime.UtcNow.AddHours(5), // token expires in 5 hours.
+                                                       //Key min: 16 characters
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(setting.Key)), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            
+            TokenDto userDto = new TokenDto() { id = user.userId, name = user.name, email = user.email, role = user.role, token = tokenHandler.WriteToken(securityToken), errorMessage = "" };
             return userDto;
         }
 
@@ -226,12 +193,9 @@ public class UserService : IUserService
     public async Task<DtoPaginated<UserDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var userDto = await _repositoryManager.userRepository.GetPaginated(page, itemCount, letters, searchTerm);
-        var usersDto = userDto.Adapt<IEnumerable<UserDto>>().ToList();
+        var usersDto = userDto.Data.Adapt<IEnumerable<UserDto>>().ToList();
 
-        var pageCount = Math.Ceiling((double)(usersDto.Count / itemCount));
-        var paginatedDtos = usersDto.Skip((page * (int)itemCount)).Take((int)itemCount).ToList();
-
-        var sdto = new DtoPaginated<UserDto>(){Data = paginatedDtos, ActualCount = usersDto.Count};
+        var sdto = new DtoPaginated<UserDto>(){Data = usersDto, ActualCount = userDto.ActualCount};
 
         return sdto;
     }

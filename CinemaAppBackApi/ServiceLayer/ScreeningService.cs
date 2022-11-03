@@ -13,11 +13,10 @@ public class ScreeningService : IScreeningService
     public async Task<IEnumerable<ScreeningDto>> GetAllAsync(){
         
         var screeningDto = await _repositoryManager.screeningRepository.GetAllInclusive();
-        screeningDto = screeningDto.Where(x => x.deleted == false);
         var screeningsDto = screeningDto.Adapt<IEnumerable<ScreeningDto>>().ToList();
 
         for(int i = 0; i < screeningDto.Count(); i++){
-            screeningsDto[i].name = screeningDto.ToList()[i].Movie.nameLocal;
+            screeningsDto[i].name = screeningDto.ElementAt(i).Movie.nameLocal;
         }
 
         return screeningsDto;
@@ -66,17 +65,14 @@ public class ScreeningService : IScreeningService
     public async Task<DtoPaginated<ScreeningDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var screeningDto = await _repositoryManager.screeningRepository.GetPaginated(page, itemCount, letters, searchTerm);
-        var screeningsDto = screeningDto.Adapt<IEnumerable<ScreeningDto>>().ToList();
+        var screeningsDto = screeningDto.Data.Adapt<IEnumerable<ScreeningDto>>().ToList();
 
-        var pageCount = Math.Ceiling((double)(screeningsDto.Count / itemCount));
-        var paginatedDtos = screeningsDto.Skip((page * (int)itemCount)).Take((int)itemCount).ToList();
-
-        for(int i = 0; i < paginatedDtos.Count(); i++){
-            var screen = await _repositoryManager.screeningRepository.GetByIdInclusive((long)paginatedDtos[i].screeningId);
-            paginatedDtos[i].name = screen.Movie.nameLocal;
+        for(int i = 0; i < screeningsDto.Count(); i++){
+            var screen = await _repositoryManager.screeningRepository.GetByIdInclusive((long)screeningsDto[i].screeningId);
+            screeningsDto[i].name = screen.Movie.nameLocal;
         }
 
-        var sdto = new DtoPaginated<ScreeningDto>(){Data = paginatedDtos, ActualCount = screeningsDto.Count};
+        var sdto = new DtoPaginated<ScreeningDto>(){Data = screeningsDto, ActualCount = screeningDto.ActualCount};
 
         return sdto;
     }

@@ -2,6 +2,7 @@ namespace PersistenceLayer.Repositories;
 using DomainLayer.Models;
 using DomainLayer.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Contracts;
 
 public class ScreeningRepository: GenericRepository<Screening>, IScreeningRepository
 {
@@ -55,7 +56,7 @@ public class ScreeningRepository: GenericRepository<Screening>, IScreeningReposi
         return movies.Find(x => x.screeningId == screeningId);
     }
 
-    public async Task<IEnumerable<Screening>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
+    public async Task<DtoPaginated<Screening>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
         var movies = dbSet.Include(x => x.Movie).Where(x => x.deleted == false);
 
@@ -69,7 +70,12 @@ public class ScreeningRepository: GenericRepository<Screening>, IScreeningReposi
             movies = movies.Where(x => letters.Contains(x.Movie.nameLocal.ToUpper().Substring(0, 1)));
         }
 
-        return await movies.ToListAsync();
+        var pageCount = Math.Ceiling((double)(movies.Count() / itemCount));
+        var paginatedDtos = await movies.Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+
+        DtoPaginated<Screening> paginated = new DtoPaginated<Screening>(){ Data = paginatedDtos, ActualCount = movies.Count() };
+
+        return paginated;
     }
 
 }

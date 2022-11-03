@@ -11,6 +11,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.ToTable(nameof(Movie));
         builder.HasKey(movie => movie.movieId);
         builder.HasMany<Genre>(movie => movie.Genres).WithMany(x => x.Movies);
+        builder.HasQueryFilter(x => !x.deleted);
 
     }
 

@@ -120,7 +120,7 @@ export default function Ticket({type, data, handler}){
         else{
             return (
             <div className={classes.wrapper}>
-            <div className={classes.info}>
+              <div className={classes.info}>
                 <div className={classes.imageContainer}>
                     <img className={classes.poster} src={poster} />
                 </div>

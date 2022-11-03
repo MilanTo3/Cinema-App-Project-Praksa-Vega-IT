@@ -19,4 +19,6 @@ public interface IMovieService
 
     Task<DtoPaginated<MovieDto>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm);
 
+    FileInfo GetImageFile(long id);
+
 }
