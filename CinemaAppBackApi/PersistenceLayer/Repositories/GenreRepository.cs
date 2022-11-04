@@ -54,7 +54,7 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
 
     public async Task<DtoPaginated<Genre>> GetPaginated(int page, int itemCount, string[]? letters, string? searchTerm){
 
-        var genres = dbSet.Where(x => x.deleted == false);
+        var genres = dbSet.AsQueryable();
 
         if(searchTerm != null){
             genres = genres.Where(x => x.name.ToLower().Contains(searchTerm.ToLower()));
@@ -64,8 +64,8 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
             genres = genres.Where(x => letters.Contains(x.name.ToUpper().Substring(0, 1)));
         }
 
-        var pageCount = Math.Ceiling((double)(genres.Count() / itemCount));
-        var paginated = await genres.OrderBy(x => x.name).Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
+        var pageCount = Math.Ceiling((double)genres.Count() / itemCount);
+        var paginated = await genres.OrderBy(x => x.genreId).Skip((page * (int)itemCount)).Take((int)itemCount).ToListAsync();
 
         DtoPaginated<Genre> paginatedp = new DtoPaginated<Genre>(){ Data = paginated, ActualCount = genres.Count() };
 

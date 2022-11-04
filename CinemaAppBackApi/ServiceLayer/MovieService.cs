@@ -11,6 +11,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using DomainLayer.Exceptions;
 using System.IO;
 
 public class MovieService : IMovieService
@@ -71,8 +72,8 @@ public class MovieService : IMovieService
     public async Task<bool> DeleteAsync(long id) {
         bool deleted = false;
         var movie = await _repositoryManager.movieRepository.getById(id);
-        if(movie == null){
-            return false;
+        if(movie is null){
+            throw new MovieNotFoundException(id.ToString());
         }
 
         deleted = await _repositoryManager.movieRepository.Delete(movie.movieId);

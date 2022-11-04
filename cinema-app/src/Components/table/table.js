@@ -175,7 +175,7 @@ export default function BasicTable({dataType}) { // Koji header, i podaci.
                   setsnackbarOpen(true);
                 }).catch(function (response){
                   setsnackbarType(1);
-                  setsnackbarContent(response["data"]);
+                  setsnackbarContent(response.response.data.error);
                   setsnackbarOpen(true);
                 });
                 onClose();

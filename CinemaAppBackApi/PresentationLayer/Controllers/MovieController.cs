@@ -86,11 +86,7 @@ namespace PresentationLayer.Controllers
         public async Task<IActionResult> DeleteMovie(long id){
 
             bool deleted = await _serviceManager.MovieService.DeleteAsync(id);
-            if(deleted){
-                return Ok("Movie deleted successfully.");
-            }else{
-                return BadRequest("Delete not operated. Movie does not exist.");
-            }
+            return Ok("Movie deleted successfully.");
         }
 
         [HttpPut]
