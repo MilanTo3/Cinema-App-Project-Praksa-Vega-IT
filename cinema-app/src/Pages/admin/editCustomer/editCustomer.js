@@ -49,7 +49,7 @@ export default function EditCustomerForm({ id }){
             setsnackbarOpen(true);
         }).catch(function (error){
             setsnackbarType(1);
-            setsnackbarContent(error["data"]);
+            setsnackbarContent(error.response.data.error);
             setsnackbarOpen(true);
         });
     };
@@ -62,7 +62,7 @@ export default function EditCustomerForm({ id }){
             setsnackbarOpen(true);
         }).catch(function (error){
             setsnackbarType(1);
-            setsnackbarContent(error["data"]);
+            setsnackbarContent(error.response.data.error);
             setsnackbarOpen(true);
         });
     };

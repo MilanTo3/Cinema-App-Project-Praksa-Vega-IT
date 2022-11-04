@@ -15,11 +15,11 @@ export default function BasicSnackbar({ type, content, isDialogOpened, handleClo
   const alert = alerts[k];
   var style = { vertical: "top", horizontal: "right" };
   if(center){
-    style = {vertical: "top", horizontal: "center", width: "100%"};
+    style = {vertical: "top", horizontal: "center"};
   }
 
   return (
-    <Snackbar open={isDialogOpened} autoHideDuration={6000} onClose={handleClose} anchorOrigin={style}>
+    <Snackbar open={isDialogOpened} autoHideDuration={6000} onClose={handleClose} style={{ width: center ? "90%":"" }} anchorOrigin={style}>
       {alert}
     </Snackbar>
   );

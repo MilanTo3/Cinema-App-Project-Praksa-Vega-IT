@@ -19,6 +19,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using DomainLayer.Exceptions;
 using static CryptoService;
 using static EmailService;
 
@@ -38,12 +39,20 @@ public class UserService : IUserService
 
     public async Task<UserDto> GetByIdAsync(long userid, CancellationToken cancellationToken) {
         var user = await _repositoryManager.userRepository.getById(userid);
+        if(user is null){
+            throw new UserNotFoundException(userid.ToString());
+        }
         var userdto = user.Adapt<UserDto>();
 
         return userdto;
     }
 
     public async Task<UserDto> CreateAsync(UserDto user, CancellationToken cancellationToken = default) {
+
+        var getted = _repositoryManager.userRepository.GetByEmail(user.email);
+        if(getted != null){
+            throw new UserEmailConflictException();
+        }
 
         var account = user.Adapt<User>();
         account.blocked = false;
@@ -87,7 +96,7 @@ public class UserService : IUserService
         if(account != null){
             
             if(account.PasswordResetToken != token){
-                return false;
+                throw new UserTokenBrokenException();
             }
 
             account.PasswordResetToken = "";
@@ -95,6 +104,8 @@ public class UserService : IUserService
             reseted = await _repositoryManager.userRepository.Update(account);
             await _repositoryManager.UnitOfWork.Complete();
 
+        }else{
+            throw new UserNotFoundException(email);
         }
 
         return reseted;
@@ -103,6 +114,10 @@ public class UserService : IUserService
     public async Task<bool> DeleteAsync(long userid, CancellationToken cancellationToken = default) {
 
         var account = await _repositoryManager.userRepository.getById(userid);
+        if(account is null){
+            throw new UserNotFoundException(userid.ToString());
+        }
+        
         bool deleted = false;
 
         if (account != null) {
@@ -123,16 +138,13 @@ public class UserService : IUserService
             var hashedPasswordString = hashPassword(loginUser.password);
 
             if (user.verified == false) {
-                tokendto.errorMessage = "Check your email for a verification link.";
-                return tokendto;
+                throw new FailedLoginException("Check your email for a verification link.");
             }
             else if (user.blocked) {
-                tokendto.errorMessage = "Oops! Your account seems to be blocked!";
-                return tokendto;
+                throw new FailedLoginException("Oops! Your account seems to be blocked!");
             }
             else if (user.password != hashedPasswordString) {
-                tokendto.errorMessage = "Incorrect email or password.";
-                return tokendto;
+                throw new FailedLoginException("Incorrect email or password.");
             }
 
             JWTSetting setting = new JWTSetting();
@@ -161,12 +173,12 @@ public class UserService : IUserService
 
         var user = await _repositoryManager.userRepository.GetByEmail(email);
         
-        if (user == null) {
-            return false;
+        if (user is null) {
+            throw new UserNotFoundException(email);
         }
 
         if (token != user.VerificationToken) {
-            return false;
+            throw new UserTokenBrokenException();
         }
 
         user.verified = true;
@@ -179,8 +191,8 @@ public class UserService : IUserService
     public async Task<bool> BlockUser(long id) {
 
         var user = await _repositoryManager.userRepository.getById(id);
-        if (user == null) {
-            return false;
+        if (user is null) {
+            throw new UserNotFoundException(id.ToString());
         }
 
         user.blocked = !user.blocked;

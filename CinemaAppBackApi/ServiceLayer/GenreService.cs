@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
+using DomainLayer.Exceptions;
 
 public class GenreService : IGenreService{
 
@@ -25,6 +26,9 @@ public class GenreService : IGenreService{
     public async Task<GenreDto> GetByNameAsync(string name){
 
         var genre = await _repositoryManager.genreRepository.GetByName(name);
+        if(genre is null){
+            throw new GenreNotFoundException(name);
+        }
         var genreDto = genre.Adapt<GenreDto>();
 
         return genreDto;
@@ -34,7 +38,7 @@ public class GenreService : IGenreService{
 
         var genre = await _repositoryManager.genreRepository.GetByName(dto.name);
         if(genre != null){
-           return false;
+            throw new GenreAddConflictException(dto.name);
         }
 
         var genreReal = dto.Adapt<Genre>();
@@ -49,8 +53,8 @@ public class GenreService : IGenreService{
         
         bool deleted = false;
         var genre = await _repositoryManager.genreRepository.getById(id);
-        if(genre == null){
-            return false;
+        if(genre is null){
+            throw new GenreNotFoundException(id.ToString());
         }
 
         deleted = await _repositoryManager.genreRepository.Delete(genre.genreId);
@@ -71,6 +75,9 @@ public class GenreService : IGenreService{
     public async Task<GenreDto> GetByIdAsync(long id){
 
         var genre = await _repositoryManager.genreRepository.getById(id);
+        if(genre is null){
+            throw new GenreNotFoundException(id.ToString());
+        }
         var genreDto = genre.Adapt<GenreDto>();
 
         return genreDto;

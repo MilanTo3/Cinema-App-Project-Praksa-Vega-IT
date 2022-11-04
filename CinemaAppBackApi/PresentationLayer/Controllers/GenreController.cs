@@ -47,13 +47,9 @@ public class GenreController : ControllerBase
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> AddGenre(GenreDto dto){
 
-        bool added = await _serviceManager.GenreService.CreateAsync(dto);
+        await _serviceManager.GenreService.CreateAsync(dto);
 
-        if(added){
-            return Ok();
-        }else{
-            return BadRequest("Genre not created. Maybe that genre already exists?");
-        }
+        return Ok();
     }
 
     [HttpDelete]
@@ -61,25 +57,16 @@ public class GenreController : ControllerBase
     [Route("{id}")]
     public async Task<IActionResult> DeleteGenre(long id){
 
-        bool deleted = await _serviceManager.GenreService.DeleteAsync(id);
-        if(deleted){
-            return Ok("Genre deleted successfully.");
-        }else{
-            return BadRequest("Delete not operated. Genre does not exist.");
-        }
+        await _serviceManager.GenreService.DeleteAsync(id);
+        return Ok("Genre deleted successfully.");
     }
 
     [HttpPut]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateGenre(GenreDto dto){
 
-        bool updated = await _serviceManager.GenreService.UpdateAsync(dto.genreId, dto.name);
-        if(updated){
-            return Ok();
-        }else{
-            return BadRequest("Updated not operated. New genre name already exists?");
-        }
-
+        await _serviceManager.GenreService.UpdateAsync(dto.genreId, dto.name);
+        return Ok();
     }
 
     [HttpGet]

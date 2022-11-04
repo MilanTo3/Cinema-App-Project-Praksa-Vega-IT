@@ -121,7 +121,7 @@ export default function CinemaReservation(){
             );
           }
         });
-      };
+    };
 
     useEffect(() => {
 
@@ -135,7 +135,7 @@ export default function CinemaReservation(){
         if(user){
             setEmail(user.email);
             setUser(user);
-            setDiscount(<p className={classes.discount}>5% discount!</p>);
+            setDiscount(<p className={classes.discount}>5% discount included!</p>);
         }
 
         async function awaiter(){

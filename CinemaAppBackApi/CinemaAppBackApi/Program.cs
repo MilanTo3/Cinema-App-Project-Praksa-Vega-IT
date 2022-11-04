@@ -46,6 +46,7 @@ app.UseStaticFiles(new StaticFileOptions(){
     RequestPath = new PathString("/Resources")
 });
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication(); // DISABLE
 app.UseAuthorization();
 app.MapControllers();

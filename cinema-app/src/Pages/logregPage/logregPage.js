@@ -60,7 +60,7 @@ export default function LogRegPage(){
 			}).catch(function (error){
 				setsnackbarType(1);
 				setsnackbarOpen(true);
-				setsnackbarContent(error["response"]["data"]);
+				setsnackbarContent(error.response.data.error);
 			});
 
 			for (const [key, value] of Object.entries(formValues)) {
@@ -89,7 +89,7 @@ export default function LogRegPage(){
 			}).catch(function (error) {
 				setsnackbarType(1);
 				setsnackbarOpen(true);
-				setsnackbarContent(error["response"]["data"]);
+				setsnackbarContent(error.response.data.error);
 			});
 			setLoginSubmit(false);
 		}
@@ -212,7 +212,6 @@ export default function LogRegPage(){
 		</div>
 	</div>
 	<BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
-
 	<BasicModal content={modal} isDialogOpened={open} handleCloseDialog={handleClose} />
 
 </motion.div>;

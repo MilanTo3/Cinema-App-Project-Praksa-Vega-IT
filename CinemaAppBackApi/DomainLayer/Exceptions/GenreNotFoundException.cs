@@ -3,8 +3,8 @@ namespace DomainLayer.Exceptions;
 
 public sealed class GenreNotFoundException : NotFoundException
 {
-    public GenreNotFoundException(string name)
-        : base($"The genre {name} not found!")
+    public GenreNotFoundException(string id)
+        : base($"The genre with the id {id} not found!")
     {
     }
 }

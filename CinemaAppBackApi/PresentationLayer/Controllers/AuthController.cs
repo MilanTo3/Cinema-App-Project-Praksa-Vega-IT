@@ -31,13 +31,8 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     [Route("registerUser")]
     public async Task<IActionResult> AddUser(UserDto user){
-
-        try {
-            await _serviceManager.UserService.CreateAsync(user);
-        }
-        catch {
-            return BadRequest();
-        }
+    
+        await _serviceManager.UserService.CreateAsync(user);
 
         return Ok();
     }
@@ -49,13 +44,7 @@ public class AuthController : ControllerBase
 
         TokenDto user = await _serviceManager.UserService.LoginUserAsync(loginUser);
 
-        if (user.errorMessage == "") {
-
-            return Ok(user);
-        }
-        else {
-            return BadRequest(user.errorMessage);
-        }
+        return Ok(user);
     }
 
 }

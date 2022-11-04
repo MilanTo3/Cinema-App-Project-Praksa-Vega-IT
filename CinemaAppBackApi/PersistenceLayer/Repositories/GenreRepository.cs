@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Security.Cryptography;
 using Contracts;
+using DomainLayer.Exceptions;
 
 public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
 
@@ -30,7 +31,7 @@ public class GenreRepository: GenericRepository<Genre>, IGenreRepository{
 
         var exist = await dbSet.Where(x => x.name == nameGenre).FirstOrDefaultAsync();
         if(exist != null){
-            return false;
+            throw new GenreUpdateConflictException(nameGenre);
         }
 
         try {

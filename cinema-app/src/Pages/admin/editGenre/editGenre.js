@@ -55,7 +55,7 @@ export default function EditGenreFrom({ id }){
 				setsnackbarOpen(true);
 			}).catch(function (error){
 				setsnackbarType(1);
-                setsnackbarContent(error["response"]["data"]);
+                setsnackbarContent(error.response.data.error);
 				setsnackbarOpen(true);
 			});
             setIsSubmit(false);
@@ -72,7 +72,7 @@ export default function EditGenreFrom({ id }){
 
     return (
         <div>
-            <BasicSnackbar type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
+            <BasicSnackbar center={true} type={snackbarType} content={snackbarContent} isDialogOpened={snackbarOpen} handleClose={handleSnackbarClose} />
             <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
                 <h1>Edit a genre:</h1>
                 <input type="text" name="name" placeholder="Genre name" value={formValues.name} onChange={handleChange} />

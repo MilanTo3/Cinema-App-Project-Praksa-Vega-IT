@@ -51,13 +51,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteUser(long id) {
 
         bool deleted = await _serviceManager.UserService.DeleteAsync(id);
-        if (deleted) {
-            return Ok();
-        }
-        else {
-            return BadRequest();
-        }
-
+        return Ok();
     }
 
     [HttpGet]
@@ -67,12 +61,7 @@ public class UserController : ControllerBase
         
         bool verified = await _serviceManager.UserService.VerifyUser(email, token);
 
-        if (verified) {
-            return Ok("Verification successfull.");
-        }
-        else {
-            return BadRequest("Verification Unsuccesfull.");
-        }
+        return Ok("Verification successfull.");
     }
 
     [HttpPut]
@@ -82,12 +71,7 @@ public class UserController : ControllerBase
         
         bool reset = await _serviceManager.UserService.ResetPassword(email, token, password);
 
-        if(reset){
-            return Ok("Password changed successfully.");
-        }else{
-            return BadRequest("User doesn't exist or the token is broken. Send for another password reset request.");
-        }
-        
+        return Ok("Password changed successfully.");  
     }
 
     [HttpPut]
@@ -97,12 +81,7 @@ public class UserController : ControllerBase
 
         bool request = await _serviceManager.UserService.RequestPassReset(email, "Oops. Forgot your password? Heres a link to change it.");
 
-        if(request){
-            return Ok("Password request sent successfully.");
-        }else{
-            return BadRequest("User doesn't exist.");
-        }
-
+        return Ok("Password request sent successfully.");
     }
 
     [HttpPut]
@@ -112,12 +91,7 @@ public class UserController : ControllerBase
 
         bool request = await _serviceManager.UserService.RequestPassReset(email, "The administration has reset your password. Heres a link to set your new password.");
 
-        if(request){
-            return Ok("Password request sent successfully.");
-        }else{
-            return BadRequest("User doesn't exist.");
-        }
-
+        return Ok("Password request sent successfully.");
     }
 
     [HttpPut]
@@ -126,12 +100,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> BlockUser(long id) {
 
         bool success = await _serviceManager.UserService.BlockUser(id);
-        if (success) {
-            return Ok("Operation successfull.");
-        }
-        else {
-            return NotFound("User not found, so could not be blocked.");
-        }
+        return Ok("Operation successfull.");  
     }
 
     [HttpGet]
